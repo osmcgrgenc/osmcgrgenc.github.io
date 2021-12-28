@@ -117,7 +117,8 @@
                                 <input type="password" name="password" id="login_password" class="form-control"
                                     aria-describedby="button-addon2" placeholder="Password">
                                 <div class="input-group-addon">
-                                    <button class="mt-0" style="height: 75%;"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                    <button class="mt-0" style="height: 75%;"><i class="fa fa-eye-slash"
+                                            aria-hidden="true"></i></button>
                                 </div>
                             </div>
                             <div id="login-password-valid" class="text-danger visually-hidden">Şifre hatalı</div>
@@ -131,12 +132,15 @@
                     <div class="form px-4 pt-5">
                         <input type="text" name="firstName" id="register_firstName" class="form-control"
                             placeholder="Ad">
-                        <div id="register-firstName-valid" class="text-danger visually-hidden">İsim hatalı</div>
+                        <div id="register-firstName-valid" class="text-danger visually-hidden">İsim hatalı (Karakter
+                            uzunluğu Min:3 Max:40)</div>
                         <input type="text" name="lastName" id="register_lastName" class="form-control"
                             placeholder="Soyad">
-                        <div id="register-lastName-valid" class="text-danger visually-hidden">Soyisim hatalı</div>
+                        <div id="register-lastName-valid" class="text-danger visually-hidden">Soyisim hatalı (Karakter
+                            uzunluğu Min:3 Max:40)</div>
                         <input type="text" name="email" id="register_email" class="form-control" placeholder="Email">
-                        <div id="register-email-valid" class="text-danger visually-hidden">Email hatalı</div>
+                        <div id="register-email-valid" class="text-danger visually-hidden">Email hatalı (Örnek:
+                            isim@alanadi.uzanti)</div>
                         <input type="password" name="password" id="register_password" class="form-control"
                             placeholder="Şifre">
                         <div id="register-password-valid" class="text-danger visually-hidden">Şifre hatalı</div>
@@ -164,18 +168,19 @@
             $('#pills-profile').addClass('show active');
             $('#pills-home').toggleClass('show active');
         })
-        $("#show_hide_password button").on('click', function(event) {
-        event.preventDefault();
-        if($('#show_hide_password input').attr("type") == "text"){
-            $('#show_hide_password input').attr('type', 'password');
-            $('#show_hide_password i').addClass( "fa-eye-slash" );
-            $('#show_hide_password i').removeClass( "fa-eye" );
-        }else if($('#show_hide_password input').attr("type") == "password"){
-            $('#show_hide_password input').attr('type', 'text');
-            $('#show_hide_password i').removeClass( "fa-eye-slash" );
-            $('#show_hide_password i').addClass( "fa-eye" );
-        }
-    });
+        $("#show_hide_password button").on('click', function (event) {
+            event.preventDefault();
+            if ($('#show_hide_password input').attr("type") == "text") {
+                $('#show_hide_password input').attr('type', 'password');
+                $('#show_hide_password i').addClass("fa-eye-slash");
+                $('#show_hide_password i').removeClass("fa-eye");
+            } else if ($('#show_hide_password input').attr("type") == "password") {
+                $('#show_hide_password input').attr('type', 'text');
+                $('#show_hide_password i').removeClass("fa-eye-slash");
+                $('#show_hide_password i').addClass("fa-eye");
+            }
+        });
+
         function login() {
             $('#login-email-valid').addClass('visually-hidden');
             $('#login-password-valid').addClass('visually-hidden');
@@ -212,9 +217,13 @@
                 return;
             }
             if (email.length > 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-                if (password.length > 6 && password == password_confirmation) {
-                    alert("Kayıt oldunuz")
+                if (password.length > 6) {
+                    if (password == password_confirmation)
+                        alert("Kayıt oldunuz")
+                    else
+                        $('#register-password-valid').innerText = "Şifreler aynı değil";
                 } else { //password hatalı
+                    $('#register-password-valid').innerText = "Şifreniz en az 6 karakter uzunluğunda olmalı";
                     $('#register-password-valid').toggleClass('visually-hidden');
                 }
             } else // email hatali
