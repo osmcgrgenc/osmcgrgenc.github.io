@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+
+<body>
+    <div>
+        <p>Date değeri</p>
+        <p id="dateHali"></p>
+    </div>
+    <div>
+        <p>Date değeri => getUTCDate ve getDate</p>
+        <p id="dateHaligetUTCDate"></p>
+        <p id="dateHaligetDate"></p>
+    </div>
+    <div>
+        <p>newDate değeri</p>
+        <p id="newDateHali"></p>
+    </div>
+    <div>
+        <p>Date değeri => getUTCDate ve getDate</p>
+        <p id="newdateHaligetUTCDate"></p>
+        <p id="newdateHaligetDate"></p>
+    </div>
+    <script>
+        const date = new Date("2022-07-27T21:45:04.603Z")
+        var newDate = date;
+
+        newDate = new Date(
+            date.getUTCFullYear(),
+            date.getUTCMonth(),
+            date.getUTCDate(),
+            date.getUTCHours(),
+            date.getUTCMinutes(),
+            date.getUTCSeconds()
+        );
+
+        document.getElementById("dateHali").innerText = date;
+        document.getElementById("dateHaligetUTCDate").innerText = date.getDate();
+        document.getElementById("dateHaligetDate").innerText = date.getUTCDate;
+        document.getElementById("newDateHali").innerText = newDate;
+        document.getElementById("newdateHaligetUTCDate").innerText = newDate.getUTCDate();
+        document.getElementById("newdateHaligetDate").innerText = newDate.getDate();
+    </script>
+</body>
+
+</html>
