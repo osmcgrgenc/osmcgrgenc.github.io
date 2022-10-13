@@ -27,6 +27,8 @@
         <p id="dateHaliFullDate1"></p>
         <p id="dateHaliFullDate2"></p>
         <p id="dateHaliFullDate3"></p>
+        <p>For Android Template</p>
+        <p id="dateHaliFullDate4"></p>
     </div>
     <div>
         <p>newDate değeri</p>
@@ -39,6 +41,8 @@
         <p id="newdateHaliFullDate1"></p>
         <p id="newdateHaliFullDate2"></p>
         <p id="newdateHaliFullDate3"></p>
+        <p>For Android Template</p>
+        <p id="newdateHaliFullDate4"></p>
     </div>
     <script>
 
@@ -54,7 +58,9 @@
                                 date.getUTCMonth() + 1,
                             )}-${formatdate(date.getUTCDate())}`;
                         case 'HH:MM':
-                            return `${ convertLocalTimeToUTCTime(date) }`;
+                            return `${convertLocalTimeToUTCTime(date)}`;
+                        case 'HH:MM-A':
+                            return `${convertLocalTimeToUTCTimeForAndroid(date)}`;
                         default:
                             return `${formatdate(date.getUTCDate())}.${formatdate(
                                 date.getUTCMonth() + 1,
@@ -83,6 +89,24 @@
             });
 
         };
+        const convertLocalTimeToUTCTimeForAndroid = (dateString) => {
+            let date = new Date(dateString);
+
+            return new Date(
+                date.getUTCFullYear(),
+                date.getUTCMonth(),
+                date.getUTCDate(),
+                date.getUTCHours(),
+                date.getUTCMinutes(),
+                date.getUTCSeconds()
+            ).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+
+        };
 
         function testNewDateType(dateValue) {
             const newDateTimeString = dateValue ?? document.getElementById("datetimearea").value;
@@ -100,6 +124,7 @@
             document.getElementById("dateHaligetUTCDate").innerText = date.getUTCDate();
             document.getElementById("dateHaliFullDate1").innerText = converter(date, 'yyyy-mm-dd');
             document.getElementById("dateHaliFullDate2").innerText = converter(date, 'HH:MM');
+            document.getElementById("dateHaliFullDate4").innerText = converter(date, 'HH:MM-A');
             document.getElementById("dateHaliFullDate3").innerText = converter(date, 'yyyy-dd-mm');
 
             document.getElementById("newDateHali").innerText = newDate;
@@ -107,6 +132,7 @@
             document.getElementById("newdateHaligetDate").innerText = newDate.getDate();
             document.getElementById("newdateHaliFullDate1").innerText = converter(newDate, 'yyyy-mm-dd');
             document.getElementById("newdateHaliFullDate2").innerText = converter(newDate, 'HH:MM');
+            document.getElementById("newdateHaliFullDate4").innerText = converter(newDate, 'HH:MM-A');
             document.getElementById("newdateHaliFullDate3").innerText = converter(newDate, 'yyyy-dd-mm');
         }
         testNewDateType("2022-07-27T21:45:04.603Z");
