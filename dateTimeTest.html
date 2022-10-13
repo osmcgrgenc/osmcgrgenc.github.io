@@ -57,7 +57,7 @@
                   date.getUTCMonth() + 1,
                 )}-${formatdate(date.getUTCDate())}`;
               case 'HH:MM':
-                return ${convertLocalTimeToUTCTime(date)};
+                return `${convertLocalTimeToUTCTime(date)}`;
               default:
                 return `${formatdate(date.getUTCDate())}.${formatdate(
                   date.getUTCMonth() + 1,
