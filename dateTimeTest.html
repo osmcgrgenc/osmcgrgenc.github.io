@@ -27,7 +27,7 @@
         <p id="dateHaliFullDate1"></p>
         <p id="dateHaliFullDate2"></p>
         <p id="dateHaliFullDate3"></p>
-        <p>For Android Template</p>
+        <h3>For Android Template</h3>
         <p id="dateHaliFullDate4"></p>
     </div>
     <div>
@@ -41,7 +41,7 @@
         <p id="newdateHaliFullDate1"></p>
         <p id="newdateHaliFullDate2"></p>
         <p id="newdateHaliFullDate3"></p>
-        <p>For Android Template</p>
+        <h3>For Android Template</h3>
         <p id="newdateHaliFullDate4"></p>
     </div>
     <script>
@@ -111,7 +111,7 @@
         function testNewDateType(dateValue) {
             const newDateTimeString = dateValue ?? document.getElementById("datetimearea").value;
             const date = new Date(newDateTimeString);
-            newDate = new Date(
+            const newDate = new Date(
                 date.getUTCFullYear(),
                 date.getUTCMonth(),
                 date.getUTCDate(),
