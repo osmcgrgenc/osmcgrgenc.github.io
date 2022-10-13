@@ -11,7 +11,7 @@
 <body>
     <div>
         <p>
-            <input:text value="" id="datetimearea" /><button onclick="testNewDateType()">
+            <input type="text" value="" id="datetimearea" /><button onclick="testNewDateType()">
                 TEST
             </button>
         </p>
@@ -54,7 +54,7 @@
                                 date.getUTCMonth() + 1,
                             )}-${formatdate(date.getUTCDate())}`;
                         case 'HH:MM':
-                            return `${ convertLocalTimeToUTCTime(date) };
+                            return `${ convertLocalTimeToUTCTime(date) }`;
                         default:
                             return `${formatdate(date.getUTCDate())}.${formatdate(
                                 date.getUTCMonth() + 1,
