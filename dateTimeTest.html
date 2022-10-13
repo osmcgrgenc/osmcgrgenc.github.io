@@ -1,52 +1,111 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
 
-<body>
+  <body>
     <div>
-        <p>Date değeri</p>
-        <p id="dateHali"></p>
+      <p>Date değeri</p>
+      <p id="dateHali"></p>
     </div>
     <div>
-        <p>Date değeri => getUTCDate ve getDate</p>
-        <p id="dateHaligetUTCDate"></p>
-        <p id="dateHaligetDate"></p>
+      <p>Date değeri => getUTCDate ve getDate</p>
+      <p id="dateHaligetUTCDate"></p>
+      <p id="dateHaligetDate"></p>
+      <p id="dateHaliFullDate1"></p>
+      <p id="dateHaliFullDate2"></p>
+      <p id="dateHaliFullDate3"></p>
     </div>
     <div>
-        <p>newDate değeri</p>
-        <p id="newDateHali"></p>
+      <p>newDate değeri</p>
+      <p id="newDateHali"></p>
     </div>
     <div>
-        <p>Date değeri => getUTCDate ve getDate</p>
-        <p id="newdateHaligetUTCDate"></p>
-        <p id="newdateHaligetDate"></p>
+      <p>Date değeri => getUTCDate ve getDate</p>
+      <p id="newdateHaligetUTCDate"></p>
+      <p id="newdateHaligetDate"></p>
+      <p id="newdateHaliFullDate1"></p>
+      <p id="newdateHaliFullDate2"></p>
+      <p id="newdateHaliFullDate3"></p>
     </div>
     <script>
-        const date = new Date("2022-07-27T21:45:04.603Z")
-        var newDate = date;
+              const date = new Date("2022-07-27T21:45:04.603Z")
+              var newDate = date;
 
-        newDate = new Date(
+              newDate = new Date(
+                  date.getUTCFullYear(),
+                  date.getUTCMonth(),
+                  date.getUTCDate(),
+                  date.getUTCHours(),
+                  date.getUTCMinutes(),
+                  date.getUTCSeconds()
+              );
+
+              function converter(
+        date,
+        format,
+      ) {
+        try {
+          if (!isNaN(date.getTime())) {
+            switch (format) {
+              case 'yyyy-mm-dd':
+                return `${date.getUTCFullYear()}-${formatdate(
+                  date.getUTCMonth() + 1,
+                )}-${formatdate(date.getUTCDate())}`;
+              case 'HH:MM':
+                return ${convertLocalTimeToUTCTime(date)};
+              default:
+                return `${formatdate(date.getUTCDate())}.${formatdate(
+                  date.getUTCMonth() + 1,
+                )}.${date.getUTCFullYear()}`;
+            }
+          } else {
+            return '';
+          }
+        } catch (error) {
+          return '';
+        }
+      }
+
+      const formatdate = date => {
+        return date < 10 ? '0' + date : date;
+      };
+
+      const convertLocalTimeToUTCTime = (dateString) => {
+        let date = new Date(dateString);
+
+          return new Date(
             date.getUTCFullYear(),
             date.getUTCMonth(),
             date.getUTCDate(),
             date.getUTCHours(),
             date.getUTCMinutes(),
             date.getUTCSeconds()
-        );
+          ).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: false
+          });
 
-        document.getElementById("dateHali").innerText = date;
-        document.getElementById("dateHaligetDate").innerText = date.getDate();
-        document.getElementById("dateHaligetUTCDate").innerText = date.getUTCDate();
-        document.getElementById("newDateHali").innerText = newDate;
-        document.getElementById("newdateHaligetUTCDate").innerText = newDate.getUTCDate();
-        document.getElementById("newdateHaligetDate").innerText = newDate.getDate();
+      };
+              document.getElementById("dateHali").innerText = date;
+              document.getElementById("dateHaligetDate").innerText = date.getDate();
+              document.getElementById("dateHaligetUTCDate").innerText = date.getUTCDate();
+              document.getElementById("dateHaliFullDate1").innerText = converter(date,'yyyy-mm-dd');
+              document.getElementById("dateHaliFullDate2").innerText = converter(date,'HH:MM');
+              document.getElementById("dateHaliFullDate3").innerText = converter(date,'yyyy-dd-mm');
+              
+              document.getElementById("newDateHali").innerText = newDate;
+              document.getElementById("newdateHaligetUTCDate").innerText = newDate.getUTCDate();
+              document.getElementById("newdateHaligetDate").innerText = newDate.getDate();
+              document.getElementById("newdateHaliFullDate1").innerText = converter(newDate,'yyyy-mm-dd');
+              document.getElementById("newdateHaliFullDate2").innerText = converter(newDate,'HH:MM');
+              document.getElementById("newdateHaliFullDate3").innerText = converter(newDate,'yyyy-dd-mm');
     </script>
-</body>
-
+  </body>
 </html>
