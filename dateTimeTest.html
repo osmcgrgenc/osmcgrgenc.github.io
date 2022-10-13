@@ -15,6 +15,7 @@
                 TEST
             </button>
         </p>
+        <p id="defaultDegerim"></p>
     </div>
     <div>
         <h1>Date değeri</h1>
@@ -110,6 +111,7 @@
 
         function testNewDateType(dateValue) {
             const newDateTimeString = dateValue ?? document.getElementById("datetimearea").value;
+            document.getElementById("defaultDegerim").innerText = newDateTimeString;
             const date = new Date(newDateTimeString);
             const newDate = new Date(
                 date.getUTCFullYear(),
