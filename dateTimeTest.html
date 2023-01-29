@@ -50,6 +50,8 @@
         <input id="selectedDateValue"></input>
         <p id="testConvertDatewithoffsetdefult"></p>
         <p id="testConvertDatewithoffsetresult"></p>
+    <p id="testConvertDatewithoffsetdefultnow"></p>
+        <p id="testConvertDatewithoffsetresultnow"></p>
     </div>
     <script>
 
@@ -152,7 +154,11 @@
            var date = new Date(textDate);
             document.getElementById("testConvertDatewithoffsetdefult").innerText = date;
            var _date = new Date(Date.parse(date) + new Date(date).getTimezoneOffset()*-1*1000*60);
-            document.getElementById("testConvertDatewithoffsetresult").innerText = date;
+            document.getElementById("testConvertDatewithoffsetresult").innerText = _date;
+            var datenow = new Date();
+            document.getElementById("testConvertDatewithoffsetdefultnow").innerText = datenow;
+           var _datenow = new Date(Date.parse(datenow) + new Date(datenow).getTimezoneOffset()*-1*1000*60);
+            document.getElementById("testConvertDatewithoffsetresultnow").innerText = _datenow;
            
         });
         
