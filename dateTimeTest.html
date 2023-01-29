@@ -45,6 +45,12 @@
         <h3>For Android Template</h3>
         <p id="newdateHaliFullDate4"></p>
     </div>
+     <div>
+        <p>Yeni Eklemeler</p>
+        <input id="selectedDateValue"></input>
+        <p id="testConvertDatewithoffsetdefult"></p>
+        <p id="testConvertDatewithoffsetresult"></p>
+    </div>
     <script>
 
         function converter(
@@ -137,6 +143,19 @@
             document.getElementById("newdateHaliFullDate4").innerText = converter(newDate, 'HH:MM-A');
             document.getElementById("newdateHaliFullDate3").innerText = converter(newDate, 'yyyy-dd-mm');
         }
+        function dateFormatter(date,format){
+            var _date = new Date(Date.parse(date) + new Date(date).getTimezoneOffset()*-1*1000*60)
+            console.log(_date)
+        }
+        document.getElementById("selectedDateValue").addEventListener('change', (event) => {
+           var textDate = this.value;
+           var date = new Date(textDate);
+            document.getElementById("testConvertDatewithoffsetdefult").innerText = date;
+           var _date = new Date(Date.parse(date) + new Date(date).getTimezoneOffset()*-1*1000*60);
+            document.getElementById("testConvertDatewithoffsetresult").innerText = date;
+           
+        });
+        
         testNewDateType("2022-07-27T21:45:04.603Z");
 
 
