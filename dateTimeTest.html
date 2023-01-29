@@ -147,7 +147,7 @@
             var _date = new Date(Date.parse(date) + new Date(date).getTimezoneOffset()*-1*1000*60)
             console.log(_date)
         }
-        document.getElementById("selectedDateValue").addEventListener('change', (event) => {
+        document.getElementById("selectedDateValue").addEventListener('change', function(event) {
            var textDate = this.value;
            var date = new Date(textDate);
             document.getElementById("testConvertDatewithoffsetdefult").innerText = date;
