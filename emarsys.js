@@ -6,13 +6,13 @@ var WebEmarsysSdk = WebEmarsysSdk || []
         defaultNotificationIcon: 'https://tracking.avansas.com/custloads/290455295/md_1818699.png',
         autoSubscribe: false,
         serviceWorker: {
-          url: '_ui/shared/js/service-worker.js',
+          url: 'https://qa2.avansas.com:49787/_ui/shared/js/service-worker.js',
           applicationServerPublicKey: 'BC1HrFWbMTndu6-5cHiw6dM8XSsXtyQ7cCqIFpj-gaywpvo90iaQc6AshGxxIRMHu4d-jkFaX9kSXoN69_4N3eg'
         }
       }])
 
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/_ui/shared/js/service-worker.js');
+        navigator.serviceWorker.register('https://qa2.avansas.com:49787/_ui/shared/js/service-worker.js');
       }
 
     var initCounter = 0;
@@ -31,7 +31,7 @@ var WebEmarsysSdk = WebEmarsysSdk || []
                 defaultNotificationIcon: 'https://tracking.avansas.com/custloads/290455295/md_1818699.png',
                 autoSubscribe: false,
                 serviceWorker: {
-                  url: '_ui/shared/js/service-worker.js',
+                  url: 'https://qa2.avansas.com:49787/_ui/shared/js/service-worker.js',
                   applicationServerPublicKey: 'BC1HrFWbMTndu6-5cHiw6dM8XSsXtyQ7cCqIFpj-gaywpvo90iaQc6AshGxxIRMHu4d-jkFaX9kSXoN69_4N3eg'
                 }, enableLogging:false
               }).then(function(){
