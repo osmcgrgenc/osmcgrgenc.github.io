@@ -7,17 +7,7 @@
     <title>Input Test for Android</title>
   </head>
   <body>
-    <script>
-      function test1(event) {
-        document.getElementById("result").innerHTML = "test1";
-      }
-      function test2(event) {
-        document.getElementById("result").innerHTML = "test2";
-      }
-      function test3(event) {
-        document.getElementById("result").innerHTML = "test3";
-      }
-    </script>
+    
     <div id="result"></div>
     <input
       type="text"
@@ -40,5 +30,16 @@
       onkeydown="test1"
       onkeypress="test2"
     />
+    <script>
+      function test1(event) {
+        document.getElementById("result").innerHTML = "test1";
+      }
+      function test2(event) {
+        document.getElementById("result").innerHTML = "test2";
+      }
+      function test3(event) {
+        document.getElementById("result").innerHTML = "test3";
+      }
+    </script>
   </body>
 </html>
