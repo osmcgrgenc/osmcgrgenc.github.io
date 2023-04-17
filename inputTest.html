@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input Test for Android</title>
+  </head>
+  <body>
+    <script>
+      function test1(event) {
+        document.getElementById("result").innerHTML = "test1";
+      }
+      function test2(event) {
+        document.getElementById("result").innerHTML = "test2";
+      }
+      function test3(event) {
+        document.getElementById("result").innerHTML = "test3";
+      }
+    </script>
+    <div id="result"></div>
+    <input
+      type="text"
+      inputmode="numeric"
+      onkeyup="test1"
+      onkeydown="test2"
+      onkeypress="test3"
+    />
+    <input
+      type="number"
+      inputmode="numeric"
+      onkeyup="test2"
+      onkeydown="test3"
+      onkeypress="test1"
+    />
+    <input
+      type="password"
+      inputmode="numeric"
+      onkeyup="test3"
+      onkeydown="test1"
+      onkeypress="test2"
+    />
+  </body>
+</html>
