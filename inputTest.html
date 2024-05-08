@@ -1,45 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Input Test for Android</title>
-  </head>
-  <body>
-    
-    <div id="result"></div>
-    <input
-      type="text"
-      inputmode="numeric"
-      onkeyup="test1"
-      onkeydown="test2"
-      onkeypress="test3"
-    />
-    <input
-      type="number"
-      inputmode="numeric"
-      onkeyup="test2"
-      onkeydown="test3"
-      onkeypress="test1"
-    />
-    <input
-      type="password"
-      inputmode="numeric"
-      onkeyup="test3"
-      onkeydown="test1"
-      onkeypress="test2"
-    />
-    <script>
-      function test1(event) {
-        document.getElementById("result").innerHTML = "test1";
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Input Test for Android</title>
+</head>
+
+<body>
+
+  <div id="result"></div>
+  <input type="text" inputmode="numeric" onkeyup="test1" onkeydown="test2" onkeypress="test3" />
+  <input type="number" inputmode="numeric" onkeyup="test2" onkeydown="test3" onkeypress="test1" />
+  <input type="text" onchange="sazimhandlechange" />
+  <script>
+    function test1(event) {
+      document.getElementById("result").innerHTML = "test1";
+    }
+    function test2(event) {
+      document.getElementById("result").innerHTML = "test2";
+    }
+    function test3(event) {
+      document.getElementById("result").innerHTML = "test3";
+    }
+    function formatText(input) {
+      // İlk önce girdiyi desenle eşleştir
+      var match = input.match(/^(\d{4})(\d{3})([a-zA-Z0-9]{20})$/);
+
+      // Eğer girdi desenle eşleşmiyorsa veya girdinin uzunluğu desene uygun değilse, işlemi iptal et
+      if (!match || match.length !== 4) {
+        return "Geçersiz giriş!";
       }
-      function test2(event) {
-        document.getElementById("result").innerHTML = "test2";
-      }
-      function test3(event) {
-        document.getElementById("result").innerHTML = "test3";
-      }
-    </script>
-  </body>
+
+      // Eşleşen grupları kullanarak istenen formata dönüştür
+      var formattedText = match[1] + "-" + match[2] + "-" + match[3];
+
+      return formattedText;
+    }
+    function sazimhandlechange(event) {
+      document.getElementById("result").innerHTML = formatText(event.target.value);
+    }
+  </script>
+</body>
+
 </html>
