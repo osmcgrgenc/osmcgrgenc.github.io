@@ -13,7 +13,7 @@
   <div id="result"></div>
   <input type="text" inputmode="numeric" onkeyup="test1" onkeydown="test2" onkeypress="test3" />
   <input type="number" inputmode="numeric" onkeyup="test2" onkeydown="test3" onkeypress="test1" />
-  <input type="text" onkeypress="sazimhandlechange" />
+  <input type="text" onkeydown="sazimhandlechange" />
   <script>
     function test1(event) {
       document.getElementById("result").innerHTML = "test1";
