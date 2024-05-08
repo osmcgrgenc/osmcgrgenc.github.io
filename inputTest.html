@@ -13,7 +13,7 @@
   <div id="result"></div>
   <input type="text" inputmode="numeric" onkeyup="test1" onkeydown="test2" onkeypress="test3" />
   <input type="number" inputmode="numeric" onkeyup="test2" onkeydown="test3" onkeypress="test1" />
-  <input type="text" onchange="sazimhandlechange" />
+  <input type="text" onkeypress="sazimhandlechange" />
   <script>
     function test1(event) {
       document.getElementById("result").innerHTML = "test1";
@@ -29,7 +29,7 @@
       var match = input.match(/^(\d{4})(\d{3})([a-zA-Z0-9]{20})$/);
 
       // Eğer girdi desenle eşleşmiyorsa veya girdinin uzunluğu desene uygun değilse, işlemi iptal et
-      if (!match || match.length !== 4) {
+      if (!match && !match[1] && !match[2]) {
         return "Geçersiz giriş!";
       }
 
