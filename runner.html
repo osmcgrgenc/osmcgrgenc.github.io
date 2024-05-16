@@ -16,12 +16,49 @@
 .runner {
   width: 50px;
   height: 80px;
-  background-color: #4CAF50;
-  border-radius: 10px;
   position: absolute;
   bottom: 0;
   left: 0;
   animation: run 2s infinite linear;
+}
+
+.head {
+  width: 30px;
+  height: 30px;
+  background-color: #4CAF50;
+  border-radius: 50%;
+  position: absolute;
+  top: -15px;
+  left: 10px;
+}
+
+.body {
+  width: 50px;
+  height: 50px;
+  background-color: #4CAF50;
+  border-radius: 10px;
+  position: absolute;
+  top: 15px;
+  left: 0;
+}
+
+.leg {
+  width: 20px;
+  height: 30px;
+  background-color: #4CAF50;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 0;
+}
+
+.left {
+  left: 10px;
+  animation: leg-left 2s infinite linear;
+}
+
+.right {
+  left: 30px;
+  animation: leg-right 2s infinite linear;
 }
 
 @keyframes run {
@@ -32,19 +69,117 @@
     left: calc(100% - 50px);
   }
 }
+
+@keyframes leg-left {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(30deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes leg-right {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-30deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+/* Previous CSS styles... */
+
+.controller {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.controller button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
   </style>
   
 </head>
 <body>
-  <div class="runner-container">
-    <div class="runner"></div>
-  </div>
-  <script>const runner = document.querySelector('.runner');
-    runner.addEventListener('animationiteration', () => {
-      runner.style.animationName = 'none';
-      setTimeout(() => {
-        runner.style.animationName = 'run';
-      }, 10);
-    });</script>
+    <div class="runner-container">
+        <div class="runner">
+          <div class="head"></div>
+          <div class="body"></div>
+          <div class="leg left"></div>
+          <div class="leg right"></div>
+        </div>
+        <div class="controller">
+            <button class="start">Start</button>
+            <button class="stop">Stop</button>
+            <button class="faster">Faster</button>
+            <button class="slower">Slower</button>
+          </div>
+      </div>
+  <script>
+    const runner = document.querySelector('.runner');
+const startBtn = document.querySelector('.start');
+const stopBtn = document.querySelector('.stop');
+const fasterBtn = document.querySelector('.faster');
+const slowerBtn = document.querySelector('.slower');
+
+let animationSpeed = 2; // Initial animation speed (in seconds)
+let animationInterval;
+
+// Start the animation
+function startAnimation() {
+  runner.style.animationDuration = `${animationSpeed}s`;
+  runner.style.animationPlayState = 'running';
+  animationInterval = setInterval(restartAnimation, animationSpeed * 1000);
+}
+
+// Stop the animation
+function stopAnimation() {
+  runner.style.animationPlayState = 'paused';
+  clearInterval(animationInterval);
+}
+
+// Increase the animation speed
+function increaseSpeed() {
+  animationSpeed -= 0.2;
+  if (animationSpeed < 0.4) {
+    animationSpeed = 0.4; // Set a minimum speed limit
+  }
+  runner.style.animationDuration = `${animationSpeed}s`;
+  clearInterval(animationInterval);
+  animationInterval = setInterval(restartAnimation, animationSpeed * 1000);
+}
+
+// Decrease the animation speed
+function decreaseSpeed() {
+  animationSpeed += 0.2;
+  runner.style.animationDuration = `${animationSpeed}s`;
+  clearInterval(animationInterval);
+  animationInterval = setInterval(restartAnimation, animationSpeed * 1000);
+}
+
+// Restart the animation when it completes
+function restartAnimation() {
+  runner.style.animationName = 'none';
+  setTimeout(() => {
+    runner.style.animationName = 'run';
+  }, 10);
+}
+
+// Event listeners for buttons
+startBtn.addEventListener('click', startAnimation);
+stopBtn.addEventListener('click', stopAnimation);
+fasterBtn.addEventListener('click', increaseSpeed);
+slowerBtn.addEventListener('click', decreaseSpeed);
+</script>
 </body>
 </html>
