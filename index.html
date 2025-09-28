@@ -1,555 +1,871 @@
+<!DOCTYPE html>
 <html lang="tr">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Osman Çağrı GENÇ | Yazılım Geliştirici & Ürün Stratejisti</title>
-  <meta name="description" content="Osman Çağrı GENÇ'in yazılım geliştirme ve ürün stratejisi alanındaki deneyim ve projelerini keşfedin." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Osman Çağrı Genç | Frontend Team Leader & Software Engineer</title>
+  <meta name="description" content="8+ yıl deneyimli Frontend Team Leader. React, React Native, Angular, Vue uzmanı. SaaS ve e-ticaret projelerinde liderlik deneyimi.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      color-scheme: light dark;
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #8b5cf6;
+      --accent: #06b6d4;
       --bg-primary: #0f172a;
-      --bg-secondary: rgba(15, 23, 42, 0.6);
-      --bg-card: rgba(15, 23, 42, 0.85);
-      --accent: #38bdf8;
-      --accent-strong: #0ea5e9;
-      --text-primary: #e2e8f0;
-      --text-secondary: #94a3b8;
-      --text-inverse: #0f172a;
-      --shadow-lg: 0 25px 50px -12px rgba(15, 23, 42, 0.45);
-      --shadow-sm: 0 10px 30px -10px rgba(15, 23, 42, 0.4);
+      --bg-secondary: #1e293b;
+      --bg-card: rgba(30, 41, 59, 0.8);
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #64748b;
+      --border: rgba(148, 163, 184, 0.2);
+      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+      --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
 
     body {
-      margin: 0;
-      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.2), transparent 45%),
-        radial-gradient(circle at 80% 0%, rgba(14, 165, 233, 0.15), transparent 35%),
-        linear-gradient(160deg, #020617 0%, #0f172a 45%, #111827 100%);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
       color: var(--text-primary);
-      line-height: 1.7;
+      line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
     }
 
+    /* Header */
     header {
-      position: sticky;
+      position: fixed;
       top: 0;
-      z-index: 10;
+      width: 100%;
+      z-index: 1000;
       backdrop-filter: blur(20px);
-      background: rgba(2, 6, 23, 0.7);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      background: rgba(15, 23, 42, 0.8);
+      border-bottom: 1px solid var(--border);
     }
 
-    .nav-container {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 1rem 1.5rem;
+    nav {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-    }
-
-    .nav-brand {
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 1.5rem;
-      margin: 0;
-      padding: 0;
-    }
-
-    nav a {
-      font-weight: 500;
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      transition: color 0.2s ease;
-    }
-
-    nav a:hover,
-    nav a:focus {
-      color: var(--accent);
-    }
-
-    main {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 0 1.5rem 6rem;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 3rem;
       align-items: center;
-      padding: 8rem 0 6rem;
+      padding: 1rem 2rem;
     }
 
-    .hero__content h1 {
-      font-size: clamp(2.8rem, 6vw, 4rem);
-      margin: 0 0 1rem;
-      line-height: 1.1;
-      color: #f8fafc;
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    .hero__content p {
-      max-width: 520px;
-      margin-bottom: 2rem;
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-    }
-
-    .hero__cta {
+    .nav-links {
       display: flex;
-      flex-wrap: wrap;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 5rem;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.1), transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1), transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-text h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+    }
+
+    .hero-text .highlight {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-text p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+
+    .hero-buttons {
+      display: flex;
       gap: 1rem;
+      flex-wrap: wrap;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      padding: 0.85rem 1.8rem;
-      border-radius: 999px;
+      gap: 0.5rem;
+      padding: 0.875rem 2rem;
+      border-radius: 50px;
       font-weight: 600;
-      border: 1px solid transparent;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
     }
 
-    .btn--primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: var(--text-inverse);
-      box-shadow: var(--shadow-sm);
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+      box-shadow: var(--shadow);
     }
 
-    .btn--primary:hover,
-    .btn--primary:focus {
+    .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 35px 60px -12px rgba(99, 102, 241, 0.4);
     }
 
-    .btn--ghost {
-      border-color: rgba(148, 163, 184, 0.4);
+    .btn-secondary {
+      border-color: var(--border);
       color: var(--text-primary);
     }
 
-    .btn--ghost:hover,
-    .btn--ghost:focus {
-      border-color: var(--accent);
-      color: var(--accent);
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      color: var(--primary);
     }
 
-    .hero__card {
+    .hero-card {
       background: var(--bg-card);
-      padding: 2rem;
+      backdrop-filter: blur(20px);
       border-radius: 24px;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      box-shadow: var(--shadow-lg);
-      position: relative;
-      overflow: hidden;
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
     }
 
-    .hero__card::after {
-      content: "";
-      position: absolute;
-      inset: -40% 60% 50% -30%;
-      background: radial-gradient(circle, rgba(56, 189, 248, 0.25), transparent 70%);
-      transform: rotate(-12deg);
-      pointer-events: none;
-    }
-
-    .hero__card h2 {
-      margin-top: 0;
-      font-size: 1.4rem;
-      color: #f1f5f9;
-    }
-
-    .hero__card p {
-      margin-bottom: 1.5rem;
-      color: var(--text-secondary);
-    }
-
-    .hero__stats {
+    .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .stat {
-      padding: 1.25rem 1.5rem;
-      border-radius: 18px;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      background: rgba(15, 23, 42, 0.6);
-      box-shadow: var(--shadow-sm);
+      text-align: center;
     }
 
-    .stat strong {
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
       display: block;
-      font-size: 1.7rem;
-      color: var(--accent);
     }
 
-    .stat span {
-      font-size: 0.9rem;
+    .stat-label {
       color: var(--text-secondary);
+      font-size: 0.875rem;
     }
 
+    /* Sections */
     section {
-      margin-bottom: 5rem;
+      padding: 5rem 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
     }
 
     .section-title {
+      font-size: 0.875rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.25em;
-      font-size: 0.85rem;
-      color: var(--accent);
+      letter-spacing: 0.1em;
+      color: var(--primary);
       margin-bottom: 1rem;
     }
 
     .section-heading {
-      font-size: clamp(2rem, 4vw, 2.6rem);
-      margin: 0 0 1.5rem;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
     }
 
-    .grid {
+    .section-description {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
       display: grid;
-      gap: 1.8rem;
-    }
-
-    .grid--two {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
     }
 
     .card {
       background: var(--bg-card);
-      border-radius: 22px;
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
       padding: 2rem;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.25s ease, border-color 0.25s ease;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
     }
 
-    .card:hover,
-    .card:focus-within {
-      transform: translateY(-4px);
-      border-color: rgba(56, 189, 248, 0.35);
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+    }
+
+    .card-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--gradient);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      color: white;
     }
 
     .card h3 {
-      margin-top: 0;
-      margin-bottom: 0.75rem;
-      font-size: 1.35rem;
-      color: #f8fafc;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
     }
 
     .card p {
-      margin: 0;
       color: var(--text-secondary);
+      margin-bottom: 1.5rem;
     }
 
-    .tag-list {
+    /* Tech Stack */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .tech-tag {
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient);
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .project-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .project-link {
+      width: 40px;
+      height: 40px;
+      background: rgba(99, 102, 241, 0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .project-link:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .project-description {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .project-tech {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-top: 1.5rem;
     }
 
-    .tag {
-      padding: 0.35rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.3);
+    .project-tech-tag {
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--secondary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 15px;
       font-size: 0.75rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-
-    .timeline {
-      position: relative;
-      padding-left: 1.5rem;
-      border-left: 2px solid rgba(56, 189, 248, 0.35);
-      display: grid;
-      gap: 1.75rem;
-    }
-
-    .timeline__item h4 {
-      margin: 0 0 0.35rem;
-      color: #f8fafc;
-      font-size: 1.15rem;
-    }
-
-    .timeline__item span {
-      display: inline-block;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.75rem;
-    }
-
-    .contact {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      align-items: center;
-      background: linear-gradient(120deg, rgba(56, 189, 248, 0.18), rgba(56, 189, 248, 0));
-      border-radius: 26px;
-      padding: 2.5rem;
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .contact h3 {
-      margin: 0 0 1rem;
-      font-size: 1.6rem;
-    }
-
-    footer {
-      border-top: 1px solid rgba(148, 163, 184, 0.2);
-      padding: 2rem 1.5rem 3rem;
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-
-    footer a {
-      color: var(--accent);
       font-weight: 500;
     }
 
-    @media (max-width: 720px) {
-      header {
-        position: static;
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--gradient);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 3rem;
+      padding-left: 2rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      border-radius: 50%;
+      transform: translateX(-5px);
+    }
+
+    .timeline-date {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .timeline-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0.5rem 0;
+    }
+
+    .timeline-description {
+      color: var(--text-secondary);
+    }
+
+    /* Contact */
+    .contact-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 3rem;
+      border: 1px solid var(--border);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.1), transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .contact-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .contact-description {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      font-size: 1.125rem;
+    }
+
+    .contact-info {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact-item:hover {
+      color: var(--primary);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
       }
 
-      .nav-container {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      nav ul {
-        justify-content: center;
-      }
-
-      .hero {
-        padding: 6rem 0 4rem;
-      }
-
-      .hero__card {
+      .hero-card {
         order: -1;
       }
+
+      .nav-links {
+        display: none;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    /* Dark mode toggle */
+    .theme-toggle {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 60px;
+      height: 60px;
+      background: var(--gradient);
+      border-radius: 50%;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    /* Loading animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
+</head>
 <body>
   <header>
-    <div class="nav-container">
-      <span class="nav-brand">Osman Çağrı GENÇ</span>
-      <nav aria-label="Ana menü">
-        <ul>
-          <li><a href="#hakkimda">Hakkımda</a></li>
-          <li><a href="#yetenekler">Yetenekler</a></li>
-          <li><a href="#deneyim">Deneyim</a></li>
-          <li><a href="#projeler">Projeler</a></li>
-          <li><a href="#iletisim">İletişim</a></li>
-        </ul>
-      </nav>
-    </div>
+    <nav>
+      <div class="logo">OÇG</div>
+      <ul class="nav-links">
+        <li><a href="#home">Ana Sayfa</a></li>
+        <li><a href="#about">Hakkımda</a></li>
+        <li><a href="#projects">Projeler</a></li>
+        <li><a href="#experience">Deneyim</a></li>
+        <li><a href="#contact">İletişim</a></li>
+      </ul>
+    </nav>
   </header>
 
   <main>
-    <section class="hero" id="anasayfa">
-      <div class="hero__content">
-        <h1>Strateji Odaklı Yazılım Geliştirici &amp; Ürün Danışmanı</h1>
-        <p>Merhaba, ben Osman Çağrı GENÇ. 10 yılı aşkın süredir teknoloji ekipleri kuruyor, ölçeklenebilir
-          ürünler geliştiriyor ve dijital deneyimleri iş hedefleriyle buluşturan çözümler tasarlıyorum. Kodun gücünü
-          veri analitiği ve güçlü iletişimle birleştirerek sürdürülebilir büyüme için sağlam temeller oluşturuyorum.</p>
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="#projeler">Öne Çıkan Projeler</a>
-          <a class="btn btn--ghost" href="#iletisim">İletişime Geç</a>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1>
+              <span class="highlight">Frontend Team Leader</span><br>
+              & Software Engineer
+            </h1>
+            <p>8+ yıl deneyimli yazılım geliştirici. React, React Native, Angular ve Vue teknolojilerinde uzman. SaaS ve e-ticaret projelerinde takım liderliği deneyimi.</p>
+            <div class="hero-buttons">
+              <a href="#projects" class="btn btn-primary">
+                <i class="fas fa-rocket"></i>
+                Projelerim
+              </a>
+              <a href="osmcgrgenc.pdf" class="btn btn-secondary" target="_blank">
+                <i class="fas fa-download"></i>
+                CV İndir
+              </a>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div class="stats">
+              <div class="stat">
+                <span class="stat-number">8+</span>
+                <span class="stat-label">Yıl Deneyim</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Proje</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number">15+</span>
+                <span class="stat-label">Teknoloji</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number">5+</span>
+                <span class="stat-label">Takım Üyesi</span>
+              </div>
+            </div>
+            <p style="color: var(--text-secondary); text-align: center;">
+              Yenilikçi çözümler üreten, takım odaklı çalışan ve sürekli öğrenmeyi benimseyen bir yazılım geliştirici.
+            </p>
+          </div>
         </div>
       </div>
-      <aside class="hero__card" aria-labelledby="hero-card-title">
-        <h2 id="hero-card-title">Kısaca Osman</h2>
-        <p>Ekibin teknoloji pusulası olmayı seviyorum. Karmaşık iş hedeflerini yalın kullanıcı deneyimlerine dönüştüren
-          ürün stratejileri, mühendislik liderliği ve çevik süreç tasarımı uzmanlık alanlarım arasında.</p>
-        <div class="hero__stats" aria-label="Öne çıkan istatistikler">
-          <div class="stat">
-            <strong>12+</strong>
-            <span>yıllık profesyonel deneyim</span>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-title">Hakkımda</div>
+          <h2 class="section-heading">Uzmanlık Alanlarım</h2>
+          <p class="section-description">
+            Modern web teknolojileri ve takım liderliği konularında derin deneyime sahip, sürekli gelişim odaklı bir yazılım profesyoneli.
+          </p>
+        </div>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon">
+              <i class="fab fa-react"></i>
+            </div>
+            <h3>Frontend Development</h3>
+            <p>React, React Native, Angular, Vue.js ile modern ve performanslı kullanıcı arayüzleri geliştiriyorum.</p>
+            <div class="tech-stack">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">React Native</span>
+              <span class="tech-tag">Angular</span>
+              <span class="tech-tag">Vue.js</span>
+              <span class="tech-tag">TypeScript</span>
+            </div>
           </div>
-          <div class="stat">
-            <strong>40+</strong>
-            <span>tamamlanan ürün &amp; proje</span>
+          <div class="card">
+            <div class="card-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Takım Liderliği</h3>
+            <p>Scrum metodolojisi ile takım yönetimi, mentorluk ve proje koordinasyonu konularında deneyimliyim.</p>
+            <div class="tech-stack">
+              <span class="tech-tag">Scrum</span>
+              <span class="tech-tag">Jira</span>
+              <span class="tech-tag">Mentoring</span>
+              <span class="tech-tag">Code Review</span>
+            </div>
           </div>
-          <div class="stat">
-            <strong>4</strong>
-            <span>kurucu ortaklık &amp; girişim</span>
+          <div class="card">
+            <div class="card-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h3>E-ticaret & SaaS</h3>
+            <p>Spartacus (SAP Hybris), e-ticaret platformları ve SaaS uygulamaları geliştirme konularında uzmanım.</p>
+            <div class="tech-stack">
+              <span class="tech-tag">Spartacus</span>
+              <span class="tech-tag">SAP Hybris</span>
+              <span class="tech-tag">E-commerce</span>
+              <span class="tech-tag">SaaS</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3>Mobil Uygulama</h3>
+            <p>React Native ile iOS ve Android platformları için native performanslı mobil uygulamalar geliştiriyorum.</p>
+            <div class="tech-stack">
+              <span class="tech-tag">React Native</span>
+              <span class="tech-tag">iOS</span>
+              <span class="tech-tag">Android</span>
+              <span class="tech-tag">Native Modules</span>
+            </div>
           </div>
         </div>
-      </aside>
-    </section>
-
-    <section id="hakkimda">
-      <p class="section-title">Hikayem</p>
-      <h2 class="section-heading">Osman Çağrı GENÇ kimdir?</h2>
-      <div class="grid grid--two">
-        <article class="card">
-          <h3>Ürün vizyoneri</h3>
-          <p>Mühendislik, tasarım ve iş geliştirme disiplinlerini ortak bir vizyon etrafında buluşturmayı seviyorum.
-            Fikri doğrulamak, MVP'yi inşa etmek ve iterasyonlarla ölçeklemek için veri odaklı süreçler tasarlıyorum.</p>
-        </article>
-        <article class="card">
-          <h3>Takım oyuncusu</h3>
-          <p>Ekiplere mentorluk yaparak kod kalitesini, çevik süreçleri ve öğrenme kültürünü destekliyorum. Uçtan uca
-            sorumluluk almayı ve müşteriye değer katan çıktılar üretmeyi önceliklendiriyorum.</p>
-        </article>
-        <article class="card">
-          <h3>Girişimci ruh</h3>
-          <p>Kurucu ortağı olduğum girişimlerde ürün stratejisini kurguladım, yatırım süreçlerini yönettim ve
-            kullanıcı büyümesini destekleyen iş birlikleri kurdum. Yeni fikirleri hayata geçirmek benim için bir yaşam
-            biçimi.</p>
-        </article>
-        <article class="card">
-          <h3>Sürekli öğrenen</h3>
-          <p>Yeni teknolojileri radarımda tutar, topluluklarla paylaşır ve öğrenmeyi bir ekip sporu olarak görürüm. Yapay
-            zekâ destekli çözümlerden bulut mimarisine, uçtan uca deneyim tasarımına kadar geniş bir perspektife sahibim.</p>
-        </article>
       </div>
     </section>
 
-    <section id="yetenekler">
-      <p class="section-title">Uzmanlık Alanları</p>
-      <h2 class="section-heading">Teknik &amp; stratejik beceriler</h2>
-      <div class="grid grid--two">
-        <article class="card">
-          <h3>Teknoloji yığını</h3>
-          <p>Modern web çerçeveleri, mikro servis mimarileri ve bulut platformlarında sağlam ürünler geliştiriyorum. Kod
-            kalitesine önem veriyor, test otomasyonunu süreçlere entegre ediyorum.</p>
-          <div class="tag-list">
-            <span class="tag">JavaScript/TypeScript</span>
-            <span class="tag">React</span>
-            <span class="tag">Node.js</span>
-            <span class="tag">.NET</span>
-            <span class="tag">REST &amp; GraphQL</span>
-          </div>
-        </article>
-        <article class="card">
-          <h3>Ürün stratejisi</h3>
-          <p>Müşteri içgörülerini veriyle buluşturarak net yol haritaları çıkarırım. OKR ve çevik metrikler yardımıyla
-            etkiyi ölçer, çapraz fonksiyonel ekipleri ortak hedeflerde hizalarım.</p>
-          <div class="tag-list">
-            <span class="tag">Ürün keşfi</span>
-            <span class="tag">OKR</span>
-            <span class="tag">Servis tasarımı</span>
-            <span class="tag">Büyüme stratejisi</span>
-          </div>
-        </article>
-        <article class="card">
-          <h3>Liderlik &amp; mentorluk</h3>
-          <p>Ekip büyütme, işe alım, performans yönetimi ve mentorluk konularında deneyimliyim. İnsan odaklı liderlik ile
-            ekiplerin en iyi performansını açığa çıkarırım.</p>
-          <div class="tag-list">
-            <span class="tag">Çevik koçluk</span>
-            <span class="tag">Takım ölçekleme</span>
-            <span class="tag">Sürekli öğrenme</span>
-          </div>
-        </article>
-        <article class="card">
-          <h3>Veri &amp; deneyim</h3>
-          <p>Analitik platformlarla kullanıcı davranışını anlamlandırır, veri odaklı karar mekanizmaları kurarım.
-            Deneyim testleri ve ölçümlerle ürünü sürekli geliştirmek önceliğimdir.</p>
-          <div class="tag-list">
-            <span class="tag">Kullanıcı araştırması</span>
-            <span class="tag">Deney tasarımı</span>
-            <span class="tag">A/B testleri</span>
-            <span class="tag">Analitik mimarisi</span>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="deneyim">
-      <p class="section-title">Kariyer Yolculuğu</p>
-      <h2 class="section-heading">Deneyimler</h2>
-      <div class="timeline">
-        <article class="timeline__item">
-          <span>2021 - Günümüz</span>
-          <h4>Kıdemli Yazılım Geliştirici &amp; Ürün Stratejisti</h4>
-          <p>Küresel ölçekte SaaS ürünleri için ürün keşfi, müşteri geri bildirim döngüleri ve teknik yol haritalarını
-            yönettim. Bulut tabanlı mimariyi yeniden kurgulayarak performansı %40 artıran dönüşümlere liderlik ettim.</p>
-        </article>
-        <article class="timeline__item">
-          <span>2017 - 2021</span>
-          <h4>Teknoloji Lideri &amp; Kurucu Ortak</h4>
-          <p>Çok disiplinli bir ekiple finans ve eğitim alanlarında dijital platformlar geliştirdim. Ekip büyütme,
-            yatırımcı ilişkileri ve ürün-pazar uyumunu yöneten çekirdek takımı yönettim.</p>
-        </article>
-        <article class="timeline__item">
-          <span>2013 - 2017</span>
-          <h4>Yazılım Geliştirici</h4>
-          <p>Kurumsal ölçekte projelerde front-end ve back-end çözümleri geliştirdim. Test süreçlerini otomatikleştirerek
-            teslim sürelerini kısalttım, kullanıcı memnuniyetini artıran özellikler teslim ettim.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="projeler">
-      <p class="section-title">Seçili İşler</p>
-      <h2 class="section-heading">Öne çıkan projeler</h2>
-      <div class="grid grid--two">
-        <article class="card" tabindex="0">
-          <h3>Veri Odaklı Abonelik Platformu</h3>
-          <p>Hızla büyüyen bir SaaS ürünü için müşteri segmentasyonu, akıllı fiyatlandırma ve self-servis onboarding
-            özellikleri geliştirdim. Yıllık tekrarlayan geliri %70 artıran strateji ve geliştirme sürecini yönettim.</p>
-        </article>
-        <article class="card" tabindex="0">
-          <h3>Eğitim Teknolojisi CRM</h3>
-          <p>Eğitim kurumları için özel tasarlanmış öğrenci ilişkileri yönetim sistemini kurgulayıp geliştirdim. Çoklu
-            kanal iletişim, performans raporları ve kişiselleştirilmiş öğrenci deneyimleri sunan modüller tasarladım.</p>
-        </article>
-        <article class="card" tabindex="0">
-          <h3>FinTech Risk Analiz Motoru</h3>
-          <p>Mikro kredi başvurularını gerçek zamanlı skorlayan analitik motoru geliştirdim. Makine öğrenmesi modelleri
-            ve mikro servis altyapısı ile dakikalar içinde karar verebilen bir sistem ortaya koydum.</p>
-        </article>
-        <article class="card" tabindex="0">
-          <h3>Topluluk Platformu</h3>
-          <p>Teknoloji toplulukları için etkinlik yönetimi, içerik üretimi ve üyelik modüllerini entegre eden modern bir
-            platform geliştirdim. Topluluk etkileşimini iki katına çıkaran deneyim tasarımı sundum.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="iletisim">
-      <div class="contact">
-        <div>
-          <p class="section-title">Birlikte üretelim</p>
-          <h3>Projelerinizi konuşmaya hazır mısınız?</h3>
-          <p>Yeni iş birlikleri, danışmanlık talepleri veya topluluk konuşmaları için bana ulaşabilirsiniz. Hikayenizi
-            dinlemek ve birlikte değer üretmek için sabırsızlanıyorum.</p>
+    <!-- Projects Section -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-title">Projelerim</div>
+          <h2 class="section-heading">Öne Çıkan Çalışmalar</h2>
+          <p class="section-description">
+            GitHub'da yer alan açık kaynak projelerim ve profesyonel deneyimlerimden öne çıkan çalışmalar.
+          </p>
         </div>
-        <div>
-          <a class="btn btn--primary" href="mailto:osman.cagri.genc@gmail.com">E-posta Gönder</a>
-          <div class="tag-list" style="margin-top: 1.5rem;">
-            <a class="tag" href="https://www.linkedin.com/in/osmcgrgenc" target="_blank" rel="noopener">LinkedIn</a>
-            <a class="tag" href="https://github.com/osmcgrgenc" target="_blank" rel="noopener">GitHub</a>
-            <a class="tag" href="https://medium.com/@osmcgrgenc" target="_blank" rel="noopener">Medium</a>
+        <div class="projects-grid" id="projects-container">
+          <!-- Featured Projects -->
+          <div class="project-card">
+            <div class="project-header">
+              <div>
+                <h3 class="project-title">Barber Appointment App</h3>
+                <p class="project-description">React Native ile geliştirilmiş berber randevu ve ödeme sistemi. Gerçek zamanlı rezervasyon yönetimi ve entegre ödeme çözümleri.</p>
+              </div>
+            </div>
+            <div class="project-tech">
+              <span class="project-tech-tag">React Native</span>
+              <span class="project-tech-tag">Payment Integration</span>
+              <span class="project-tech-tag">Real-time</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-header">
+              <div>
+                <h3 class="project-title">EnoPrice Dynamic Pricing</h3>
+                <p class="project-description">React tabanlı AI destekli dinamik fiyatlama sistemi. Makine öğrenmesi algoritmaları ile otomatik fiyat optimizasyonu.</p>
+              </div>
+            </div>
+            <div class="project-tech">
+              <span class="project-tech-tag">React</span>
+              <span class="project-tech-tag">AI/ML</span>
+              <span class="project-tech-tag">Dynamic Pricing</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-header">
+              <div>
+                <h3 class="project-title">E-bebek B2C E-commerce</h3>
+                <p class="project-description">Angular Spartacus ile geliştirilmiş büyük ölçekli e-ticaret platformu. 150+ özellik ve yüksek performans odaklı mimari.</p>
+              </div>
+            </div>
+            <div class="project-tech">
+              <span class="project-tech-tag">Angular</span>
+              <span class="project-tech-tag">Spartacus</span>
+              <span class="project-tech-tag">SAP Hybris</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-header">
+              <div>
+                <h3 class="project-title">Flyiva Flight Booking</h3>
+                <p class="project-description">React Native ile çok dilli uçak bileti rezervasyon uygulaması. Ödeme entegrasyonu ve gerçek zamanlı fiyat takibi.</p>
+              </div>
+            </div>
+            <div class="project-tech">
+              <span class="project-tech-tag">React Native</span>
+              <span class="project-tech-tag">Multi-language</span>
+              <span class="project-tech-tag">Payment</span>
+            </div>
+          </div>
+
+          <!-- GitHub Projects will be loaded here -->
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+          <button id="load-github-projects" class="btn btn-secondary">
+            <span class="loading" style="display: none;"></span>
+            <span class="btn-text">GitHub Projelerini Yükle</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-title">Deneyim</div>
+          <h2 class="section-heading">Kariyer Yolculuğum</h2>
+          <p class="section-description">
+            Yazılım geliştirme kariyerimde edindiğim deneyimler ve başarılarım.
+          </p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-date">2021 - Günümüz</div>
+            <h3 class="timeline-title">Senior Frontend Team Leader</h3>
+            <p class="timeline-description">
+              React, React Native ve Angular teknolojileri ile büyük ölçekli e-ticaret ve SaaS projelerinde takım liderliği. 
+              Scrum metodolojisi ile proje yönetimi, kod kalitesi standartları oluşturma ve takım mentorluğu.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2019 - 2021</div>
+            <h3 class="timeline-title">Frontend Developer</h3>
+            <p class="timeline-description">
+              Vue.js ve React teknolojileri ile IoT ve trafik kontrol sistemleri geliştirme. 
+              C# WPF uygulamaları ile desktop çözümler ve gerçek zamanlı veri görselleştirme projeleri.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2016 - 2019</div>
+            <h3 class="timeline-title">Software Developer</h3>
+            <p class="timeline-description">
+              Modern web teknolojileri ile kullanıcı odaklı arayüzler geliştirme. 
+              JavaScript, HTML5, CSS3 ve çeşitli framework'ler ile responsive web uygulamaları.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+      <div class="container">
+        <div class="contact-card">
+          <div class="contact-content">
+            <h2 class="contact-title">İletişime Geçin</h2>
+            <p class="contact-description">
+              Yeni projeler, iş birlikleri veya sorularınız için benimle iletişime geçebilirsiniz.
+            </p>
+            <a href="mailto:osman.cagri.genc@enoca.com" class="btn btn-primary">
+              <i class="fas fa-envelope"></i>
+              E-posta Gönder
+            </a>
+            <div class="contact-info">
+              <a href="https://linkedin.com/in/osmcgrgenc" class="contact-item" target="_blank">
+                <i class="fab fa-linkedin"></i>
+                LinkedIn
+              </a>
+              <a href="https://github.com/osmcgrgenc" class="contact-item" target="_blank">
+                <i class="fab fa-github"></i>
+                GitHub
+              </a>
+              <a href="https://youtube.com/@codifya" class="contact-item" target="_blank">
+                <i class="fab fa-youtube"></i>
+                YouTube
+              </a>
+              <a href="https://bsky.app/profile/osmcgrgenc.bsky.social" class="contact-item" target="_blank">
+                <i class="fas fa-cloud"></i>
+                Bluesky
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -557,13 +873,125 @@
   </main>
 
   <footer>
-    © <span id="year"></span> Osman Çağrı GENÇ. Tüm hakları saklıdır. | Tasarım &amp; geliştirme: Osman Çağrı GENÇ
+    <div class="container">
+      <p>&copy; 2024 Osman Çağrı Genç. Tüm hakları saklıdır.</p>
+    </div>
   </footer>
 
+  <button class="theme-toggle" id="theme-toggle">
+    <i class="fas fa-moon"></i>
+  </button>
+
   <script>
-    const yearEl = document.getElementById("year");
-    const now = new Date();
-    if (yearEl) {
-      yearEl.textContent = now.getFullYear();
-    }
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // GitHub Projects Loader
+    document.getElementById('load-github-projects').addEventListener('click', async function() {
+      const button = this;
+      const loading = button.querySelector('.loading');
+      const btnText = button.querySelector('.btn-text');
+      
+      loading.style.display = 'inline-block';
+      btnText.textContent = 'Yükleniyor...';
+      button.disabled = true;
+
+      try {
+        const response = await fetch('https://api.github.com/users/osmcgrgenc/repos?per_page=20&sort=updated');
+        const repos = await response.json();
+        
+        const container = document.getElementById('projects-container');
+        
+        repos.forEach(repo => {
+          if (repo.name !== 'osmcgrgenc.github.io' && repo.name !== 'osmcgrgenc') {
+            const projectCard = document.createElement('div');
+            projectCard.className = 'project-card';
+            
+            const description = repo.description || 'GitHub repository - detaylı açıklama için projeyi ziyaret edin.';
+            const language = repo.language || 'Mixed';
+            
+            projectCard.innerHTML = `
+              <div class="project-header">
+                <div>
+                  <h3 class="project-title">${repo.name}</h3>
+                  <p class="project-description">${description}</p>
+                </div>
+                <div class="project-links">
+                  <a href="${repo.html_url}" class="project-link" target="_blank" title="GitHub'da Görüntüle">
+                    <i class="fab fa-github"></i>
+                  </a>
+                  ${repo.homepage ? `<a href="${repo.homepage}" class="project-link" target="_blank" title="Canlı Demo"><i class="fas fa-external-link-alt"></i></a>` : ''}
+                </div>
+              </div>
+              <div class="project-tech">
+                <span class="project-tech-tag">${language}</span>
+                ${repo.stargazers_count > 0 ? `<span class="project-tech-tag">⭐ ${repo.stargazers_count}</span>` : ''}
+                ${repo.forks_count > 0 ? `<span class="project-tech-tag">🍴 ${repo.forks_count}</span>` : ''}
+              </div>
+            `;
+            
+            container.appendChild(projectCard);
+          }
+        });
+        
+        button.style.display = 'none';
+      } catch (error) {
+        console.error('GitHub projeleri yüklenirken hata:', error);
+        btnText.textContent = 'Yükleme Hatası - Tekrar Dene';
+        button.disabled = false;
+        loading.style.display = 'none';
+      }
+    });
+
+    // Theme toggle (placeholder for future implementation)
+    document.getElementById('theme-toggle').addEventListener('click', function() {
+      // Light/Dark mode toggle functionality can be added here
+      console.log('Theme toggle clicked');
+    });
+
+    // Add scroll effect to header
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('header');
+      if (window.scrollY > 100) {
+        header.style.background = 'rgba(15, 23, 42, 0.95)';
+      } else {
+        header.style.background = 'rgba(15, 23, 42, 0.8)';
+      }
+    });
+
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe all cards and timeline items
+    document.querySelectorAll('.card, .project-card, .timeline-item').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
   </script>
+</body>
+</html>
