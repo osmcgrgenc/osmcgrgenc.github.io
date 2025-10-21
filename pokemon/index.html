@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Yakalayıcısı</title>
+    <style>
+        /* Piksel Stili Font */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            font-family: 'Press+Start+2P', cursive;
+            background-color: #1a1a1a;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Kaydırma çubuklarını engelle */
+            user-select: none;
+        }
+
+        h1 {
+            color: #ffcc00; /* Pokemon Sarısı */
+            text-shadow: 2px 2px #3b4cca; /* Pokemon Mavisi */
+            margin-bottom: 10px;
+        }
+
+        #game-ui {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        #pokedex-count {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        #game-map {
+            width: 600px;
+            height: 400px;
+            background-color: #70c060; /* Çimen Rengi */
+            border: 5px solid #4a3c2c; /* Toprak Kenarlık */
+            border-radius: 10px;
+            position: relative; /* Player ve Pokemon'lar için ana konteyner */
+            overflow: hidden; /* Harita dışına çıkmayı engelle */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        #player {
+            position: absolute;
+            width: 32px;
+            height: 48px;
+            /* Basit CSS ile bir "Eğitmen" sprite'ı */
+            background-color: transparent;
+            /* Kafa (Kırmızı Şapka) */
+            border-top: 8px solid #f04040;
+            /* Yüz */
+            border-bottom: 10px solid #f0c0a0;
+            box-sizing: border-box;
+            /* Animasyon */
+            animation: bob 0.4s infinite alternate;
+        }
+        
+        /* Eğitmenin Gövdesi */
+        #player::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: 4px;
+            width: 24px;
+            height: 30px;
+            /* Mavi Gömlek */
+            background-color: #3b4cca;
+            /* Koyu Pantolon */
+            border-bottom: 10px solid #333;
+            box-sizing: border-box;
+        }
+
+        @keyframes bob {
+            from { transform: translateY(-2px); }
+            to { transform: translateY(0px); }
+        }
+
+        .pokemon-sprite {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            /* Görüntülerin pikselleşmesini engelle (net pikseller) */
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            cursor: pointer;
+            transition: transform 0.2s;
+            animation: poke-spawn 0.3s ease-out;
+        }
+        
+        .pokemon-sprite:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes poke-spawn {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* YAKALAMA MODALI */
+        #catch-modal {
+            display: none; /* Başlangıçta gizli */
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        #catch-modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            color: #333;
+            padding: 20px;
+            border: 5px solid #3b4cca;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 300px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+
+        #modal-pokemon-img {
+            width: 120px;
+            height: 120px;
+            image-rendering: pixelated;
+            margin-bottom: 10px;
+            animation: modal-poke-bob 1s infinite alternate;
+        }
+
+        @keyframes modal-poke-bob {
+            from { transform: translateY(-5px) scale(1.05); }
+            to { transform: translateY(0px) scale(1); }
+        }
+
+        #modal-message {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        #catch-button, #close-button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            padding: 10px 15px;
+            border: 3px solid #333;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        #catch-button {
+            background-color: #f04040; /* Kırmızı */
+            color: white;
+        }
+        
+        #close-button {
+            background-color: #aaa;
+        }
+
+        .instructions {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Pokemon Yakalayıcısı</h1>
+    <div id="game-ui">
+        Yakalanan Pokemon: <span id="pokedex-count">0</span>
+    </div>
+
+    <div id="game-map">
+        <div id="player"></div>
+        </div>
+
+    <div class="instructions">
+        Pokemon yakalamak için YÖN TUŞLARI ile haritada gezin!
+    </div>
+
+    <div id="catch-modal">
+        <div class="modal-content">
+            <img id="modal-pokemon-img" src="" alt="Pokemon">
+            <h2 id="modal-pokemon-name"></h2>
+            <p id="modal-message">Vahşi bir Pokemon belirdi!</p>
+            <button id="catch-button">Poketop At!</button>
+            <button id="close-button" style="display: none;">Kapat</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elementleri
+            const map = document.getElementById('game-map');
+            const player = document.getElementById('player');
+            const pokedexCountDisplay = document.getElementById('pokedex-count');
+            const modal = document.getElementById('catch-modal');
+            const modalPokeImg = document.getElementById('modal-pokemon-img');
+            const modalPokeName = document.getElementById('modal-pokemon-name');
+            const modalMessage = document.getElementById('modal-message');
+            const catchButton = document.getElementById('catch-button');
+            const closeButton = document.getElementById('close-button');
+
+            // Oyun Değişkenleri
+            let playerX = 50;
+            let playerY = 50;
+            const playerSpeed = 10;
+            let pokedexCount = 0;
+            let gamePaused = false;
+            let spawnerInterval;
+            let currentTargetPokemon = null; // Yakalanmaya çalışılan Pokemon
+            
+            // Harita sınırları
+            const mapWidth = map.clientWidth;
+            const mapHeight = map.clientHeight;
+            const playerWidth = player.clientWidth;
+            const playerHeight = player.clientHeight;
+
+            // Oyuncu Hareket Fonksiyonu
+            function handleMovement(e) {
+                if (gamePaused) return;
+
+                switch (e.key) {
+                    case 'ArrowUp':
+                        playerY = Math.max(0, playerY - playerSpeed);
+                        break;
+                    case 'ArrowDown':
+                        playerY = Math.min(mapHeight - playerHeight - 10, playerY + playerSpeed); // 10, gövde için pay
+                        break;
+                    case 'ArrowLeft':
+                        playerX = Math.max(0, playerX - playerSpeed);
+                        break;
+                    case 'ArrowRight':
+                        playerX = Math.min(mapWidth - playerWidth, playerX + playerSpeed);
+                        break;
+                    default:
+                        return; // Başka bir tuşa basıldıysa çık
+                }
+
+                // Pozisyonu güncelle
+                player.style.top = playerY + 'px';
+                player.style.left = playerX + 'px';
+
+                // Çarpışma kontrolü
+                checkCollision();
+            }
+
+            // Rastgele Pokemon Oluştur
+            function spawnPokemon() {
+                if (gamePaused) return;
+                
+                // Haritada çok fazla pokemon olmasın (max 10)
+                if (document.querySelectorAll('.pokemon-sprite').length >= 10) {
+                    return;
+                }
+
+                const pokeId = Math.floor(Math.random() * 151) + 1; // İlk 151 Pokemon
+                const pokeImg = document.createElement('img');
+                pokeImg.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeId}.png`;
+                pokeImg.className = 'pokemon-sprite';
+                pokeImg.dataset.id = pokeId;
+                
+                // Rastgele pozisyon
+                const pokeSize = 48;
+                const x = Math.floor(Math.random() * (mapWidth - pokeSize));
+                const y = Math.floor(Math.random() * (mapHeight - pokeSize));
+                
+                pokeImg.style.left = x + 'px';
+                pokeImg.style.top = y + 'px';
+                
+                map.appendChild(pokeImg);
+            }
+            
+            // Çarpışma Kontrolü
+            function checkCollision() {
+                const allPokemon = document.querySelectorAll('.pokemon-sprite');
+                const playerRect = player.getBoundingClientRect();
+                
+                for (const poke of allPokemon) {
+                    const pokeRect = poke.getBoundingClientRect();
+                    
+                    // Basit AABB (Axis-Aligned Bounding Box) çarpışma tespiti
+                    if (
+                        playerRect.left < pokeRect.right &&
+                        playerRect.right > pokeRect.left &&
+                        playerRect.top < pokeRect.bottom &&
+                        playerRect.bottom > pokeRect.top
+                    ) {
+                        // Çarpışma var!
+                        startCatchSequence(poke);
+                        break; // Bir seferde sadece bir pokemon yakala
+                    }
+                }
+            }
+
+            // Yakalama Ekranını Başlat
+            function startCatchSequence(pokemonElement) {
+                pauseGame();
+                currentTargetPokemon = pokemonElement;
+                
+                const pokeId = pokemonElement.dataset.id;
+                
+                // PokeAPI'den Pokemon adını çek (fetch)
+                fetch(`https://pokeapi.co/api/v2/pokemon/${pokeId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        modalPokeName.textContent = data.name.toUpperCase();
+                    })
+                    .catch(() => {
+                        modalPokeName.textContent = 'POKEMON'; // API hatası olursa
+                    });
+
+                modalPokeImg.src = pokemonElement.src;
+                modalMessage.textContent = `Vahşi bir ${modalPokeName.textContent} belirdi!`;
+                
+                // Butonları ayarla
+                catchButton.style.display = 'inline-block';
+                closeButton.style.display = 'none';
+                
+                modal.classList.add('show');
+            }
+
+            // Yakalamayı Dene
+            function attemptCatch() {
+                if (!currentTargetPokemon) return;
+
+                // %50 yakalama şansı
+                const isCaught = Math.random() < 0.5; 
+                
+                if (isCaught) {
+                    modalMessage.textContent = `${modalPokeName.textContent} yakalandı!`;
+                    pokedexCount++;
+                    pokedexCountDisplay.textContent = pokedexCount;
+                    // Yakalanan Pokemon'u haritadan kaldır
+                    currentTargetPokemon.remove();
+                } else {
+                    modalMessage.textContent = `Oh hayır! ${modalPokeName.textContent} kaçtı!`;
+                    // Kaçan Pokemon'u haritadan kaldır
+                    currentTargetPokemon.remove();
+                }
+                
+                currentTargetPokemon = null;
+                
+                // Butonları değiştir
+                catchButton.style.display = 'none';
+                closeButton.style.display = 'inline-block';
+            }
+            
+            function pauseGame() {
+                gamePaused = true;
+                clearInterval(spawnerInterval); // Pokemon üretimini durdur
+            }
+
+            function resumeGame() {
+                gamePaused = false;
+                modal.classList.remove('show');
+                // Pokemon üretimini tekrar başlat
+                spawnerInterval = setInterval(spawnPokemon, 3000);
+            }
+
+            // Olay Dinleyicileri
+            document.addEventListener('keydown', handleMovement);
+            catchButton.addEventListener('click', attemptCatch);
+            closeButton.addEventListener('click', resumeGame);
+
+            // Oyunu Başlat
+            function initGame() {
+                player.style.top = playerY + 'px';
+                player.style.left = playerX + 'px';
+                pokedexCountDisplay.textContent = pokedexCount;
+                spawnerInterval = setInterval(spawnPokemon, 3000); // Her 3 saniyede bir pokemon
+                
+                // Başlangıçta birkaç pokemon ekle
+                for(let i=0; i<5; i++) {
+                    spawnPokemon();
+                }
+            }
+            
+            initGame();
+        });
+    </script>
+
+</body>
+</html>
