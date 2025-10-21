@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Pokemon Savaşı</title>
+    <style>
+        /* Piksel Stili Font */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        :root {
+            --hp-green: #20c020;
+            --hp-yellow: #f0e040;
+            --hp-red: #f04040;
+            --border-color: #333;
+            --menu-bg: #f8f8f8;
+            --menu-border: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #c0d0c0; /* Gameboy yeşili */
+            color: #333;
+            font-size: 14px;
+        }
+
+        #game-container {
+            width: 90%;
+            max-width: 600px;
+            border: 4px solid var(--border-color);
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        /* SAVAŞ ALANI */
+        #battle-scene {
+            position: relative;
+            height: 300px;
+            background: #f0f8f0;
+            border-bottom: 4px solid var(--border-color);
+            background-image: 
+                linear-gradient(to bottom, transparent 95%, #b0c0b0 95%),
+                linear-gradient(to right, #e0f0e0 50%, #d8e8d8 50%);
+            background-size: 100% 20px, 20px 100%;
+        }
+
+        .pokemon-sprite {
+            position: absolute;
+            /* Görüntülerin pikselleşmesini engelle (net pikseller) */
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        #player-sprite {
+            bottom: 55px;
+            left: 50px;
+            width: 120px;
+        }
+
+        #opponent-sprite {
+            top: 50px;
+            right: 50px;
+            width: 120px;
+        }
+
+        /* HP BİLGİ KUTULARI */
+        .info-box {
+            position: absolute;
+            width: 200px;
+            padding: 8px 12px;
+            background: var(--menu-bg);
+            border: 3px solid var(--border-color);
+            border-radius: 5px;
+        }
+
+        #player-info {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        #opponent-info {
+            top: 20px;
+            right: 20px;
+        }
+
+        .hp-bar-container {
+            width: 100%;
+            height: 12px;
+            background-color: #ddd;
+            border: 2px solid #555;
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .hp-bar {
+            height: 100%;
+            width: 100%; /* JS ile değiştirilecek */
+            background-color: var(--hp-green);
+            transition: width 0.5s ease, background-color 0.5s ease;
+        }
+
+        /* MENÜ VE MESAJ KUTUSU */
+        #menu-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 50% mesaj, 50% menü */
+            height: 120px;
+        }
+
+        #message-log {
+            padding: 15px;
+            border-right: 4px solid var(--border-color);
+            line-height: 1.6;
+            overflow-y: auto;
+        }
+
+        #menu-options, #attack-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            padding: 10px;
+        }
+
+        button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            padding: 12px 5px;
+            cursor: pointer;
+            border: 3px solid var(--border-color);
+            border-radius: 5px;
+            background: #fff;
+            transition: background 0.1s ease;
+        }
+
+        button:hover {
+            background: #ddd;
+        }
+        
+        button:disabled {
+            color: #999;
+            background: #eee;
+            cursor: not-allowed;
+        }
+        
+        #attack-menu {
+            display: none; /* Başlangıçta gizli */
+        }
+        
+        /* Animasyonlar */
+        .attack-animation {
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-5px, 5px); }
+            50% { transform: translate(5px, -5px); }
+            75% { transform: translate(-5px, 5px); }
+            100% { transform: translate(0, 0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="battle-scene">
+            <div id="opponent-info" class="info-box">
+                <div id="opponent-name">CHARMANDER</div>
+                <div class="hp-bar-container">
+                    <div id="opponent-hp-bar" class="hp-bar"></div>
+                </div>
+            </div>
+            <img id="opponent-sprite" class="pokemon-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" alt="Charmander">
+
+            <div id="player-info" class="info-box">
+                <div id="player-name">PIKACHU</div>
+                <div class="hp-bar-container">
+                    <div id="player-hp-bar" class="hp-bar"></div>
+                </div>
+            </div>
+            <img id="player-sprite" class="pokemon-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png" alt="Pikachu">
+        </div>
+
+        <div id="menu-container">
+            <div id="message-log">Savaş Başladı!</div>
+            
+            <div id="menu-options">
+                <button id="attack-button">Saldırı</button>
+                <button id="restart-button" style="display: none;">Yeniden Başla</button>
+                </div>
+
+            <div id="attack-menu">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elementleri
+            const DOM = {
+                player: {
+                    name: document.getElementById('player-name'),
+                    hpBar: document.getElementById('player-hp-bar'),
+                    sprite: document.getElementById('player-sprite')
+                },
+                opponent: {
+                    name: document.getElementById('opponent-name'),
+                    hpBar: document.getElementById('opponent-hp-bar'),
+                    sprite: document.getElementById('opponent-sprite')
+                },
+                messageLog: document.getElementById('message-log'),
+                menuOptions: document.getElementById('menu-options'),
+                attackMenu: document.getElementById('attack-menu'),
+                attackButton: document.getElementById('attack-button'),
+                restartButton: document.getElementById('restart-button')
+            };
+
+            // Pokemon Veri Yapısı
+            let playerPokemon, opponentPokemon;
+            let isPlayerTurn = true;
+            let isGameOver = false;
+
+            const attacks = {
+                "Thunder Shock": { power: 25, type: "Electric" },
+                "Quick Attack":  { power: 20, type: "Normal" },
+                "Ember":         { power: 25, type: "Fire" },
+                "Scratch":       { power: 20, type: "Normal" }
+            };
+
+            // Oyunu Başlatma
+            function initGame() {
+                isPlayerTurn = true;
+                isGameOver = false;
+
+                playerPokemon = {
+                    name: "PIKACHU",
+                    hp: 100,
+                    maxHp: 100,
+                    attacks: [attacks["Thunder Shock"], attacks["Quick Attack"]],
+                    spriteElement: DOM.player.sprite
+                };
+                
+                opponentPokemon = {
+                    name: "CHARMANDER",
+                    hp: 100,
+                    maxHp: 100,
+                    attacks: [attacks["Ember"], attacks["Scratch"]],
+                    spriteElement: DOM.opponent.sprite
+                };
+                
+                // UI Güncelle
+                DOM.player.name.textContent = playerPokemon.name;
+                DOM.opponent.name.textContent = opponentPokemon.name;
+                updateHPBars();
+                
+                // Menüleri ayarla
+                DOM.attackButton.style.display = 'block';
+                DOM.restartButton.style.display = 'none';
+                DOM.menuOptions.style.display = 'grid';
+                DOM.attackMenu.style.display = 'none';
+                
+                logMessage(`Vahşi bir ${opponentPokemon.name} belirdi!`);
+                
+                // Saldırı menüsünü doldur
+                DOM.attackMenu.innerHTML = ''; // Menüyü temizle
+                playerPokemon.attacks.forEach(attack => {
+                    const button = document.createElement('button');
+                    button.textContent = attack.name;
+                    button.onclick = () => performAttack(attack, playerPokemon, opponentPokemon);
+                    DOM.attackMenu.appendChild(button);
+                });
+            }
+
+            // Can Barlarını Güncelle
+            function updateHPBars() {
+                updateSingleHPBar(playerPokemon, DOM.player.hpBar);
+                updateSingleHPBar(opponentPokemon, DOM.opponent.hpBar);
+            }
+            
+            function updateSingleHPBar(pokemon, hpBarElement) {
+                const hpPercent = (pokemon.hp / pokemon.maxHp) * 100;
+                hpBarElement.style.width = `${hpPercent}%`;
+                
+                // Rengi değiştir
+                if (hpPercent < 20) {
+                    hpBarElement.style.backgroundColor = 'var(--hp-red)';
+                } else if (hpPercent < 50) {
+                    hpBarElement.style.backgroundColor = 'var(--hp-yellow)';
+                } else {
+                    hpBarElement.style.backgroundColor = 'var(--hp-green)';
+                }
+            }
+            
+            // Mesaj Yazdır
+            function logMessage(message) {
+                DOM.messageLog.textContent = message;
+            }
+            
+            // Saldırı Menüsünü Göster/Gizle
+            DOM.attackButton.onclick = () => {
+                if (!isPlayerTurn || isGameOver) return;
+                DOM.menuOptions.style.display = 'none';
+                DOM.attackMenu.style.display = 'grid';
+            };
+            
+            // Saldırı Yap
+            function performAttack(attack, attacker, target) {
+                if (!isPlayerTurn || isGameOver) return;
+                
+                // Oyuncu sırası
+                logMessage(`${attacker.name} ${attack.name} kullandı!`);
+                target.hp -= attack.power;
+                if (target.hp < 0) target.hp = 0;
+                
+                // Görsel efekt
+                animateAttack(target.spriteElement);
+                updateHPBars();
+                
+                // Sırayı kilitle
+                isPlayerTurn = false;
+                DOM.attackMenu.style.display = 'none';
+                
+                // Oyun bitti mi kontrol et
+                if (checkGameOver(target)) return;
+
+                // Rakip sırası (gecikmeli)
+                setTimeout(() => {
+                    opponentTurn();
+                }, 1500); // 1.5 saniye bekle
+            }
+            
+            // Rakip Sırası
+            function opponentTurn() {
+                const randomAttack = opponentPokemon.attacks[Math.floor(Math.random() * opponentPokemon.attacks.length)];
+                
+                logMessage(`${opponentPokemon.name} ${randomAttack.name} kullandı!`);
+                playerPokemon.hp -= randomAttack.power;
+                if (playerPokemon.hp < 0) playerPokemon.hp = 0;
+                
+                animateAttack(playerPokemon.spriteElement);
+                updateHPBars();
+                
+                if (checkGameOver(playerPokemon)) return;
+                
+                // Sırayı oyuncuya geri ver
+                isPlayerTurn = true;
+                DOM.menuOptions.style.display = 'grid';
+            }
+
+            // Oyun Bitiş Kontrolü
+            function checkGameOver(target) {
+                if (target.hp <= 0) {
+                    isGameOver = true;
+                    if (target === opponentPokemon) {
+                        logMessage(`${target.name} bayıldı. Kazandın!`);
+                    } else {
+                        logMessage(`${target.name} bayıldı. Kaybettin!`);
+                    }
+                    DOM.attackButton.style.display = 'none';
+                    DOM.restartButton.style.display = 'block';
+                    return true;
+                }
+                return false;
+            }
+
+            // Basit vuruş animasyonu
+            function animateAttack(sprite) {
+                sprite.classList.add('attack-animation');
+                setTimeout(() => {
+                    sprite.classList.remove('attack-animation');
+                }, 300); // Animasyon süresi (CSS ile aynı)
+            }
+            
+            // Yeniden Başlat Butonu
+            DOM.restartButton.onclick = initGame;
+            
+            // Oyunu Başlat
+            initGame();
+        });
+    </script>
+
+</body>
+</html>
