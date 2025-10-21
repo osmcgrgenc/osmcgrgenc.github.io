@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Mayın Tarlası</title>
+    <style>
+        /* CSS Değişkenleri ve Temel Kurulum */
+        :root {
+            --cell-size: 30px; /* Hücre boyutu */
+            --bg-color: #1a1a1a;
+            --header-bg: #2a2a2a;
+            --cell-hidden-bg: #444;
+            --cell-revealed-bg: #333;
+            --border-color: #555;
+            --text-color: #eee;
+            --accent-color: #0abf53; /* Yeşil vurgu */
+
+            /* Sayı renkleri */
+            --color-1: #1e90ff; /* Mavi */
+            --color-2: #32cd32; /* Yeşil */
+            --color-3: #ff4500; /* Kırmızı-Turuncu */
+            --color-4: #4169e1; /* Kraliyet Mavisi */
+            --color-5: #b22222; /* Ateş Tuğlası */
+            --color-6: #20b2aa; /* Turkuaz */
+            --color-7: #000000; /* Siyah */
+            --color-8: #808080; /* Gri */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 0;
+            padding-top: 20px;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        /* Oyun Konteyneri */
+        .game-container {
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Zorluk Seçimi */
+        .difficulty-selector {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .difficulty-selector button {
+            background-color: var(--cell-hidden-bg);
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .difficulty-selector button:hover {
+            background-color: var(--cell-revealed-bg);
+        }
+
+        .difficulty-selector button.active {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #111;
+        }
+
+        /* Üst Başlık (Sayaçlar ve Reset) */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--header-bg);
+            padding: 10px 15px;
+            font-size: 1.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+        }
+
+        .counter {
+            background-color: #111;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #ff4500; /* Sayaç rengi */
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        #restart-button {
+            font-size: 2rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0 10px;
+            user-select: none; /* Gülen yüzün seçilmesini engelle */
+        }
+
+        /* Oyun Alanı (Grid) */
+        #game-grid {
+            display: grid;
+            border-top: 2px solid var(--border-color);
+            /* Grid sütunları JS tarafından ayarlanacak */
+        }
+
+        .cell {
+            width: var(--cell-size);
+            height: var(--cell-size);
+            background-color: var(--cell-hidden-bg);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box; /* Önemli: Kenarlıklar boyuta dahil */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.1s;
+        }
+
+        .cell:not(.revealed):hover {
+            background-color: #555;
+        }
+
+        .cell.revealed {
+            background-color: var(--cell-revealed-bg);
+            border-color: #444;
+            cursor: default;
+        }
+
+        .cell.flagged {
+            font-size: 1rem;
+        }
+        
+        .cell.question {
+            font-size: 1.2rem;
+        }
+
+        .cell.bomb {
+            background-color: #ff4500; /* Patlayan mayın */
+        }
+
+        .cell.bomb-revealed {
+            background-color: var(--cell-revealed-bg);
+            font-size: 1rem;
+        }
+        
+        .cell.wrong-flag {
+            background-color: var(--cell-revealed-bg);
+            font-size: 1.2rem;
+        }
+
+        /* Sayı Renkleri */
+        .cell[data-adjacent="1"] { color: var(--color-1); }
+        .cell[data-adjacent="2"] { color: var(--color-2); }
+        .cell[data-adjacent="3"] { color: var(--color-3); }
+        .cell[data-adjacent="4"] { color: var(--color-4); }
+        .cell[data-adjacent="5"] { color: var(--color-5); }
+        .cell[data-adjacent="6"] { color: var(--color-6); }
+        .cell[data-adjacent="7"] { color: var(--color-7); }
+        .cell[data-adjacent="8"] { color: var(--color-8); }
+
+        /* Oyun Sonu Modalı */
+        #modal {
+            display: none; /* Başlangıçta gizli */
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--header-bg);
+            padding: 30px 40px;
+            border-radius: 10px;
+            border: 2px solid var(--accent-color);
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Modern Mayın Tarlası</h1>
+
+    <div class="difficulty-selector">
+        <button id="btn-easy" class="active">Kolay (9x9, 10 Mayın)</button>
+        <button id="btn-medium">Orta (16x16, 40 Mayın)</button>
+        <button id="btn-expert">Zor (30x16, 99 Mayın)</button>
+    </div>
+
+    <div class="game-container">
+        <div class="game-header">
+            <div id="bomb-counter" class="counter">010</div>
+            <button id="restart-button">🙂</button>
+            <div id="timer" class="counter">000</div>
+        </div>
+        <div id="game-grid"></div>
+    </div>
+
+    <div id="modal">
+        <div class="modal-content">
+            <h2 id="modal-message"></h2>
+            <p>Yeniden oynamak için gülen yüze tıklayın.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const DOM = {
+                grid: document.getElementById('game-grid'),
+                bombCounter: document.getElementById('bomb-counter'),
+                timer: document.getElementById('timer'),
+                restartButton: document.getElementById('restart-button'),
+                modal: document.getElementById('modal'),
+                modalMessage: document.getElementById('modal-message'),
+                btnEasy: document.getElementById('btn-easy'),
+                btnMedium: document.getElementById('btn-medium'),
+                btnExpert: document.getElementById('btn-expert')
+            };
+
+            const SETTINGS = {
+                easy:   { width: 9,  height: 9,  bombs: 10 },
+                medium: { width: 16, height: 16, bombs: 40 },
+                expert: { width: 30, height: 16, bombs: 99 }
+            };
+
+            let width, height, bombCount;
+            let grid = []; // 2D array (board state)
+            let cells = []; // 1D array (DOM elements)
+            let bombsRemaining;
+            let isGameOver = false;
+            let isFirstClick = true;
+            let timerInterval = null;
+            let seconds = 0;
+
+            function initGame(difficulty) {
+                // Aktif butonu ayarla
+                [DOM.btnEasy, DOM.btnMedium, DOM.btnExpert].forEach(btn => btn.classList.remove('active'));
+                document.getElementById(`btn-${difficulty}`).classList.add('active');
+
+                // Ayarları yükle
+                const settings = SETTINGS[difficulty];
+                width = settings.width;
+                height = settings.height;
+                bombCount = settings.bombs;
+
+                bombsRemaining = bombCount;
+                isGameOver = false;
+                isFirstClick = true;
+                seconds = 0;
+
+                // Sayaçları ve UI'ı sıfırla
+                DOM.bombCounter.textContent = formatCounter(bombsRemaining);
+                DOM.timer.textContent = formatCounter(seconds);
+                DOM.restartButton.textContent = '🙂';
+                DOM.modal.classList.remove('show');
+                if (timerInterval) clearInterval(timerInterval);
+
+                // CSS Grid'i ayarla
+                DOM.grid.innerHTML = ''; // Eski grid'i temizle
+                DOM.grid.style.gridTemplateColumns = `repeat(${width}, var(--cell-size))`;
+
+                // Hücreleri (DOM ve Veri) oluştur
+                grid = [];
+                cells = [];
+                for (let r = 0; r < height; r++) {
+                    const row = [];
+                    for (let c = 0; c < width; c++) {
+                        // Veri objesi
+                        row.push({
+                            isBomb: false,
+                            isRevealed: false,
+                            isFlagged: false, // 0: yok, 1: bayrak, 2: soru işareti
+                            isQuestion: false,
+                            adjacentBombs: 0,
+                            r, c
+                        });
+
+                        // DOM elemanı
+                        const cell = document.createElement('div');
+                        cell.classList.add('cell');
+                        cell.dataset.r = r;
+                        cell.dataset.c = c;
+                        
+                        // Olay dinleyicileri
+                        cell.addEventListener('click', () => onCellClick(r, c));
+                        cell.addEventListener('contextmenu', (e) => onRightClick(e, r, c));
+                        
+                        DOM.grid.appendChild(cell);
+                        cells.push(cell);
+                    }
+                    grid.push(row);
+                }
+            }
+
+            function startTimer() {
+                if (timerInterval) clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    DOM.timer.textContent = formatCounter(seconds);
+                }, 1000);
+            }
+
+            function formatCounter(num) {
+                return num.toString().padStart(3, '0');
+            }
+
+            function placeBombs(firstClickRow, firstClickCol) {
+                let bombsPlaced = 0;
+                while (bombsPlaced < bombCount) {
+                    const r = Math.floor(Math.random() * height);
+                    const c = Math.floor(Math.random() * width);
+
+                    // İlk tıklanan yere ve komşularına koyma (daha iyi bir "güvenli başlangıç")
+                    const isSafeZone = Math.abs(r - firstClickRow) <= 1 && Math.abs(c - firstClickCol) <= 1;
+
+                    if (!grid[r][c].isBomb && !isSafeZone) {
+                        grid[r][c].isBomb = true;
+                        bombsPlaced++;
+                    }
+                }
+            }
+            
+            function calculateAdjacentBombs() {
+                for (let r = 0; r < height; r++) {
+                    for (let c = 0; c < width; c++) {
+                        if (grid[r][c].isBomb) continue;
+                        
+                        let count = 0;
+                        getNeighbors(r, c).forEach(neighbor => {
+                            if (neighbor.isBomb) {
+                                count++;
+                            }
+                        });
+                        grid[r][c].adjacentBombs = count;
+                    }
+                }
+            }
+
+            function getNeighbors(r, c) {
+                const neighbors = [];
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        if (dr === 0 && dc === 0) continue;
+                        const nr = r + dr;
+                        const nc = c + dc;
+                        if (nr >= 0 && nr < height && nc >= 0 && nc < width) {
+                            neighbors.push(grid[nr][nc]);
+                        }
+                    }
+                }
+                return neighbors;
+            }
+
+            function getCellElement(r, c) {
+                return cells[r * width + c]; // 1D array'den hızlı erişim
+            }
+            
+            function onCellClick(r, c) {
+                if (isGameOver) return;
+                
+                const cellData = grid[r][c];
+                if (cellData.isFlagged || cellData.isRevealed) return;
+
+                if (isFirstClick) {
+                    isFirstClick = false;
+                    placeBombs(r, c); // Mayınları güvenli alandan uzağa yerleştir
+                    calculateAdjacentBombs(); // Sayıları hesapla
+                    startTimer(); // Zamanlayıcıyı başlat
+                }
+                
+                revealCell(r, c);
+            }
+            
+            function revealCell(r, c) {
+                const cellData = grid[r][c];
+                if (isGameOver || cellData.isRevealed || cellData.isFlagged || cellData.isQuestion) return;
+                
+                cellData.isRevealed = true;
+                const cellEl = getCellElement(r, c);
+                cellEl.classList.add('revealed');
+                
+                if (cellData.isBomb) {
+                    cellEl.classList.add('bomb'); // Patlayan mayın
+                    cellEl.textContent = '💥';
+                    gameOver(false);
+                    return;
+                }
+                
+                if (cellData.adjacentBombs > 0) {
+                    cellEl.textContent = cellData.adjacentBombs;
+                    cellEl.dataset.adjacent = cellData.adjacentBombs;
+                } else {
+                    // Flood fill: Komşuları aç
+                    getNeighbors(r, c).forEach(neighbor => {
+                        revealCell(neighbor.r, neighbor.c);
+                    });
+                }
+                
+                checkWinCondition();
+            }
+
+            function onRightClick(e, r, c) {
+                e.preventDefault(); // Menüyü engelle
+                if (isGameOver) return;
+                
+                const cellData = grid[r][c];
+                if (cellData.isRevealed) return;
+                
+                const cellEl = getCellElement(r, c);
+                
+                if (!cellData.isFlagged && !cellData.isQuestion) {
+                    // Bayrak koy
+                    cellData.isFlagged = true;
+                    cellEl.textContent = '🚩';
+                    cellEl.classList.add('flagged');
+                    bombsRemaining--;
+                } else if (cellData.isFlagged) {
+                    // Soru işareti koy
+                    cellData.isFlagged = false;
+                    cellData.isQuestion = true;
+                    cellEl.textContent = '❓';
+                    cellEl.classList.remove('flagged');
+                    cellEl.classList.add('question');
+                    bombsRemaining++; // Bayrağı kaldırdık
+                } else if (cellData.isQuestion) {
+                    // Temizle
+                    cellData.isQuestion = false;
+                    cellEl.textContent = '';
+                    cellEl.classList.remove('question');
+                }
+                
+                DOM.bombCounter.textContent = formatCounter(bombsRemaining);
+            }
+
+            function gameOver(isWin) {
+                isGameOver = true;
+                clearInterval(timerInterval);
+                
+                // Modalı göster
+                DOM.modalMessage.textContent = isWin ? 'Tebrikler, Kazandınız!' : 'Oyun Bitti! Kaybettiniz.';
+                DOM.modalMessage.style.color = isWin ? 'var(--accent-color)' : '#ff4500';
+                DOM.modal.classList.add('show');
+                
+                DOM.restartButton.textContent = isWin ? '😎' : '😵';
+
+                // Tüm mayınları ve yanlış bayrakları göster
+                for (let r = 0; r < height; r++) {
+                    for (let c = 0; c < width; c++) {
+                        const cellData = grid[r][c];
+                        const cellEl = getCellElement(r, c);
+                        
+                        if (cellData.isBomb && !cellData.isFlagged && !isWin) {
+                            cellEl.classList.add('revealed', 'bomb-revealed');
+                            cellEl.textContent = '💣';
+                        } else if (!cellData.isBomb && cellData.isFlagged) {
+                            cellEl.classList.add('revealed', 'wrong-flag');
+                            cellEl.textContent = '❌';
+                        }
+                    }
+                }
+            }
+            
+            function checkWinCondition() {
+                let revealedNonBombs = 0;
+                const totalNonBombs = width * height - bombCount;
+                
+                for (let r = 0; r < height; r++) {
+                    for (let c = 0; c < width; c++) {
+                        if (grid[r][c].isRevealed && !grid[r][c].isBomb) {
+                            revealedNonBombs++;
+                        }
+                    }
+                }
+                
+                if (revealedNonBombs === totalNonBombs) {
+                    gameOver(true);
+                }
+            }
+
+            // Olay Dinleyicileri (Zorluk ve Reset)
+            DOM.btnEasy.addEventListener('click', () => initGame('easy'));
+            DOM.btnMedium.addEventListener('click', () => initGame('medium'));
+            DOM.btnExpert.addEventListener('click', () => initGame('expert'));
+            DOM.restartButton.addEventListener('click', () => {
+                const currentDifficulty = DOM.btnEasy.classList.contains('active') ? 'easy' :
+                                          (DOM.btnMedium.classList.contains('active') ? 'medium' : 'expert');
+                initGame(currentDifficulty);
+            });
+
+            // Oyunu başlat
+            initGame('easy');
+        });
+    </script>
+
+</body>
+</html>
