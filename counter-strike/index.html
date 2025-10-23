@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Counter Strike – HTML/CSS/JS Prototip</title>
+  <style>
+    :root{--bg:#0f1115;--panel:#161a22;--text:#e5edf5;--accent:#00e7a7;--danger:#ff5470}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#0c1016,#0a0d13)}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);display:grid;place-items:center}
+    #wrap{display:grid;gap:.5rem}
+    #hud{display:flex;gap:.75rem;align-items:center;justify-content:space-between;background:var(--panel);padding:.5rem .75rem;border:1px solid #222532;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    #hud .section{display:flex;gap:1rem;align-items:center}
+    #hud .pill{background:#0d1118;border:1px solid #1b2030;padding:.35rem .6rem;border-radius:999px;font-weight:600}
+    #hud .badge{padding:.2rem .5rem;border-radius:.5rem;border:1px solid #30364a;background:#121623}
+    #game{background:#0b0f16;border:1px solid #1b2130;border-radius:12px;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+    #help{font-size:.9rem;opacity:.85}
+    #overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+    .center-card{pointer-events:auto;max-width:720px;background:#0f1420;border:1px solid #22283a;padding:1rem 1.25rem;border-radius:14px;box-shadow:0 30px 70px rgba(0,0,0,.6)}
+    button{background:var(--accent);border:none;color:#001c12;font-weight:800;padding:.6rem 1rem;border-radius:10px;cursor:pointer}
+    .muted{opacity:.7}
+    .shop{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin-top:.5rem}
+    .card{background:#0c111a;border:1px solid #1d2332;border-radius:12px;padding:.7rem}
+    .card h4{margin:.25rem 0 .35rem 0}
+    .row{display:flex;gap:.5rem;align-items:center;justify-content:space-between}
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <div id="hud">
+      <div class="section">
+        <span class="pill">🕹️ Round: <span id="round">1</span></span>
+        <span class="pill">⏱️ <span id="timer">90</span>s</span>
+        <span class="pill">💀 Kills: <span id="kills">0</span></span>
+      </div>
+      <div class="section">
+        <span class="badge">🔫 <span id="gun">Pistol</span></span>
+        <span class="badge">🔋 <span id="ammo">12/48</span></span>
+        <span class="badge">❤️ <span id="hp">100</span></span>
+        <span class="badge">🪙 $<span id="cash">800</span></span>
+      </div>
+    </div>
+    <canvas id="game" width="960" height="540"></canvas>
+    <div id="help">WASD: hareket • Mouse: nişan • Sol tık: ateş • R: şarjör • B: satın al • Shift: yürü/koş • P: durdur • M: sessiz</div>
+  </div>
+
+  <div id="overlay" aria-hidden="true">
+    <div class="center-card" id="menu">
+      <h2 style="margin:.25rem 0 .5rem 0">Counter‑Strike Mini (2D Top‑Down)</h2>
+      <p class="muted">Arcade tarzı, turlu bir prototip. Basit AI, duvar çarpışmaları, mermi fiziği, hasar ve mağaza sistemi içerir.</p>
+      <div class="row" style="margin:.75rem 0 1rem 0">
+        <button id="startBtn">Oyunu Başlat</button>
+        <button id="openShopBtn" style="background:#7dd3fc;color:#071520">Mağaza (B)</button>
+      </div>
+      <div class="shop" id="menuShop"></div>
+      <p class="muted" style="margin-top:.75rem">İpucu: Turları hızlı bitir, başına ödül kazan. Duvar köşelerini kullan ve hat çekme açılarını daralt.</p>
+    </div>
+  </div>
+
+  <audio id="sfxShoot"></audio>
+  <audio id="sfxHit"></audio>
+  <audio id="sfxReload"></audio>
+  <audio id="sfxBuy"></audio>
+
+<script>
+(()=>{
+  // ====== Basit CS Mekanikli 2D Top‑Down Prototip ======
+  const c = document.getElementById('game');
+  const ctx = c.getContext('2d');
+  const HUD = {
+    round: document.getElementById('round'),
+    timer: document.getElementById('timer'),
+    kills: document.getElementById('kills'),
+    gun: document.getElementById('gun'),
+    ammo: document.getElementById('ammo'),
+    hp: document.getElementById('hp'),
+    cash: document.getElementById('cash')
+  };
+  const overlay = document.getElementById('overlay');
+  const menu = document.getElementById('menu');
+  const menuShop = document.getElementById('menuShop');
+  const startBtn = document.getElementById('startBtn');
+  const openShopBtn = document.getElementById('openShopBtn');
+
+  // Ses (küçük base64 bipler, harici dosya yok)
+  const sfx = {
+    shoot: document.getElementById('sfxShoot'),
+    hit: document.getElementById('sfxHit'),
+    reload: document.getElementById('sfxReload'),
+    buy: document.getElementById('sfxBuy')
+  };
+  const beep = (hz,dur=0.05)=>{
+    try{
+      const ac = new (window.AudioContext||window.webkitAudioContext)();
+      const o = ac.createOscillator();
+      const g = ac.createGain();
+      o.type='square';o.frequency.value=hz;o.connect(g);g.connect(ac.destination);
+      g.gain.value=.02;o.start();setTimeout(()=>{o.stop();ac.close();}, dur*1000);
+    }catch(e){}
+  };
+
+  // Oyun sabitleri
+  const W=c.width,H=c.height;
+  const keys={};
+  const mouse={x:W/2,y:H/2,down:false};
+  let lastTime=0,acc=0; const dt=1/60;
+  let paused=false, muted=false;
+
+  // Harita: basit dikdörtgen duvarlar
+  const walls=[
+    {x:80,y:80,w:240,h:20},
+    {x:400,y:60,w:20,h:200},
+    {x:520,y:260,w:280,h:20},
+    {x:180,y:360,w:220,h:20},
+    {x:700,y:120,w:20,h:240},
+    {x:120,y:200,w:20,h:180},
+    {x:720,y:420,w:160,h:20}
+  ];
+
+  // Silahlar
+  const WEAPONS={
+    Pistol:{name:'Pistol', dmg:22, rof:6, spread:5, speed:700, mag:12, reserve:48, reload:1.0, price:0, auto:false},
+    SMG:{name:'SMG', dmg:14, rof:12, spread:8, speed:800, mag:30, reserve:90, reload:1.3, price:1400, auto:true},
+    Rifle:{name:'Rifle', dmg:32, rof:8, spread:4, speed:900, mag:30, reserve:90, reload:1.7, price:2700, auto:true},
+    Shotgun:{name:'Shotgun', dmg:12, rof:1.5, spread:18, pellets:6, speed:750, mag:6, reserve:24, reload:1.6, price:2000, auto:false}
+  };
+
+  // Oyuncu ve AI
+  const player = {
+    x:140,y:460,r:14,speed:180,hp:100,cash:800,kills:0,
+    weapon: structuredClone(WEAPONS.Pistol),
+    mag: WEAPONS.Pistol.mag,
+    reserve: WEAPONS.Pistol.reserve,
+    canShoot:true, fireCd:0, reloading:false, reloadT:0
+  };
+  let round=1, timeLeft=90, enemies=[], bullets=[], particles=[];
+
+  function resetPlayer(){
+    player.x=140;player.y=460;player.r=14;player.hp=100;player.kills=0;player.canShoot=true;player.fireCd=0;player.reloading=false;player.reloadT=0;
+  }
+
+  function spawnWave(n){
+    enemies=[];bullets=[];particles=[];
+    for(let i=0;i<n;i++){
+      const side=Math.floor(Math.random()*4);
+      let ex,ey;
+      if(side===0){ex=Math.random()*W;ey=-30}
+      else if(side===1){ex=W+30;ey=Math.random()*H}
+      else if(side===2){ex=Math.random()*W;ey=H+30}
+      else {ex=-30;ey=Math.random()*H}
+      enemies.push({x:ex,y:ey,r:13,hp:60+round*8,speed:110+Math.random()*30,aggro:260, fire:1.2, cd:0, alive:true});
+    }
+  }
+
+  function aabbCircleCollide(w, cx, cy, r){
+    const dx = Math.max(w.x - cx, 0, cx - (w.x+w.w));
+    const dy = Math.max(w.y - cy, 0, cy - (w.y+w.h));
+    return dx*dx + dy*dy <= r*r;
+  }
+
+  function collideWithWalls(entity, nx, ny){
+    // Basit ayırma çarpışması
+    for(const w of walls){
+      // X ekseni
+      if(nx!==0){
+        if(aabbCircleCollide({x:w.x,y:w.y,w:w.w,h:w.h}, entity.x+nx, entity.y, entity.r)) nx=0;
+      }
+      // Y ekseni
+      if(ny!==0){
+        if(aabbCircleCollide({x:w.x,y:w.y,w:w.w,h:w.h}, entity.x, entity.y+ny, entity.r)) ny=0;
+      }
+    }
+    entity.x+=nx; entity.y+=ny;
+  }
+
+  function lineIntersectsRect(x1,y1,x2,y2, r){
+    // Mermiler için kaba çarpışma: çizgi-rect kesişimi (parametrik)
+    const rx=r.x, ry=r.y, rw=r.w, rh=r.h;
+    const t0 = {min:0, max:1};
+    const dx=x2-x1, dy=y2-y1;
+    const slabs=[
+      {p:-dx, q:x1-rx}, {p:dx, q:rx+rw - x1},
+      {p:-dy, q:y1-ry}, {p:dy, q:ry+rh - y1}
+    ];
+    for(const s of slabs){
+      if(s.p===0){ if(s.q<0) return false; }
+      else{ const t=s.q/s.p; if(s.p<0){ if(t>t0.max) return false; if(t>t0.min) t0.min=t; } else { if(t<t0.min) return false; if(t<t0.max) t0.max=t; } }
+    }
+    return true;
+  }
+
+  function tryShoot(origin, angle, speed, dmg){
+    const spread = (player.weapon.spread||5) * (keys.Shift?0.6:1);
+    const a = angle + (Math.random()*2-1) * spread * Math.PI/180;
+    const vx = Math.cos(a)*speed, vy=Math.sin(a)*speed;
+    bullets.push({x:origin.x, y:origin.y, vx, vy, life:0.9, dmg});
+    if(!muted) beep(360,0.04);
+  }
+
+  function shoot(){
+    if(player.reloading || !player.canShoot) return;
+    if(player.mag<=0){ if(!muted) beep(220,0.06); return; }
+    const dx = mouse.x - player.x; const dy = mouse.y - player.y; const ang = Math.atan2(dy,dx);
+    const w = player.weapon;
+    if(w.name==='Shotgun'){
+      for(let i=0;i<(w.pellets||6);i++) tryShoot(player, ang, w.speed, w.dmg);
+    }else{
+      tryShoot(player, ang, w.speed, w.dmg);
+    }
+    player.mag--; player.canShoot=false; player.fireCd = 1/(w.rof||6);
+  }
+
+  function reload(){
+    const w=player.weapon; if(player.reloading) return; if(player.mag===w.mag) return; if(player.reserve<=0) return;
+    player.reloading=true; player.reloadT=w.reload; if(!muted) beep(180,0.06);
+  }
+
+  function switchWeapon(newW){
+    player.weapon = structuredClone(newW); player.mag=newW.mag; player.reserve=newW.reserve;
+    HUD.gun.textContent=newW.name; updateAmmo(); if(!muted) beep(600,0.05);
+  }
+
+  function updateAmmo(){ HUD.ammo.textContent = `${player.mag}/${player.reserve}`; }
+
+  function buy(name){
+    const w = WEAPONS[name]; if(!w) return; if(player.cash < w.price){ if(!muted) beep(120,0.07); return; }
+    player.cash -= w.price; HUD.cash.textContent=player.cash; switchWeapon(w);
+  }
+
+  function openShop(){
+    overlay.style.display='grid';
+    renderShop(menuShop);
+  }
+
+  function renderShop(root){
+    root.innerHTML='';
+    Object.values(WEAPONS).forEach(w=>{
+      const card=document.createElement('div'); card.className='card';
+      card.innerHTML = `<h4>${w.name}</h4>
+        <div class="muted" style="font-size:.9rem">DMG ${w.dmg} • ROF ${w.rof}/s • Mag ${w.mag} • Reload ${w.reload}s</div>
+        <div class="row"><span>$${w.price}</span><button data-buy="${w.name}">Satın Al</button></div>`;
+      root.appendChild(card);
+    });
+    root.querySelectorAll('button[data-buy]').forEach(btn=>btn.onclick=()=>{buy(btn.dataset.buy)});
+  }
+
+  function nextRound(){
+    round++; HUD.round.textContent=round; timeLeft=90; HUD.timer.textContent=timeLeft;
+    spawnWave(4+Math.floor(round*1.5));
+    overlay.style.display='none';
+  }
+
+  function gameOver(){
+    overlay.style.display='grid';
+    menu.innerHTML = `<h2>👎 Elendin</h2>
+      <p class="muted">Skor: ${player.kills} kill • Round ${round}</p>
+      <div class='row'>
+        <button id='retryBtn'>Tekrar Oyna</button>
+        <button id='shopFromOver'>Mağaza (B)</button>
+      </div>`;
+    document.getElementById('retryBtn').onclick=()=>{startGame(true)};
+    document.getElementById('shopFromOver').onclick=()=>{renderShop(menuShop)};
+  }
+
+  function startGame(reset=false){
+    if(reset){ resetPlayer(); player.cash=800; HUD.cash.textContent=player.cash; switchWeapon(WEAPONS.Pistol); }
+    round=1; timeLeft=90; HUD.round.textContent=round; HUD.timer.textContent=timeLeft; player.kills=0; HUD.kills.textContent=0;
+    spawnWave(5);
+    overlay.style.display='none';
+  }
+
+  // Girdi
+  window.addEventListener('keydown',e=>{ keys[e.key]=true; if(e.key===' '){e.preventDefault()} });
+  window.addEventListener('keyup',e=>{ keys[e.key]=false; });
+  c.addEventListener('mousemove',e=>{
+    const rect=c.getBoundingClientRect(); mouse.x=(e.clientX-rect.left)*(c.width/rect.width); mouse.y=(e.clientY-rect.top)*(c.height/rect.height);
+  });
+  c.addEventListener('mousedown',()=>{ mouse.down=true; });
+  c.addEventListener('mouseup',()=>{ mouse.down=false; });
+
+  document.addEventListener('visibilitychange',()=>{ if(document.hidden) paused=true; });
+
+  // Kısayollar
+  window.addEventListener('keydown',e=>{
+    if(e.key==='b' || e.key==='B'){ openShop(); }
+    if(e.key==='r' || e.key==='R'){ reload(); }
+    if(e.key==='p' || e.key==='P'){ paused=!paused; }
+    if(e.key==='m' || e.key==='M'){ muted=!muted; }
+  });
+  startBtn.onclick=()=>startGame(true);
+  openShopBtn.onclick=openShop;
+
+  // Yardımcılar
+  function clamp(v,min,max){ return Math.max(min, Math.min(max,v)); }
+  function dist(ax,ay,bx,by){ const dx=ax-bx, dy=ay-by; return Math.hypot(dx,dy); }
+
+  // Oyun döngüsü
+  function update(step){
+    if(paused) return;
+    // Zamanlayıcı / round ödülü
+    timeLeft -= step; if(timeLeft<=0){ player.cash += 600 + Math.floor(player.kills*50); HUD.cash.textContent=player.cash; nextRound(); }
+    HUD.timer.textContent = Math.max(0, Math.floor(timeLeft));
+
+    // Hareket
+    const spd = keys.Shift? player.speed*0.7 : player.speed;
+    let mx=0,my=0;
+    if(keys['w']||keys['W']) my-=1; if(keys['s']||keys['S']) my+=1; if(keys['a']||keys['A']) mx-=1; if(keys['d']||keys['D']) mx+=1;
+    const len=Math.hypot(mx,my)||1; mx/=len; my/=len;
+    const nx = mx*spd*step, ny=my*spd*step;
+    collideWithWalls(player,nx,ny);
+    player.x=clamp(player.x,20,W-20); player.y=clamp(player.y,20,H-20);
+
+    // Ateş etme
+    if(player.fireCd>0){ player.fireCd-=step; if(player.fireCd<=0) player.canShoot=true; }
+    if(player.reloading){ player.reloadT-=step; if(player.reloadT<=0){
+      const need = player.weapon.mag - player.mag; const take = Math.min(need, player.reserve);
+      player.mag += take; player.reserve -= take; player.reloading=false; updateAmmo(); if(!muted) beep(240,0.04);
+    }}
+    if(mouse.down){
+      if(player.weapon.auto) shoot(); else if(player.canShoot) shoot();
+    }
+
+    // Mermiler
+    for(let i=bullets.length-1;i>=0;i--){
+      const b=bullets[i]; b.life-=step; if(b.life<=0){ bullets.splice(i,1); continue; }
+      const px=b.x, py=b.y; b.x += b.vx*step; b.y += b.vy*step;
+      // Duvara çarparsa yok olsun
+      for(const w of walls){ if(lineIntersectsRect(px,py,b.x,b.y,w)){ bullets.splice(i,1); continue; } }
+      // Düşmana çarpma
+      for(const e of enemies){ if(!e.alive) continue; if(dist(b.x,b.y,e.x,e.y)<=e.r){ e.hp -= b.dmg; bullets.splice(i,1); if(!muted) beep(520,0.03); particles.push({x:e.x,y:e.y,t:.2}); if(e.hp<=0){ e.alive=false; player.kills++; HUD.kills.textContent=player.kills; player.cash+=100; HUD.cash.textContent=player.cash; } break; }
+      }
+    }
+
+    // Düşman AI: görüş hattında yaklaş, menzile girince vur
+    for(const e of enemies){ if(!e.alive) continue;
+      const d = dist(player.x,player.y,e.x,e.y);
+      const dirx=(player.x-e.x)/Math.max(1,d), diry=(player.y-e.y)/Math.max(1,d);
+      // Duvarlardan kaçınma (basit): x/y adımlı dene
+      let vx=dirx*e.speed*step, vy=diry*e.speed*step;
+      collideWithWalls(e,vx,vy);
+      // Ateş
+      e.cd-=step;
+      if(d<200 && e.cd<=0){ player.hp-=8; e.cd = e.fire; if(!muted) beep(100,0.03); if(player.hp<=0){ HUD.hp.textContent=0; gameOver(); return; } }
+    }
+
+    HUD.hp.textContent=Math.max(0, Math.floor(player.hp));
+    updateAmmo();
+
+    // Parçacıklar
+    for(let i=particles.length-1;i>=0;i--){ particles[i].t-=step; if(particles[i].t<=0) particles.splice(i,1); }
+
+    // Tüm düşmanlar ölürse ara ödül ve yeni round bekleyişi
+    if(enemies.every(e=>!e.alive)){
+      player.cash += 500; HUD.cash.textContent=player.cash; nextRound();
+    }
+  }
+
+  function render(){
+    // Arka plan grid
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle="#0b0f16"; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle="#111826"; ctx.lineWidth=1; ctx.globalAlpha=.8;
+    for(let x=0;x<W;x+=40){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for(let y=0;y<H;y+=40){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    ctx.globalAlpha=1;
+
+    // Duvarlar
+    ctx.fillStyle="#111b2b"; ctx.strokeStyle="#1e2a44"; ctx.lineWidth=2;
+    walls.forEach(w=>{ ctx.fillRect(w.x,w.y,w.w,w.h); ctx.strokeRect(w.x,w.y,w.w,w.h); });
+
+    // Mermiler
+    ctx.strokeStyle="#91f2d9"; ctx.lineWidth=2;
+    bullets.forEach(b=>{ ctx.beginPath(); ctx.moveTo(b.x,b.y); ctx.lineTo(b.x-b.vx*0.03,b.y-b.vy*0.03); ctx.stroke(); });
+
+    // Düşmanlar
+    enemies.forEach(e=>{
+      if(!e.alive){ ctx.globalAlpha=.3; }
+      ctx.fillStyle=e.alive?"#ff5470":"#5a2030"; ctx.beginPath(); ctx.arc(e.x,e.y,e.r,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1;
+      // HP bar
+      if(e.alive){ ctx.fillStyle="#2b3448"; ctx.fillRect(e.x-14,e.y-22,28,4); ctx.fillStyle="#00e7a7"; ctx.fillRect(e.x-14,e.y-22, clamp(28*e.hp/(60+round*8),0,28),4); }
+    });
+
+    // Oyuncu
+    ctx.fillStyle="#00e7a7"; ctx.beginPath(); ctx.arc(player.x,player.y,player.r,0,Math.PI*2); ctx.fill();
+    // Nişangâh
+    ctx.strokeStyle="#c9e6ff"; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(mouse.x,mouse.y,10,0,Math.PI*2); ctx.stroke();
+
+    // Parçacık vuruş efekti
+    particles.forEach(p=>{ ctx.globalAlpha=clamp(p.t/.2,0,1); ctx.fillStyle="#ffd1d9"; ctx.beginPath(); ctx.arc(p.x,p.y,6*(p.t/.2),0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; });
+  }
+
+  function frame(t){
+    const sec=t/1000; const dtMs = sec-lastTime; lastTime=sec; acc+=dtMs;
+    while(acc>dt){ update(dt); acc-=dt; }
+    render(); requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
