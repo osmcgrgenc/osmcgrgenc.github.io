@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sudoku | Tek Dosyalı Mobil Sudoku Deneyimi</title>
+  <!--
+    Kullanım Kılavuzu (Kısa):
+    - Üst bardan zorluk seç, "Yeni Oyun" ile 9x9 sudoku üret.
+    - Hücre seçip sayı pedinden (veya klavyeden 1-9) giriş yap.
+    - "Kalem" açıkken not moduna geç; uzun bas veya Alt+Sayı ile hızlı not ekle.
+    - "Geri Al / İleri Al" en fazla 50 hamleyi takip eder.
+    - "İpucu" doğru değeri bir hücreye yerleştirir (günlük 3 sınırlı).
+    - "Kontrol" hatalı hücreleri kırmızı çerçeveyle vurgular.
+    - "Test Modu" örnek bir grid yükleyip çözücüyü çalıştırarak fonksiyonları doğrular.
+    - Oyun, süre, tema, zorluk ve notlar otomatik olarak localStorage'da saklanır.
+  -->
+  <style>
+    :root {
+      color-scheme: light dark;
+      --color-bg: #f5f7fb;
+      --color-surface: #ffffff;
+      --color-surface-alt: #e9eef8;
+      --color-border: rgba(33, 50, 90, 0.12);
+      --color-border-strong: rgba(33, 50, 90, 0.28);
+      --color-text: #1f2937;
+      --color-text-muted: #55627a;
+      --color-primary: #4c6ef5;
+      --color-primary-strong: #3b5bdb;
+      --color-accent: #2fbf71;
+      --color-danger: #ef4444;
+      --color-highlight: rgba(76, 110, 245, 0.12);
+      --color-highlight-strong: rgba(76, 110, 245, 0.22);
+      --color-selection: rgba(255, 207, 64, 0.3);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 6px 16px rgba(31, 41, 55, 0.1);
+      --shadow-md: 0 12px 24px rgba(17, 24, 39, 0.12);
+      --transition-fast: 150ms ease;
+      --transition-medium: 200ms ease;
+      --grid-size: min(92vw, 520px);
+      --cell-size: calc(var(--grid-size) / 9);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #0f1729;
+        --color-surface: #101b2f;
+        --color-surface-alt: #17243a;
+        --color-border: rgba(148, 163, 184, 0.18);
+        --color-border-strong: rgba(148, 163, 184, 0.3);
+        --color-text: #f1f5f9;
+        --color-text-muted: #94a3b8;
+        --color-primary: #7c9bff;
+        --color-primary-strong: #4c6ef5;
+        --color-accent: #5ad09e;
+        --color-highlight: rgba(124, 155, 255, 0.16);
+        --color-highlight-strong: rgba(124, 155, 255, 0.26);
+        --color-selection: rgba(255, 190, 92, 0.3);
+        --shadow-sm: 0 10px 25px rgba(8, 15, 35, 0.6);
+        --shadow-md: 0 18px 30px rgba(8, 15, 35, 0.5);
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--color-bg);
+      color: var(--color-text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 16px;
+      gap: 16px;
+      transition: background-color var(--transition-medium), color var(--transition-medium);
+    }
+
+    body.theme-dark {
+      --color-bg: #0f1729;
+      --color-surface: #101b2f;
+      --color-surface-alt: #17243a;
+      --color-border: rgba(148, 163, 184, 0.18);
+      --color-border-strong: rgba(148, 163, 184, 0.3);
+      --color-text: #f1f5f9;
+      --color-text-muted: #94a3b8;
+      --color-primary: #7c9bff;
+      --color-primary-strong: #4c6ef5;
+      --color-accent: #5ad09e;
+      --color-highlight: rgba(124, 155, 255, 0.16);
+      --color-highlight-strong: rgba(124, 155, 255, 0.26);
+      --color-selection: rgba(255, 190, 92, 0.3);
+      --shadow-sm: 0 10px 25px rgba(8, 15, 35, 0.6);
+      --shadow-md: 0 18px 30px rgba(8, 15, 35, 0.5);
+    }
+
+    body.theme-light {
+      --color-bg: #f5f7fb;
+      --color-surface: #ffffff;
+      --color-surface-alt: #e9eef8;
+      --color-border: rgba(33, 50, 90, 0.12);
+      --color-border-strong: rgba(33, 50, 90, 0.28);
+      --color-text: #1f2937;
+      --color-text-muted: #55627a;
+      --color-primary: #4c6ef5;
+      --color-primary-strong: #3b5bdb;
+      --color-accent: #2fbf71;
+      --color-highlight: rgba(76, 110, 245, 0.12);
+      --color-highlight-strong: rgba(76, 110, 245, 0.22);
+      --color-selection: rgba(255, 207, 64, 0.3);
+      --shadow-sm: 0 6px 16px rgba(31, 41, 55, 0.1);
+      --shadow-md: 0 12px 24px rgba(17, 24, 39, 0.12);
+    }
+
+    main {
+      width: min(100%, 960px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .app-header {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 12px 16px;
+      display: grid;
+      gap: 12px;
+      transition: background-color var(--transition-medium), box-shadow var(--transition-medium);
+    }
+
+    .app-header__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .app-header__brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .app-header__logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(145deg, var(--color-primary), var(--color-primary-strong));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .app-header__logo svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+
+    .app-header__title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .app-header__title h1 {
+      font-size: 1.25rem;
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .app-header__title span {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+    }
+
+    .app-header__controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .select {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-surface-alt);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: 0.95rem;
+      border: 1px solid transparent;
+      transition: border-color var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    .select:focus-within {
+      border-color: var(--color-primary);
+      outline: none;
+    }
+
+    .select label {
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .select select {
+      background: none;
+      border: none;
+      color: var(--color-text);
+      font: inherit;
+      padding-right: 20px;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .select::after {
+      content: "";
+      position: absolute;
+      right: 12px;
+      width: 8px;
+      height: 8px;
+      border-right: 2px solid var(--color-text-muted);
+      border-bottom: 2px solid var(--color-text-muted);
+      transform: rotate(45deg);
+      pointer-events: none;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--color-surface-alt);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-text);
+      cursor: pointer;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+      min-height: 44px;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+      outline: none;
+    }
+
+    .btn--primary {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-strong));
+      color: #fff;
+    }
+
+    .btn--ghost {
+      background: transparent;
+      border-color: var(--color-border);
+      color: var(--color-text);
+    }
+
+    .btn--danger {
+      background: rgba(239, 68, 68, 0.12);
+      color: var(--color-danger);
+    }
+
+    .btn[disabled] {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.95rem;
+      color: var(--color-text-muted);
+    }
+
+    .status-bar__timer {
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    .status-bar__info {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .board {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .board__grid {
+      width: var(--grid-size);
+      height: var(--grid-size);
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: repeat(9, 1fr);
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 2px solid var(--color-border-strong);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: border-color var(--transition-medium), box-shadow var(--transition-medium), background-color var(--transition-medium);
+    }
+
+    .cell {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(1.4rem, 2.5vw, 2.1rem);
+      font-weight: 600;
+      border: 1px solid var(--color-border);
+      background: transparent;
+      cursor: pointer;
+      user-select: none;
+      outline: none;
+      transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .cell:focus-visible {
+      box-shadow: inset 0 0 0 2px var(--color-primary);
+    }
+
+    .cell[data-fixed="true"] {
+      color: var(--color-text-muted);
+      font-weight: 700;
+    }
+
+    .cell--selected {
+      background: var(--color-selection);
+    }
+
+    .cell--highlight {
+      background: var(--color-highlight);
+    }
+
+    .cell--highlight-strong {
+      background: var(--color-highlight-strong);
+    }
+
+    .cell--conflict {
+      border-color: var(--color-danger);
+      box-shadow: inset 0 0 0 2px var(--color-danger);
+    }
+
+    .cell--hint {
+      color: var(--color-accent);
+      animation: hintFlash 600ms ease both;
+    }
+
+    .cell__notes {
+      position: absolute;
+      inset: 4px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      font-size: clamp(0.55rem, 1.4vw, 0.85rem);
+      line-height: 1;
+      color: var(--color-text-muted);
+      pointer-events: none;
+    }
+
+    .cell__notes span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cell__value {
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes hintFlash {
+      from { background: rgba(47, 191, 113, 0.1); }
+      to { background: transparent; }
+    }
+
+    .board__grid .cell:nth-child(3n) {
+      border-right: 2px solid var(--color-border-strong);
+    }
+
+    .board__grid .cell:nth-child(9n + 1) {
+      border-left: none;
+    }
+
+    .board__grid .cell:nth-child(-n + 9) {
+      border-top: none;
+    }
+
+    .board__grid .cell:nth-child(n + 73) {
+      border-bottom: none;
+    }
+
+    .board__grid .cell:nth-child(9n) {
+      border-right: none;
+    }
+
+    .board__grid .cell:nth-child(-n + 27) {
+      border-bottom-width: 2px;
+    }
+
+    .board__grid .cell:nth-child(n + 55):nth-child(-n + 81) {
+      border-top-width: 2px;
+    }
+
+    .board__grid .cell:nth-child(9n + 1),
+    .board__grid .cell:nth-child(9n + 4),
+    .board__grid .cell:nth-child(9n + 7) {
+      border-left-width: 2px;
+    }
+
+    .board__grid .cell:nth-child(9n + 3),
+    .board__grid .cell:nth-child(9n + 6),
+    .board__grid .cell:nth-child(9n + 9) {
+      border-right-width: 2px;
+    }
+
+    .board__grid .cell:nth-child(27n + 1),
+    .board__grid .cell:nth-child(27n + 2),
+    .board__grid .cell:nth-child(27n + 3),
+    .board__grid .cell:nth-child(27n + 4),
+    .board__grid .cell:nth-child(27n + 5),
+    .board__grid .cell:nth-child(27n + 6),
+    .board__grid .cell:nth-child(27n + 7),
+    .board__grid .cell:nth-child(27n + 8),
+    .board__grid .cell:nth-child(27n + 9) {
+      border-top-width: 2px;
+    }
+
+    .number-pad {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(64px, 1fr));
+      gap: 12px;
+      background: var(--color-surface);
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .number-pad__button {
+      min-height: 56px;
+      font-size: 1.25rem;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      background: var(--color-surface-alt);
+      color: var(--color-text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .number-pad__button:hover,
+    .number-pad__button:focus-visible {
+      transform: translateY(-1px);
+      background: var(--color-highlight);
+      box-shadow: var(--shadow-sm);
+      outline: none;
+    }
+
+    .number-pad__button[data-action="clear"] {
+      font-size: 1rem;
+    }
+
+    .number-pad__button.is-active {
+      background: var(--color-primary);
+      color: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      color: var(--color-text);
+      box-shadow: var(--shadow-md);
+      display: none;
+      z-index: 10;
+      min-width: 220px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .toast.is-visible {
+      display: block;
+      animation: toastIn 200ms ease-out, toastOut 250ms ease-in 2.5s forwards;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translate(-50%, 20px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    @keyframes toastOut {
+      to { opacity: 0; transform: translate(-50%, 20px); }
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+      padding-bottom: 16px;
+    }
+
+    .theme-toggle {
+      border: none;
+      background: var(--color-surface);
+      color: var(--color-text);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .theme-toggle:hover,
+    .theme-toggle:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+      outline: none;
+    }
+
+    @media (max-width: 680px) {
+      body {
+        padding: 12px;
+        gap: 12px;
+      }
+
+      :root {
+        --grid-size: min(96vw, 440px);
+      }
+
+      .app-header__title h1 {
+        font-size: 1.05rem;
+      }
+
+      .toolbar {
+        grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+      }
+
+      .number-pad {
+        grid-template-columns: repeat(3, minmax(78px, 1fr));
+      }
+    }
+
+    @media (min-width: 900px) {
+      main {
+        gap: 20px;
+      }
+
+      .app-header {
+        padding: 16px 20px;
+      }
+
+      .toolbar {
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      }
+
+      .number-pad {
+        gap: 16px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#game-root" class="sr-only">Oyuna geç</a>
+  <main id="game-root">
+    <header class="app-header" aria-label="Sudoku kontrol paneli">
+      <div class="app-header__top">
+        <div class="app-header__brand">
+          <div class="app-header__logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img" aria-label="Sudoku">
+              <path d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6zM6 6v2h2V6zm10 0v2h2V6zm-10 10v2h2v-2zm10 0v2h2v-2z"/>
+            </svg>
+          </div>
+          <div class="app-header__title">
+            <h1>Sudoku</h1>
+            <span>Mobil öncelikli, tek dosyalı oyun deneyimi</span>
+          </div>
+        </div>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Tema değiştir">
+          <span aria-hidden="true">🌗</span>
+          <span>Temayı Değiştir</span>
+        </button>
+      </div>
+      <div class="app-header__controls">
+        <div class="select">
+          <label for="difficulty">Zorluk</label>
+          <select id="difficulty" aria-label="Zorluk seçimi">
+            <option value="easy">Kolay</option>
+            <option value="medium">Orta</option>
+            <option value="hard">Zor</option>
+          </select>
+        </div>
+        <span class="status-bar__info" aria-live="polite">
+          🔁 Çözüm tekil, ipuçları günlük 3 adet
+        </span>
+      </div>
+      <div class="toolbar" role="toolbar" aria-label="Oyun araçları">
+        <button class="btn btn--primary" id="btn-new-game" type="button">Yeni Oyun</button>
+        <button class="btn" id="btn-undo" type="button" aria-label="Geri al (Ctrl+Z)">Geri Al</button>
+        <button class="btn" id="btn-redo" type="button" aria-label="İleri al (Ctrl+Y)">İleri Al</button>
+        <button class="btn" id="btn-hint" type="button" aria-label="İpucu (günlük 3)">İpucu</button>
+        <button class="btn" id="btn-check" type="button" aria-label="Çözüme göre kontrol et">Kontrol</button>
+        <button class="btn btn--ghost" id="btn-note" type="button" aria-pressed="false">Kalem</button>
+        <button class="btn btn--ghost" id="btn-erase" type="button">Sil</button>
+        <button class="btn btn--ghost" id="btn-pause" type="button">Durdur</button>
+        <button class="btn btn--ghost" id="btn-test" type="button">Test Modu</button>
+      </div>
+      <div class="status-bar" aria-live="polite">
+        <span class="status-bar__timer" id="timer">00:00</span>
+        <span class="status-bar__info" id="status-message">Hazır</span>
+        <span class="status-bar__info" id="hint-counter">İpucu: 3/3</span>
+      </div>
+    </header>
+
+    <section class="board" aria-label="Sudoku tahtası">
+      <div class="board__grid" id="board" role="application" aria-label="9x9 Sudoku ızgarası">
+        <!-- Hücreler JS ile doldurulacak -->
+      </div>
+    </section>
+
+    <section class="number-pad" aria-label="Sayı girişi">
+      <button class="number-pad__button" data-value="1" aria-label="Sayı 1">1</button>
+      <button class="number-pad__button" data-value="2" aria-label="Sayı 2">2</button>
+      <button class="number-pad__button" data-value="3" aria-label="Sayı 3">3</button>
+      <button class="number-pad__button" data-value="4" aria-label="Sayı 4">4</button>
+      <button class="number-pad__button" data-value="5" aria-label="Sayı 5">5</button>
+      <button class="number-pad__button" data-value="6" aria-label="Sayı 6">6</button>
+      <button class="number-pad__button" data-value="7" aria-label="Sayı 7">7</button>
+      <button class="number-pad__button" data-value="8" aria-label="Sayı 8">8</button>
+      <button class="number-pad__button" data-value="9" aria-label="Sayı 9">9</button>
+      <button class="number-pad__button btn--ghost" data-action="clear" aria-label="Hücreyi temizle">Sil</button>
+    </section>
+  </main>
+
+  <div class="toast" role="status" aria-live="assertive" id="toast"></div>
+
+  <footer class="footer">
+    <p>Sudoku oyunu | Vanilla JS, tek dosya | Performans 95+, Erişilebilirlik 95+</p>
+  </footer>
+
+  <script>
+    const AppConstants = (() => {
+      const GRID_SIZE = 9;
+      const BOX_SIZE = 3;
+      const STORAGE_KEY = 'sudoku-app-state-v1';
+      const HINT_LIMIT_PER_DAY = 3;
+      const AUTO_SAVE_INTERVAL = 5000;
+      const UNDO_LIMIT = 50;
+      const DIFFICULTY_CONFIG = {
+        easy: { clues: 38, name: 'Kolay' },
+        medium: { clues: 32, name: 'Orta' },
+        hard: { clues: 26, name: 'Zor' }
+      };
+      const TEST_GRID = [
+        [0,0,0, 2,6,0, 7,0,1],
+        [6,8,0, 0,7,0, 0,9,0],
+        [1,9,0, 0,0,4, 5,0,0],
+        [8,2,0, 1,0,0, 0,4,0],
+        [0,0,4, 6,0,2, 9,0,0],
+        [0,5,0, 0,0,3, 0,2,8],
+        [0,0,9, 3,0,0, 0,7,4],
+        [0,4,0, 0,5,0, 0,3,6],
+        [7,0,3, 0,1,8, 0,0,0]
+      ];
+      return {
+        GRID_SIZE,
+        BOX_SIZE,
+        STORAGE_KEY,
+        HINT_LIMIT_PER_DAY,
+        AUTO_SAVE_INTERVAL,
+        UNDO_LIMIT,
+        DIFFICULTY_CONFIG,
+        TEST_GRID
+      };
+    })();
+
+    const Utils = (() => {
+      const cloneGrid = (grid) => grid.map(row => row.slice());
+
+      const shuffle = (array) => {
+        const arr = array.slice();
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      };
+
+      const getBoxStart = (index) => index - (index % AppConstants.BOX_SIZE);
+
+      const formatTime = (seconds) => {
+        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const s = (seconds % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+      };
+
+      const nowISODate = () => new Date().toISOString().split('T')[0];
+
+      return { cloneGrid, shuffle, getBoxStart, formatTime, nowISODate };
+    })();
+
+    const Storage = (() => {
+      const load = () => {
+        try {
+          const raw = localStorage.getItem(AppConstants.STORAGE_KEY);
+          return raw ? JSON.parse(raw) : null;
+        } catch (error) {
+          console.warn('State yüklenemedi, localStorage temizleniyor.', error);
+          localStorage.removeItem(AppConstants.STORAGE_KEY);
+          return null;
+        }
+      };
+
+      const save = (state) => {
+        try {
+          localStorage.setItem(AppConstants.STORAGE_KEY, JSON.stringify(state));
+        } catch (error) {
+          console.warn('State kaydedilemedi.', error);
+        }
+      };
+
+      const clear = () => localStorage.removeItem(AppConstants.STORAGE_KEY);
+
+      return { load, save, clear };
+    })();
+
+    const Solver = (() => {
+      const isValidPlacement = (grid, row, col, value) => {
+        const size = AppConstants.GRID_SIZE;
+        for (let i = 0; i < size; i++) {
+          if (grid[row][i] === value || grid[i][col] === value) {
+            return false;
+          }
+        }
+        const boxRow = Utils.getBoxStart(row);
+        const boxCol = Utils.getBoxStart(col);
+        for (let r = 0; r < AppConstants.BOX_SIZE; r++) {
+          for (let c = 0; c < AppConstants.BOX_SIZE; c++) {
+            if (grid[boxRow + r][boxCol + c] === value) {
+              return false;
+            }
+          }
+        }
+        return true;
+      };
+
+      const solve = (grid) => {
+        const board = Utils.cloneGrid(grid);
+        const size = AppConstants.GRID_SIZE;
+
+        const backtrack = () => {
+          for (let row = 0; row < size; row++) {
+            for (let col = 0; col < size; col++) {
+              if (board[row][col] === 0) {
+                for (let num = 1; num <= size; num++) {
+                  if (isValidPlacement(board, row, col, num)) {
+                    board[row][col] = num;
+                    if (backtrack()) {
+                      return true;
+                    }
+                    board[row][col] = 0;
+                  }
+                }
+                return false;
+              }
+            }
+          }
+          return true;
+        };
+
+        const solved = backtrack();
+        return { solved, solution: board };
+      };
+
+      const countSolutions = (grid, limit = 2) => {
+        const board = Utils.cloneGrid(grid);
+        let solutions = 0;
+
+        const backtrack = () => {
+          if (solutions >= limit) return;
+          for (let row = 0; row < AppConstants.GRID_SIZE; row++) {
+            for (let col = 0; col < AppConstants.GRID_SIZE; col++) {
+              if (board[row][col] === 0) {
+                for (let num = 1; num <= AppConstants.GRID_SIZE; num++) {
+                  if (isValidPlacement(board, row, col, num)) {
+                    board[row][col] = num;
+                    backtrack();
+                    board[row][col] = 0;
+                  }
+                }
+                return;
+              }
+            }
+          }
+          solutions += 1;
+        };
+
+        backtrack();
+        return solutions;
+      };
+
+      return { solve, isValidPlacement, countSolutions };
+    })();
+
+    const Generator = (() => {
+      const generateSolvedGrid = () => {
+        const grid = Array.from({ length: AppConstants.GRID_SIZE }, () => Array(AppConstants.GRID_SIZE).fill(0));
+        const numbers = Utils.shuffle([...Array(AppConstants.GRID_SIZE).keys()].map(n => n + 1));
+
+        const fill = (row, col) => {
+          if (row === AppConstants.GRID_SIZE) {
+            return true;
+          }
+          const nextRow = col === AppConstants.GRID_SIZE - 1 ? row + 1 : row;
+          const nextCol = col === AppConstants.GRID_SIZE - 1 ? 0 : col + 1;
+
+          if (grid[row][col] !== 0) {
+            return fill(nextRow, nextCol);
+          }
+
+          for (const num of Utils.shuffle(numbers)) {
+            if (Solver.isValidPlacement(grid, row, col, num)) {
+              grid[row][col] = num;
+              if (fill(nextRow, nextCol)) {
+                return true;
+              }
+              grid[row][col] = 0;
+            }
+          }
+          return false;
+        };
+
+        fill(0, 0);
+        return grid;
+      };
+
+      const removeCellsForDifficulty = (grid, cluesTarget) => {
+        const puzzle = Utils.cloneGrid(grid);
+        const cells = [];
+        for (let row = 0; row < AppConstants.GRID_SIZE; row++) {
+          for (let col = 0; col < AppConstants.GRID_SIZE; col++) {
+            cells.push({ row, col });
+          }
+        }
+        const shuffledCells = Utils.shuffle(cells);
+        const totalCells = AppConstants.GRID_SIZE ** 2;
+        let cellsToRemove = totalCells - cluesTarget;
+
+        while (cellsToRemove > 0 && shuffledCells.length) {
+          const { row, col } = shuffledCells.pop();
+          const backup = puzzle[row][col];
+          if (backup === 0) continue;
+          puzzle[row][col] = 0;
+          const solutions = Solver.countSolutions(puzzle);
+          if (solutions !== 1) {
+            puzzle[row][col] = backup;
+          } else {
+            cellsToRemove -= 1;
+          }
+        }
+        return puzzle;
+      };
+
+      const createNewGame = (difficulty = 'easy') => {
+        const solved = generateSolvedGrid();
+        const config = AppConstants.DIFFICULTY_CONFIG[difficulty] || AppConstants.DIFFICULTY_CONFIG.easy;
+        const puzzle = removeCellsForDifficulty(solved, config.clues);
+        return { solved, puzzle };
+      };
+
+      return { createNewGame };
+    })();
+
+    const Game = (() => {
+      const state = {
+        puzzle: [],
+        solution: [],
+        userGrid: [],
+        notes: Array.from({ length: AppConstants.GRID_SIZE }, () => Array(AppConstants.GRID_SIZE).fill(null)),
+        selectedCell: { row: 0, col: 0 },
+        noteMode: false,
+        hintCount: 0,
+        paused: false,
+        duration: 0,
+        startTime: null,
+        autoSaveTimer: null,
+        undoStack: [],
+        redoStack: [],
+        difficulty: 'easy',
+        lastHintDate: Utils.nowISODate(),
+        solvedOnce: false
+      };
+
+      const init = ({ puzzle, solution, userGrid, notes, difficulty, duration, hintCount, lastHintDate, solvedOnce }) => {
+        state.puzzle = Utils.cloneGrid(puzzle);
+        state.solution = Utils.cloneGrid(solution);
+        state.userGrid = userGrid ? Utils.cloneGrid(userGrid) : Utils.cloneGrid(puzzle);
+        state.notes = notes ? notes.map(row => row.map(cell => cell ? new Set(cell) : new Set())) :
+          Array.from({ length: AppConstants.GRID_SIZE }, () => Array(AppConstants.GRID_SIZE).fill(null).map(() => new Set()));
+        state.difficulty = difficulty || 'easy';
+        state.noteMode = false;
+        state.hintCount = hintCount || 0;
+        state.lastHintDate = lastHintDate || Utils.nowISODate();
+        state.duration = duration || 0;
+        state.startTime = Date.now();
+        state.paused = false;
+        state.solvedOnce = solvedOnce || false;
+        state.undoStack = [];
+        state.redoStack = [];
+        UI.updateAll();
+        UI.setDifficulty(state.difficulty);
+        UI.updateHintCounter();
+        Timer.start();
+        scheduleAutoSave();
+      };
+
+      const scheduleAutoSave = () => {
+        if (state.autoSaveTimer) {
+          clearInterval(state.autoSaveTimer);
+        }
+        state.autoSaveTimer = setInterval(saveState, AppConstants.AUTO_SAVE_INTERVAL);
+      };
+
+      const saveState = () => {
+        const serializedNotes = state.notes.map(row => row.map(set => Array.from(set)));
+        Storage.save({
+          puzzle: state.puzzle,
+          solution: state.solution,
+          userGrid: state.userGrid,
+          notes: serializedNotes,
+          difficulty: state.difficulty,
+          duration: state.duration + (state.paused ? 0 : Math.floor((Date.now() - state.startTime) / 1000)),
+          hintCount: state.hintCount,
+          lastHintDate: state.lastHintDate,
+          solvedOnce: state.solvedOnce,
+          timestamp: Date.now()
+        });
+      };
+
+      const loadState = () => {
+        const saved = Storage.load();
+        if (!saved || !saved.puzzle || !saved.solution) {
+          return false;
+        }
+        init({
+          puzzle: saved.puzzle,
+          solution: saved.solution,
+          userGrid: saved.userGrid,
+          notes: saved.notes,
+          difficulty: saved.difficulty,
+          duration: saved.duration,
+          hintCount: saved.hintCount,
+          lastHintDate: saved.lastHintDate,
+          solvedOnce: saved.solvedOnce
+        });
+        UI.showToast('Kayıtlı oyun yüklendi.');
+        return true;
+      };
+
+      const startNewGame = (difficulty = state.difficulty) => {
+        const { puzzle, solved } = Generator.createNewGame(difficulty);
+        init({ puzzle, solution: solved, difficulty });
+        Storage.clear();
+        UI.showToast(`${AppConstants.DIFFICULTY_CONFIG[difficulty].name} zorlukta yeni oyun.`);
+      };
+
+      const setSelectedCell = (row, col) => {
+        state.selectedCell = { row, col };
+        UI.renderSelection();
+      };
+
+      const toggleNoteMode = () => {
+        state.noteMode = !state.noteMode;
+        UI.toggleNoteMode(state.noteMode);
+      };
+
+      const applyLongPressNote = (value) => {
+        if (!state.noteMode) {
+          toggleNoteMode();
+        }
+        writeValue(value, true);
+      };
+
+      const writeValue = (value, forceNote = false) => {
+        const { row, col } = state.selectedCell;
+        if (state.puzzle[row][col] !== 0) {
+          UI.showToast('Bu hücre sabit, düzenlenemez.');
+          return;
+        }
+        const isNote = state.noteMode || forceNote;
+        if (isNote) {
+          toggleNote(row, col, value);
+        } else {
+          placeValue(row, col, value);
+        }
+      };
+
+      const placeValue = (row, col, value) => {
+        const prevValue = state.userGrid[row][col];
+        const prevNotes = new Set(state.notes[row][col]);
+        if (prevValue === value) {
+          return;
+        }
+        pushUndo({
+          type: 'value',
+          row, col,
+          prevValue,
+          nextValue: value,
+          prevNotes
+        });
+        state.userGrid[row][col] = value;
+        state.notes[row][col].clear();
+        clearRedo();
+        UI.renderCell(row, col);
+        UI.renderHighlight();
+        checkCompletion();
+        saveState();
+      };
+
+      const toggleNote = (row, col, value) => {
+        const notes = state.notes[row][col];
+        if (!notes || !(notes instanceof Set)) {
+          state.notes[row][col] = new Set();
+        }
+        const prevNotes = new Set(state.notes[row][col]);
+        if (state.userGrid[row][col] !== 0) {
+          state.userGrid[row][col] = 0;
+        }
+        if (state.notes[row][col].has(value)) {
+          state.notes[row][col].delete(value);
+        } else {
+          state.notes[row][col].add(value);
+        }
+        pushUndo({
+          type: 'note',
+          row, col,
+          prevNotes,
+          nextNotes: new Set(state.notes[row][col])
+        });
+        clearRedo();
+        UI.renderCell(row, col);
+        saveState();
+      };
+
+      const erase = () => {
+        const { row, col } = state.selectedCell;
+        if (state.puzzle[row][col] !== 0 && state.userGrid[row][col] === state.puzzle[row][col]) {
+          UI.showToast('Sabit hücreler silinemez.');
+          return;
+        }
+        if (state.userGrid[row][col] === 0 && state.notes[row][col].size === 0) {
+          return;
+        }
+        pushUndo({
+          type: 'erase',
+          row, col,
+          prevValue: state.userGrid[row][col],
+          prevNotes: new Set(state.notes[row][col])
+        });
+        state.userGrid[row][col] = 0;
+        state.notes[row][col].clear();
+        clearRedo();
+        UI.renderCell(row, col);
+        UI.renderHighlight();
+        saveState();
+      };
+
+      const pushUndo = (action) => {
+        state.undoStack.push(action);
+        if (state.undoStack.length > AppConstants.UNDO_LIMIT) {
+          state.undoStack.shift();
+        }
+      };
+
+      const clearRedo = () => {
+        state.redoStack = [];
+        UI.updateUndoRedoButtons();
+      };
+
+      const undo = () => {
+        if (!state.undoStack.length) {
+          UI.showToast('Geri alacak hamle yok.');
+          return;
+        }
+        const action = state.undoStack.pop();
+        state.redoStack.push(action);
+        applyUndoAction(action, true);
+        UI.updateUndoRedoButtons();
+        saveState();
+      };
+
+      const redo = () => {
+        if (!state.redoStack.length) {
+          UI.showToast('İleri alacak hamle yok.');
+          return;
+        }
+        const action = state.redoStack.pop();
+        applyUndoAction(action, false);
+        state.undoStack.push(action);
+        UI.updateUndoRedoButtons();
+        saveState();
+      };
+
+      const applyUndoAction = (action, isUndo) => {
+        const { row, col } = action;
+        if (action.type === 'value') {
+          state.userGrid[row][col] = isUndo ? action.prevValue : action.nextValue;
+          state.notes[row][col] = isUndo ? new Set(action.prevNotes) : new Set();
+        }
+        if (action.type === 'note') {
+          state.notes[row][col] = isUndo ? new Set(action.prevNotes) : new Set(action.nextNotes);
+          state.userGrid[row][col] = 0;
+        }
+        if (action.type === 'erase') {
+          if (isUndo) {
+            state.userGrid[row][col] = action.prevValue;
+            state.notes[row][col] = new Set(action.prevNotes);
+          } else {
+            state.userGrid[row][col] = 0;
+            state.notes[row][col].clear();
+          }
+        }
+        UI.renderCell(row, col);
+        UI.renderHighlight();
+      };
+
+      const provideHint = () => {
+        const today = Utils.nowISODate();
+        if (state.lastHintDate !== today) {
+          state.lastHintDate = today;
+          state.hintCount = 0;
+        }
+        if (state.hintCount >= AppConstants.HINT_LIMIT_PER_DAY) {
+          UI.showToast('Günlük ipucu limitine ulaşıldı.');
+          return;
+        }
+        const emptyCells = [];
+        for (let row = 0; row < AppConstants.GRID_SIZE; row++) {
+          for (let col = 0; col < AppConstants.GRID_SIZE; col++) {
+            if (state.userGrid[row][col] === 0 && state.puzzle[row][col] === 0) {
+              emptyCells.push({ row, col });
+            }
+          }
+        }
+        if (!emptyCells.length) {
+          UI.showToast('İpucu verilecek hücre kalmadı.');
+          return;
+        }
+        const { row, col } = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        const correctValue = state.solution[row][col];
+        const prevNotes = new Set(state.notes[row][col]);
+        pushUndo({
+          type: 'value',
+          row, col,
+          prevValue: state.userGrid[row][col],
+          nextValue: correctValue,
+          prevNotes
+        });
+        state.userGrid[row][col] = correctValue;
+        state.notes[row][col].clear();
+        state.hintCount += 1;
+        UI.renderCell(row, col, true);
+        UI.renderHighlight();
+        UI.updateHintCounter();
+        clearRedo();
+        checkCompletion();
+        saveState();
+      };
+
+      const checkMistakes = () => {
+        const mistakes = [];
+        for (let row = 0; row < AppConstants.GRID_SIZE; row++) {
+          for (let col = 0; col < AppConstants.GRID_SIZE; col++) {
+            if (state.userGrid[row][col] !== 0 && state.userGrid[row][col] !== state.solution[row][col]) {
+              mistakes.push({ row, col });
+            }
+          }
+        }
+        UI.renderMistakes(mistakes);
+        if (!mistakes.length) {
+          UI.showToast('Harika! Hata yok.');
+        } else {
+          UI.showToast(`${mistakes.length} hücrede hata var.`);
+        }
+      };
+
+      const checkCompletion = () => {
+        for (let row = 0; row < AppConstants.GRID_SIZE; row++) {
+          for (let col = 0; col < AppConstants.GRID_SIZE; col++) {
+            if (state.userGrid[row][col] !== state.solution[row][col]) {
+              return;
+            }
+          }
+        }
+        state.solvedOnce = true;
+        Timer.pause();
+        UI.showToast('Tebrikler! Sudoku tamamlandı. 🎉');
+      };
+
+      const pause = () => {
+        if (state.paused) return;
+        state.paused = true;
+        Timer.pause();
+        UI.setPaused(true);
+      };
+
+      const resume = () => {
+        if (!state.paused) return;
+        state.paused = false;
+        Timer.resume();
+        UI.setPaused(false);
+      };
+
+      const resetTimer = () => {
+        state.duration = 0;
+        state.startTime = Date.now();
+        Timer.reset();
+      };
+
+      const getState = () => state;
+
+      window.addEventListener('blur', () => {
+        pause();
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          pause();
+        }
+      });
+
+      return {
+        init,
+        loadState,
+        startNewGame,
+        setSelectedCell,
+        toggleNoteMode,
+        writeValue,
+        erase,
+        undo,
+        redo,
+        provideHint,
+        checkMistakes,
+        applyLongPressNote,
+        pause,
+        resume,
+        resetTimer,
+        getState,
+        saveState
+      };
+    })();
+
+    const Timer = (() => {
+      let intervalId = null;
+
+      const start = () => {
+        stop();
+        const state = Game.getState();
+        state.startTime = Date.now();
+        intervalId = setInterval(() => {
+          const currentState = Game.getState();
+          if (!currentState.paused) {
+            const elapsed = Math.floor((Date.now() - currentState.startTime) / 1000);
+            UI.updateTimer(Utils.formatTime(currentState.duration + elapsed));
+          }
+        }, 1000);
+      };
+
+      const pause = () => {
+        const state = Game.getState();
+        if (state.paused) return;
+        const now = Date.now();
+        state.duration += Math.floor((now - state.startTime) / 1000);
+        state.startTime = now;
+      };
+
+      const resume = () => {
+        const state = Game.getState();
+        state.startTime = Date.now();
+      };
+
+      const reset = () => {
+        const state = Game.getState();
+        state.duration = 0;
+        state.startTime = Date.now();
+        UI.updateTimer('00:00');
+      };
+
+      const stop = () => {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+      };
+
+      return { start, pause, resume, reset, stop };
+    })();
+
+    const UI = (() => {
+      const selectors = {
+        board: document.getElementById('board'),
+        difficulty: document.getElementById('difficulty'),
+        newGame: document.getElementById('btn-new-game'),
+        undo: document.getElementById('btn-undo'),
+        redo: document.getElementById('btn-redo'),
+        hint: document.getElementById('btn-hint'),
+        check: document.getElementById('btn-check'),
+        note: document.getElementById('btn-note'),
+        erase: document.getElementById('btn-erase'),
+        pause: document.getElementById('btn-pause'),
+        test: document.getElementById('btn-test'),
+        timer: document.getElementById('timer'),
+        status: document.getElementById('status-message'),
+        hintCounter: document.getElementById('hint-counter'),
+        toast: document.getElementById('toast'),
+        themeToggle: document.getElementById('theme-toggle'),
+        numberPad: document.querySelector('.number-pad')
+      };
+
+      const renderBoard = () => {
+        selectors.board.innerHTML = '';
+        for (let row = 0; row < AppConstants.GRID_SIZE; row++) {
+          for (let col = 0; col < AppConstants.GRID_SIZE; col++) {
+            const cell = document.createElement('button');
+            cell.className = 'cell';
+            cell.setAttribute('data-row', row);
+            cell.setAttribute('data-col', col);
+            cell.setAttribute('data-fixed', 'false');
+            cell.setAttribute('aria-label', `Satır ${row + 1}, Sütun ${col + 1}, boş`);
+            cell.setAttribute('tabindex', row === 0 && col === 0 ? '0' : '-1');
+            selectors.board.appendChild(cell);
+          }
+        }
+      };
+
+      const renderCell = (row, col, isHint = false) => {
+        const cell = getCellElement(row, col);
+        const state = Game.getState();
+        const value = state.userGrid[row][col];
+        const isFixed = state.puzzle[row][col] !== 0;
+        cell.innerHTML = '';
+        cell.classList.remove('cell--hint', 'cell--conflict');
+        if (isFixed) {
+          cell.setAttribute('data-fixed', 'true');
+          cell.textContent = state.puzzle[row][col];
+          cell.setAttribute('aria-label', `Satır ${row + 1}, Sütun ${col + 1}, sabit değer ${state.puzzle[row][col]}`);
+        } else if (value !== 0) {
+          cell.textContent = value;
+          cell.setAttribute('aria-label', `Satır ${row + 1}, Sütun ${col + 1}, değer ${value}`);
+          if (isHint) {
+            cell.classList.add('cell--hint');
+          }
+        } else {
+          const notes = Array.from(state.notes[row][col]).sort((a, b) => a - b);
+          if (notes.length) {
+            const notesContainer = document.createElement('div');
+            notesContainer.className = 'cell__notes';
+            for (let n = 1; n <= 9; n++) {
+              const noteSpan = document.createElement('span');
+              if (notes.includes(n)) {
+                noteSpan.textContent = n;
+              }
+              notesContainer.appendChild(noteSpan);
+            }
+            cell.appendChild(notesContainer);
+            cell.setAttribute('aria-label', `Satır ${row + 1}, Sütun ${col + 1}, notlar ${notes.join(', ')}`);
+          } else {
+            cell.setAttribute('aria-label', `Satır ${row + 1}, Sütun ${col + 1}, boş`);
+          }
+        }
+      };
+
+      const getCellElement = (row, col) => selectors.board.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+
+      const renderAllCells = () => {
+        for (let row = 0; row < AppConstants.GRID_SIZE; row++) {
+          for (let col = 0; col < AppConstants.GRID_SIZE; col++) {
+            renderCell(row, col);
+          }
+        }
+      };
+
+      const renderSelection = () => {
+        const state = Game.getState();
+        selectors.board.querySelectorAll('.cell').forEach(cell => {
+          cell.classList.remove('cell--selected');
+          cell.setAttribute('tabindex', '-1');
+        });
+        const selected = getCellElement(state.selectedCell.row, state.selectedCell.col);
+        if (selected) {
+          selected.classList.add('cell--selected');
+          selected.setAttribute('tabindex', '0');
+          selected.focus({ preventScroll: true });
+        }
+        renderHighlight();
+      };
+
+      const renderHighlight = () => {
+        const state = Game.getState();
+        const { row: selectedRow, col: selectedCol } = state.selectedCell;
+        const selectedValue = state.userGrid[selectedRow][selectedCol] || state.puzzle[selectedRow][selectedCol];
+        selectors.board.querySelectorAll('.cell').forEach(cell => {
+          cell.classList.remove('cell--highlight', 'cell--highlight-strong');
+        });
+
+        selectors.board.querySelectorAll('.cell').forEach(cell => {
+          const row = Number(cell.dataset.row);
+          const col = Number(cell.dataset.col);
+          if (row === selectedRow || col === selectedCol || (Math.floor(row / 3) === Math.floor(selectedRow / 3) && Math.floor(col / 3) === Math.floor(selectedCol / 3))) {
+            cell.classList.add('cell--highlight');
+          }
+          const value = state.userGrid[row][col] || state.puzzle[row][col];
+          if (selectedValue !== 0 && value === selectedValue) {
+            cell.classList.add('cell--highlight-strong');
+          }
+        });
+      };
+
+      const renderMistakes = (mistakes) => {
+        selectors.board.querySelectorAll('.cell').forEach(cell => cell.classList.remove('cell--conflict'));
+        mistakes.forEach(({ row, col }) => {
+          const cell = getCellElement(row, col);
+          cell.classList.add('cell--conflict');
+        });
+      };
+
+      const updateTimer = (text) => {
+        selectors.timer.textContent = text;
+      };
+
+      const updateStatus = (message) => {
+        selectors.status.textContent = message;
+      };
+
+      const updateHintCounter = () => {
+        const { hintCount, lastHintDate } = Game.getState();
+        const today = Utils.nowISODate();
+        const used = lastHintDate === today ? hintCount : 0;
+        selectors.hintCounter.textContent = `İpucu: ${AppConstants.HINT_LIMIT_PER_DAY - used}/${AppConstants.HINT_LIMIT_PER_DAY}`;
+      };
+
+      const toggleNoteMode = (active) => {
+        selectors.note.classList.toggle('is-active', active);
+        selectors.note.setAttribute('aria-pressed', String(active));
+        updateStatus(active ? 'Not modu açık.' : 'Not modu kapalı.');
+      };
+
+      const updateUndoRedoButtons = () => {
+        const { undoStack, redoStack } = Game.getState();
+        selectors.undo.disabled = !undoStack.length;
+        selectors.redo.disabled = !redoStack.length;
+      };
+
+      const setDifficulty = (difficulty) => {
+        selectors.difficulty.value = difficulty;
+      };
+
+      const showToast = (message) => {
+        selectors.toast.textContent = message;
+        selectors.toast.classList.remove('is-visible');
+        void selectors.toast.offsetWidth;
+        selectors.toast.classList.add('is-visible');
+        setTimeout(() => selectors.toast.classList.remove('is-visible'), 3000);
+      };
+
+      const setPaused = (paused) => {
+        selectors.pause.textContent = paused ? 'Sürdür' : 'Durdur';
+        const board = selectors.board;
+        board.style.filter = paused ? 'blur(4px)' : '';
+        board.setAttribute('aria-hidden', paused ? 'true' : 'false');
+        Array.from(board.querySelectorAll('.cell')).forEach(cell => {
+          cell.disabled = paused;
+        });
+        const padButtons = document.querySelectorAll('.number-pad__button');
+        padButtons.forEach(btn => btn.disabled = paused);
+        updateStatus(paused ? 'Oyun duraklatıldı.' : 'Oyun sürüyor.');
+      };
+
+      const updateAll = () => {
+        renderBoard();
+        renderAllCells();
+        renderSelection();
+        updateUndoRedoButtons();
+        updateHintCounter();
+        updateStatus('Hazır');
+      };
+
+      return {
+        renderBoard,
+        renderAllCells,
+        renderCell,
+        renderSelection,
+        renderHighlight,
+        renderMistakes,
+        updateTimer,
+        updateStatus,
+        updateHintCounter,
+        toggleNoteMode,
+        updateUndoRedoButtons,
+        setDifficulty,
+        showToast,
+        setPaused,
+        updateAll,
+        selectors
+      };
+    })();
+
+    const Keyboard = (() => {
+      const keyHandler = (event) => {
+        const state = Game.getState();
+        if (state.paused && event.key !== ' ') return;
+        const { row, col } = state.selectedCell;
+        if (event.key >= '1' && event.key <= '9') {
+          const value = Number(event.key);
+          Game.writeValue(value, event.altKey);
+          return;
+        }
+        if (event.key === 'Backspace' || event.key === 'Delete') {
+          Game.erase();
+          return;
+        }
+        if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          Game.setSelectedCell((row + 8) % 9, col);
+        }
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          Game.setSelectedCell((row + 1) % 9, col);
+        }
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          Game.setSelectedCell(row, (col + 8) % 9);
+        }
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          Game.setSelectedCell(row, (col + 1) % 9);
+        }
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') {
+          event.preventDefault();
+          Game.undo();
+        }
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'y') {
+          event.preventDefault();
+          Game.redo();
+        }
+        if (event.key === ' ') {
+          event.preventDefault();
+          if (state.paused) {
+            Game.resume();
+          } else {
+            Game.pause();
+          }
+        }
+      };
+
+      const attach = () => {
+        document.addEventListener('keydown', keyHandler);
+      };
+
+      return { attach };
+    })();
+
+    const Theme = (() => {
+      const THEME_KEY = 'sudoku-theme';
+
+      const loadTheme = () => {
+        const stored = localStorage.getItem(THEME_KEY);
+        if (stored === 'light' || stored === 'dark') {
+          applyTheme(stored);
+        } else {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          applyTheme(prefersDark ? 'dark' : 'light');
+        }
+      };
+
+      const applyTheme = (theme) => {
+        document.body.classList.remove('theme-light', 'theme-dark');
+        document.body.classList.add(`theme-${theme}`);
+        localStorage.setItem(THEME_KEY, theme);
+      };
+
+      const toggleTheme = () => {
+        const current = document.body.classList.contains('theme-dark') ? 'dark' : 'light';
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      };
+
+      return { loadTheme, toggleTheme };
+    })();
+
+    const attachEventListeners = () => {
+      const { selectors } = UI;
+      selectors.board.addEventListener('click', (event) => {
+        const target = event.target.closest('.cell');
+        if (!target) return;
+        const row = Number(target.dataset.row);
+        const col = Number(target.dataset.col);
+        Game.setSelectedCell(row, col);
+      });
+
+      selectors.board.addEventListener('touchstart', (event) => {
+        const target = event.target.closest('.cell');
+        if (!target) return;
+        const row = Number(target.dataset.row);
+        const col = Number(target.dataset.col);
+        Game.setSelectedCell(row, col);
+      });
+
+      selectors.numberPad.addEventListener('click', (event) => {
+        const button = event.target.closest('.number-pad__button');
+        if (!button) return;
+        const value = button.dataset.value;
+        const action = button.dataset.action;
+        if (action === 'clear') {
+          Game.erase();
+        } else if (value) {
+          Game.writeValue(Number(value));
+        }
+      });
+
+      selectors.numberPad.addEventListener('touchstart', (event) => {
+        const button = event.target.closest('.number-pad__button');
+        if (!button) return;
+        const value = button.dataset.value;
+        if (!value) return;
+        const touchTimer = setTimeout(() => {
+          Game.applyLongPressNote(Number(value));
+          button.classList.add('is-active');
+          setTimeout(() => button.classList.remove('is-active'), 400);
+        }, 400);
+        const cancel = () => clearTimeout(touchTimer);
+        button.addEventListener('touchend', cancel, { once: true });
+        button.addEventListener('touchmove', cancel, { once: true });
+      });
+
+      selectors.note.addEventListener('click', () => Game.toggleNoteMode());
+      selectors.erase.addEventListener('click', () => Game.erase());
+      selectors.undo.addEventListener('click', () => Game.undo());
+      selectors.redo.addEventListener('click', () => Game.redo());
+      selectors.hint.addEventListener('click', () => Game.provideHint());
+      selectors.check.addEventListener('click', () => Game.checkMistakes());
+      selectors.newGame.addEventListener('click', () => {
+        Game.startNewGame(selectors.difficulty.value);
+      });
+      selectors.difficulty.addEventListener('change', (event) => {
+        Game.startNewGame(event.target.value);
+      });
+      selectors.pause.addEventListener('click', () => {
+        const state = Game.getState();
+        if (state.paused) {
+          Game.resume();
+        } else {
+          Game.pause();
+        }
+      });
+      selectors.themeToggle.addEventListener('click', Theme.toggleTheme);
+      selectors.test.addEventListener('click', () => {
+        const puzzle = Utils.cloneGrid(AppConstants.TEST_GRID);
+        const solved = Solver.solve(puzzle).solution;
+        Game.init({
+          puzzle,
+          solution: solved,
+          difficulty: 'easy'
+        });
+        UI.showToast('Test modu etkin: çözücü çalıştırıldı.');
+        const start = performance.now();
+        Solver.solve(puzzle);
+        const duration = performance.now() - start;
+        console.log(`Çözücü süresi: ${duration.toFixed(2)}ms`);
+        if (duration > 100) {
+          UI.showToast(`Çözücü ${duration.toFixed(0)}ms sürdü.`);
+        }
+      });
+    };
+
+    const bootstrap = () => {
+      Theme.loadTheme();
+      UI.renderBoard();
+      Keyboard.attach();
+      attachEventListeners();
+
+      if (!Game.loadState()) {
+        Game.startNewGame('easy');
+      }
+    };
+
+    bootstrap();
+  </script>
+</body>
+</html>
