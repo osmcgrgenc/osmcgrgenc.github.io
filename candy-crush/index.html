@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Brick Breaker | Retro Arcade</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="hud">
+        <div class="stat-group">
+          <div class="stat">
+            <span class="stat-label">Skor</span>
+            <span id="score" class="stat-value">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">En Yüksek</span>
+            <span id="highScore" class="stat-value">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Seviye</span>
+            <span id="level" class="stat-value">1</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Can</span>
+            <span id="lives" class="stat-value lives-display">
+              <span class="heart">❤</span>
+              <span class="heart">❤</span>
+              <span class="heart">❤</span>
+            </span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Başarı</span>
+            <span id="achievements" class="stat-value">🏆 <span id="achievementCount">0</span></span>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button id="startButton" class="primary-btn" type="button">
+            <span class="btn-icon">▶</span> Başlat
+          </button>
+          <button id="pauseButton" class="secondary-btn" type="button" disabled>
+            <span class="btn-icon">⏸</span> Duraklat
+          </button>
+          <button id="statsButton" class="secondary-btn" type="button" title="İstatistikler">
+            <span class="btn-icon">📊</span>
+          </button>
+        </div>
+      </header>
+
+      <section id="game-frame">
+        <canvas id="gameCanvas" aria-label="Brick Breaker oyun alanı"></canvas>
+        <div id="comboDisplay" class="combo-display hidden">
+          <span class="combo-text">COMBO x<span id="comboCount">0</span></span>
+        </div>
+        <div id="powerUpDisplay" class="powerup-display hidden">
+          <span id="powerUpText" class="powerup-text"></span>
+        </div>
+        <div id="achievementNotification" class="achievement-notification hidden">
+          <div class="achievement-content">
+            <span id="achievementIcon" class="achievement-icon">🏆</span>
+            <div class="achievement-info">
+              <div id="achievementTitle" class="achievement-title">Başarı Kazanıldı!</div>
+              <div id="achievementDesc" class="achievement-desc">Açıklama</div>
+            </div>
+          </div>
+        </div>
+        <div id="bossHealthBar" class="boss-health-bar hidden">
+          <div class="boss-label">BOSS</div>
+          <div class="health-bar-container">
+            <div id="bossHealthFill" class="health-bar-fill"></div>
+          </div>
+        </div>
+        <div id="overlay" class="overlay" role="alert" aria-live="assertive">
+          <div class="overlay-content">
+            <h2 id="overlayTitle">🎮 Brick Breaker</h2>
+            <p id="overlayMessage">
+              Topu sektirerek tüm tuğlaları kır!
+            </p>
+            <div class="overlay-controls">
+              <div class="control-hint">
+                <span class="key">←</span><span class="key">→</span>
+                <span>veya fare ile hareket</span>
+              </div>
+              <div class="control-hint">
+                <span class="key">Space</span>
+                <span>başlat / duraklat</span>
+              </div>
+              <div class="control-hint mobile-hint">
+                <span>📱 Dokunarak hareket ettir</span>
+              </div>
+            </div>
+            <button id="restartButton" class="primary-btn large-btn" type="button">
+              <span class="btn-icon">▶</span> Oyunu Başlat
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="instructions">
+        <p>
+          <strong>Kontroller:</strong> Sol/Sağ ok tuşları, fare veya dokunmatik ekran ile paddle'ı hareket ettir.
+        </p>
+      </footer>
+    </main>
+
+    <!-- Stats Modal -->
+    <div id="statsModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>📊 İstatistikler</h2>
+          <button id="closeStats" class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="stat-item">
+            <span class="stat-label">Toplam Skor</span>
+            <span id="totalScore" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Kırılan Tuğla</span>
+            <span id="bricksBroken" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">En Yüksek Combo</span>
+            <span id="maxCombo" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Toplanan Power-up</span>
+            <span id="powerUpsCollected" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Tamamlanan Seviye</span>
+            <span id="levelsCompleted" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Oyun Süresi</span>
+            <span id="playTime" class="stat-value">0:00</span>
+          </div>
+          <div class="achievements-section">
+            <h3>🏆 Başarılar</h3>
+            <div id="achievementsList" class="achievements-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
