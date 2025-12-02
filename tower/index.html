@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🏰 Tower Defense - Kule Savunma</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Ana Menü -->
+    <div id="mainMenu" class="menu-screen">
+        <div class="menu-content">
+            <h1>🏰 Tower Defense</h1>
+            <p class="menu-subtitle">Kule Savunma Oyunu</p>
+            
+            <div class="difficulty-selection">
+                <h3>⚔️ Zorluk Seviyesi</h3>
+                <div class="difficulty-options">
+                    <button class="difficulty-btn selected" data-difficulty="easy">
+                        <span class="diff-icon">🟢</span>
+                        <span class="diff-name">Kolay</span>
+                        <span class="diff-desc">Yeni başlayanlar için</span>
+                    </button>
+                    <button class="difficulty-btn" data-difficulty="normal">
+                        <span class="diff-icon">🟡</span>
+                        <span class="diff-name">Normal</span>
+                        <span class="diff-desc">Dengeli zorluk</span>
+                    </button>
+                    <button class="difficulty-btn" data-difficulty="hard">
+                        <span class="diff-icon">🔴</span>
+                        <span class="diff-name">Zor</span>
+                        <span class="diff-desc">Tecrübeliler için</span>
+                    </button>
+                    <button class="difficulty-btn" data-difficulty="nightmare">
+                        <span class="diff-icon">💀</span>
+                        <span class="diff-name">Kabus</span>
+                        <span class="diff-desc">Gerçek meydan okuma</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="menu-buttons">
+                <button id="playBtn" class="btn btn-play">🎮 OYNA</button>
+                <button id="tutorialBtn" class="btn btn-tutorial">📖 Nasıl Oynanır?</button>
+                <button id="highScoresBtn" class="btn btn-scores">🏆 Skor Tablosu</button>
+                <button id="achievementsBtn" class="btn btn-achievements">🎖️ Başarımlar</button>
+            </div>
+
+            <div class="sound-controls">
+                <button id="musicToggle" class="sound-btn active" title="Müzik">🎵</button>
+                <button id="sfxToggle" class="sound-btn active" title="Ses Efektleri">🔊</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tutorial Modal -->
+    <div id="tutorialModal" class="modal">
+        <div class="modal-content tutorial-modal">
+            <h2>📖 Nasıl Oynanır?</h2>
+            
+            <div class="tutorial-section">
+                <h3>🎯 Amaç</h3>
+                <p>Düşmanların sol tarafa ulaşmasını engelleyin! Her geçen düşman can kaybettirir.</p>
+            </div>
+            
+            <div class="tutorial-section">
+                <h3>🏰 Kuleler</h3>
+                <div class="tutorial-towers">
+                    <div class="tutorial-tower">
+                        <div class="tower-icon tower-basic"></div>
+                        <span><strong>Temel:</strong> Dengeli, başlangıç için ideal</span>
+                    </div>
+                    <div class="tutorial-tower">
+                        <div class="tower-icon tower-rapid"></div>
+                        <span><strong>Hızlı:</strong> Çok hızlı ateş, düşük hasar</span>
+                    </div>
+                    <div class="tutorial-tower">
+                        <div class="tower-icon tower-sniper"></div>
+                        <span><strong>Keskin Nişancı:</strong> Yüksek hasar, yavaş</span>
+                    </div>
+                    <div class="tutorial-tower">
+                        <div class="tower-icon tower-splash"></div>
+                        <span><strong>Bomba:</strong> Alan hasarı, gruplar için</span>
+                    </div>
+                    <div class="tutorial-tower">
+                        <div class="tower-icon tower-freeze"></div>
+                        <span><strong>Buz:</strong> Düşmanları yavaşlatır</span>
+                    </div>
+                    <div class="tutorial-tower">
+                        <div class="tower-icon tower-laser"></div>
+                        <span><strong>Lazer:</strong> Sürekli ışın, güçlü</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tutorial-section">
+                <h3>👾 Düşmanlar</h3>
+                <div class="tutorial-enemies">
+                    <span class="enemy-type"><span class="enemy-dot normal"></span> Normal: Standart</span>
+                    <span class="enemy-type"><span class="enemy-dot fast"></span> Hızlı: Çok hızlı, az can</span>
+                    <span class="enemy-type"><span class="enemy-dot tank"></span> Tank: Yavaş, çok can</span>
+                    <span class="enemy-type"><span class="enemy-dot healer"></span> Healer: Diğerlerini iyileştirir</span>
+                    <span class="enemy-type"><span class="enemy-dot boss"></span> Boss: Her 5. dalgada!</span>
+                </div>
+            </div>
+            
+            <div class="tutorial-section">
+                <h3>⚡ Power-Ups</h3>
+                <div class="tutorial-powerups">
+                    <span>💣 <strong>Nükleer:</strong> Tüm düşmanları yok et</span>
+                    <span>❄️ <strong>Dondur:</strong> 5sn düşmanları dondur</span>
+                    <span>⚔️ <strong>2x Hasar:</strong> 10sn çift hasar</span>
+                    <span>❤️ <strong>İyileştir:</strong> +5 can kazan</span>
+                </div>
+            </div>
+            
+            <div class="tutorial-section">
+                <h3>💡 İpuçları</h3>
+                <ul class="tutorial-tips">
+                    <li>Kuleleri satırların başına yerleştirin</li>
+                    <li>Buz kuleleri + Hasar kuleleri = Güçlü kombo</li>
+                    <li>Boss dalgaları için power-up saklayın</li>
+                    <li>Kuleleri yükselterek güçlendirin</li>
+                    <li>Yerleşik kuleye tıklayarak yükseltin veya satın</li>
+                </ul>
+            </div>
+            
+            <div class="tutorial-section">
+                <h3>⌨️ Kısayollar</h3>
+                <div class="tutorial-shortcuts">
+                    <span><kbd>1-6</kbd> Kule seç</span>
+                    <span><kbd>Q</kbd> Nükleer</span>
+                    <span><kbd>W</kbd> Dondur</span>
+                    <span><kbd>E</kbd> 2x Hasar</span>
+                    <span><kbd>R</kbd> İyileştir</span>
+                    <span><kbd>Space</kbd> Duraklat</span>
+                </div>
+            </div>
+            
+            <button id="closeTutorialBtn" class="btn btn-play">Anladım! 🎮</button>
+        </div>
+    </div>
+
+    <!-- High Scores Modal -->
+    <div id="highScoresModal" class="modal">
+        <div class="modal-content scores-modal">
+            <h2>🏆 Skor Tablosu</h2>
+            <div class="scores-tabs">
+                <button class="score-tab active" data-difficulty="all">Tümü</button>
+                <button class="score-tab" data-difficulty="easy">Kolay</button>
+                <button class="score-tab" data-difficulty="normal">Normal</button>
+                <button class="score-tab" data-difficulty="hard">Zor</button>
+                <button class="score-tab" data-difficulty="nightmare">Kabus</button>
+            </div>
+            <div id="scoresList" class="scores-list">
+                <p class="no-scores">Henüz skor yok</p>
+            </div>
+            <button id="closeScoresBtn" class="btn btn-restart">Kapat</button>
+        </div>
+    </div>
+
+    <!-- Achievements Modal -->
+    <div id="achievementsModal" class="modal">
+        <div class="modal-content achievements-modal">
+            <h2>🎖️ Başarımlar</h2>
+            <div id="achievementsList" class="achievements-list"></div>
+            <button id="closeAchievementsBtn" class="btn btn-restart">Kapat</button>
+        </div>
+    </div>
+
+    <!-- Oyun Alanı -->
+    <div id="gameContainer" class="game-container hidden">
+        <div class="game-header">
+            <h1>🏰 Tower Defense</h1>
+            <div class="controls">
+                <button id="menuBtn" class="btn btn-menu">🏠</button>
+                <button id="pauseBtn" class="btn btn-pause">⏸️</button>
+                <button id="helpBtn" class="btn btn-help">❓</button>
+            </div>
+        </div>
+
+        <div class="game-stats">
+            <div class="stat-item score-stat">
+                <span class="stat-label">💎 Skor</span>
+                <span id="score" class="stat-value">0</span>
+            </div>
+            <div class="stat-item wave-stat">
+                <span class="stat-label">🌊 Dalga</span>
+                <span id="wave" class="stat-value">0</span>
+            </div>
+            <div class="stat-item lives-stat">
+                <span class="stat-label">❤️ Can</span>
+                <span id="lives" class="stat-value">10</span>
+            </div>
+            <div class="stat-item energy-stat">
+                <span class="stat-label">⚡ Enerji</span>
+                <span id="energy" class="stat-value">100</span>
+            </div>
+        </div>
+
+        <!-- Combo Göstergesi -->
+        <div id="comboDisplay" class="combo-display hidden">
+            <span class="combo-text">COMBO</span>
+            <span id="comboCount" class="combo-count">x2</span>
+        </div>
+
+        <!-- Dalga Bilgisi -->
+        <div class="wave-info">
+            <div class="wave-progress">
+                <span id="waveProgress">Düşman: 0/0</span>
+                <div class="wave-progress-bar">
+                    <div id="waveProgressFill" class="wave-progress-fill"></div>
+                </div>
+            </div>
+            <div id="nextWaveTimer" class="next-wave-timer hidden">
+                Sonraki dalga: <span id="nextWaveCountdown">3</span>
+            </div>
+        </div>
+
+        <!-- Power-ups -->
+        <div class="powerups-container">
+            <h4>⚡ Power-Ups <span class="powerup-hint">(Q/W/E/R)</span></h4>
+            <div class="powerups">
+                <button class="powerup-btn" data-powerup="nuke" title="Tüm düşmanları yok et (Q)">
+                    <span class="powerup-icon">💣</span>
+                    <span class="powerup-count" id="nukeCount">1</span>
+                    <span class="powerup-key">Q</span>
+                </button>
+                <button class="powerup-btn" data-powerup="freeze" title="5sn düşmanları dondur (W)">
+                    <span class="powerup-icon">❄️</span>
+                    <span class="powerup-count" id="freezeCount">2</span>
+                    <span class="powerup-key">W</span>
+                </button>
+                <button class="powerup-btn" data-powerup="doubleDamage" title="10sn 2x hasar (E)">
+                    <span class="powerup-icon">⚔️</span>
+                    <span class="powerup-count" id="doubleDamageCount">1</span>
+                    <span class="powerup-key">E</span>
+                </button>
+                <button class="powerup-btn" data-powerup="heal" title="+5 can (R)">
+                    <span class="powerup-icon">❤️</span>
+                    <span class="powerup-count" id="healCount">1</span>
+                    <span class="powerup-key">R</span>
+                </button>
+            </div>
+            <div id="activeEffects" class="active-effects"></div>
+        </div>
+
+        <div class="game-board-container">
+            <!-- Yol göstergesi -->
+            <div class="path-indicator">
+                <span class="path-arrow">→</span>
+                <span class="path-text">Düşman Yolu</span>
+                <span class="path-arrow">→</span>
+            </div>
+            <div id="gameBoard" class="game-board"></div>
+            <div class="base-indicator">
+                <span>🏠 Üssünüz</span>
+            </div>
+        </div>
+
+        <div class="tower-selection">
+            <h3>🏰 Kuleler <span class="tower-hint">(1-6 tuşları)</span></h3>
+            <div class="tower-types">
+                <div class="tower-type" data-type="basic">
+                    <div class="tower-key">1</div>
+                    <div class="tower-icon tower-basic"></div>
+                    <div class="tower-name">Temel</div>
+                    <div class="tower-stats">
+                        <div>⚔️ 20</div>
+                        <div>📏 Satır</div>
+                    </div>
+                    <div class="tower-cost">💰 50</div>
+                </div>
+                <div class="tower-type" data-type="rapid">
+                    <div class="tower-key">2</div>
+                    <div class="tower-icon tower-rapid"></div>
+                    <div class="tower-name">Hızlı</div>
+                    <div class="tower-stats">
+                        <div>⚔️ 10</div>
+                        <div>⚡ Hızlı</div>
+                    </div>
+                    <div class="tower-cost">💰 70</div>
+                </div>
+                <div class="tower-type" data-type="sniper">
+                    <div class="tower-key">3</div>
+                    <div class="tower-icon tower-sniper"></div>
+                    <div class="tower-name">Nişancı</div>
+                    <div class="tower-stats">
+                        <div>⚔️ 60</div>
+                        <div>🎯 Uzun</div>
+                    </div>
+                    <div class="tower-cost">💰 100</div>
+                </div>
+                <div class="tower-type" data-type="splash">
+                    <div class="tower-key">4</div>
+                    <div class="tower-icon tower-splash"></div>
+                    <div class="tower-name">Bomba</div>
+                    <div class="tower-stats">
+                        <div>⚔️ 30</div>
+                        <div>💥 Alan</div>
+                    </div>
+                    <div class="tower-cost">💰 120</div>
+                </div>
+                <div class="tower-type" data-type="freeze">
+                    <div class="tower-key">5</div>
+                    <div class="tower-icon tower-freeze"></div>
+                    <div class="tower-name">Buz</div>
+                    <div class="tower-stats">
+                        <div>🥶 %50</div>
+                        <div>❄️ Yavaşlat</div>
+                    </div>
+                    <div class="tower-cost">💰 80</div>
+                </div>
+                <div class="tower-type" data-type="laser">
+                    <div class="tower-key">6</div>
+                    <div class="tower-icon tower-laser"></div>
+                    <div class="tower-name">Lazer</div>
+                    <div class="tower-stats">
+                        <div>⚔️ 15/sn</div>
+                        <div>🔴 Işın</div>
+                    </div>
+                    <div class="tower-cost">💰 150</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-info">
+            <div class="info-row">
+                <span>Seçili: <strong class="selected-tower-name">Temel</strong></span>
+                <span class="info-tip">💡 Kuleye tıkla = Yükselt/Sat</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upgrade Modal -->
+    <div id="upgradeModal" class="modal">
+        <div class="modal-content upgrade-modal">
+            <h2>⬆️ Kule Yönetimi</h2>
+            <div id="upgradeInfo" class="upgrade-info"></div>
+            <div class="upgrade-buttons">
+                <button id="upgradeBtn" class="btn btn-upgrade">⬆️ Yükselt</button>
+                <button id="sellBtn" class="btn btn-sell">💰 Sat</button>
+                <button id="cancelUpgradeBtn" class="btn btn-restart">❌ İptal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Modal -->
+    <div id="pauseModal" class="modal">
+        <div class="modal-content pause-modal">
+            <h2>⏸️ Oyun Duraklatıldı</h2>
+            <div class="pause-stats">
+                <p>Skor: <span id="pauseScore">0</span></p>
+                <p>Dalga: <span id="pauseWave">0</span></p>
+            </div>
+            <div class="pause-buttons">
+                <button id="resumeBtn" class="btn btn-start">▶️ Devam Et</button>
+                <button id="pauseRestartBtn" class="btn btn-restart">🔄 Yeniden Başla</button>
+                <button id="pauseMenuBtn" class="btn btn-menu">🏠 Ana Menü</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal">
+        <div class="modal-content gameover-modal">
+            <h2>💀 Oyun Bitti!</h2>
+            <div class="gameover-stats">
+                <div class="stat-row">
+                    <span>💎 Final Skoru:</span>
+                    <span id="finalScore" class="highlight">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>🌊 Ulaşılan Dalga:</span>
+                    <span id="finalWave" class="highlight">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>💀 Öldürülen Düşman:</span>
+                    <span id="enemiesKilled" class="highlight">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>🏰 Yerleştirilen Kule:</span>
+                    <span id="towersPlaced" class="highlight">0</span>
+                </div>
+            </div>
+            <div id="newHighScore" class="new-high-score hidden">🏆 YENİ REKOR! 🏆</div>
+            <div class="modal-buttons">
+                <button id="retryBtn" class="btn btn-restart">🔄 Tekrar Oyna</button>
+                <button id="gameOverMenuBtn" class="btn btn-menu">🏠 Ana Menü</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory Modal -->
+    <div id="victoryModal" class="modal">
+        <div class="modal-content victory">
+            <h2>🎉 TEBRİKLER! 🎉</h2>
+            <p class="victory-subtitle">Tüm Dalgaları Başarıyla Tamamladınız!</p>
+            <div class="victory-stats">
+                <div class="stat-row">
+                    <span>💎 Final Skoru:</span>
+                    <span id="victoryScore" class="highlight">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>⏱️ Toplam Süre:</span>
+                    <span id="playTime" class="highlight">0:00</span>
+                </div>
+            </div>
+            <div id="victoryHighScore" class="new-high-score hidden">🏆 YENİ REKOR! 🏆</div>
+            <div class="modal-buttons">
+                <button id="victoryRetryBtn" class="btn btn-restart">🔄 Tekrar Oyna</button>
+                <button id="victoryMenuBtn" class="btn btn-menu">🏠 Ana Menü</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievement Popup -->
+    <div id="achievementPopup" class="achievement-popup hidden">
+        <div class="achievement-content">
+            <span class="achievement-icon">🎖️</span>
+            <div class="achievement-text">
+                <div class="achievement-title">Başarım Kazanıldı!</div>
+                <div id="achievementName" class="achievement-name"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Damage Numbers Container -->
+    <div id="floatingNumbers" class="floating-numbers"></div>
+
+    <!-- Particles Container -->
+    <div id="particles" class="particles-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
