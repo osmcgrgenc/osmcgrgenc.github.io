@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BerberBul - Berberler için akıllı randevu ve müşteri yönetim sistemi. Yakınınızdaki berberleri bulun, online randevu alın. Berberler için uygun fiyatlı abonelik.">
-    <title>BerberBul – Berberler için akıllı randevu ve müşteri yönetimi</title>
+    <meta name="description" content="BerberBul - Berberler için akıllı randevu ve müşteri yönetim sistemi. Yakınınızdaki berberleri bulun, online randevu alın.">
+    <title>BerberBul – Akıllı Randevu ve Müşteri Yönetimi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,106 +14,194 @@
         }
 
         :root {
-            --primary: #e67e22;
-            --primary-dark: #d35400;
-            --secondary: #2c3e50;
-            --text: #333;
-            --text-light: #666;
-            --bg: #ffffff;
-            --bg-light: #f8f9fa;
-            --border: #e0e0e0;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
-            --radius: 12px;
-            --radius-sm: 8px;
+            --bg-dark: #0c0a09;
+            --bg-surface: #1c1917;
+            --bg-card: rgba(28, 25, 23, 0.7);
+            --amber: #f59e0b;
+            --amber-light: #fbbf24;
+            --amber-dark: #d97706;
+            --orange: #ea580c;
+            --text: #fafaf9;
+            --text-muted: #a8a29e;
+            --border: rgba(245, 158, 11, 0.15);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-dark);
             color: var(--text);
-            background: var(--bg);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        /* Gradient backgrounds */
+        .gradient-bg {
+            background: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(245, 158, 11, 0.15), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 50%, rgba(234, 88, 12, 0.1), transparent),
+                radial-gradient(ellipse 50% 30% at 10% 80%, rgba(251, 191, 36, 0.08), transparent);
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
+        /* Grid pattern */
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(245, 158, 11, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245, 158, 11, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
 
+        /* Glass card */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(245, 158, 11, 0.3);
+            transform: translateY(-4px);
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--amber-light) 0%, var(--amber) 50%, var(--orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Glow effect */
+        .glow {
+            box-shadow: 0 0 40px rgba(245, 158, 11, 0.2);
+        }
+
+        /* Button styles */
         .btn {
-            display: inline-block;
-            padding: 14px 28px;
-            border-radius: var(--radius-sm);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 32px;
+            border-radius: 16px;
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
+            text-decoration: none;
         }
 
         .btn-primary {
-            background: var(--primary);
-            color: white;
+            background: linear-gradient(135deg, var(--amber), var(--orange));
+            color: var(--bg-dark);
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: var(--shadow);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
         }
 
         .btn-secondary {
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--border);
         }
 
         .btn-secondary:hover {
-            background: var(--primary);
-            color: white;
+            border-color: var(--amber);
+            background: rgba(245, 158, 11, 0.1);
         }
 
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
         header {
-            background: var(--bg);
-            padding: 15px 0;
             position: fixed;
-            width: 100%;
             top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 24px;
         }
 
-        header .container {
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(12, 10, 9, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 12px 24px;
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--amber), var(--orange));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .logo-text {
+            font-family: 'Bebas Neue', sans-serif;
             font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
+            letter-spacing: 1px;
+            color: var(--text);
+        }
+
+        .logo-text span {
+            color: var(--amber);
         }
 
         nav {
             display: flex;
-            gap: 25px;
+            align-items: center;
+            gap: 32px;
         }
 
         nav a {
-            color: var(--text);
+            color: var(--text-muted);
+            text-decoration: none;
             font-weight: 500;
+            font-size: 0.95rem;
             transition: color 0.3s;
         }
 
         nav a:hover {
-            color: var(--primary);
+            color: var(--amber);
+        }
+
+        .nav-cta {
+            background: var(--amber);
+            color: var(--bg-dark);
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+
+        .nav-cta:hover {
+            background: var(--amber-light);
+            color: var(--bg-dark);
         }
 
         .mobile-menu {
@@ -122,252 +211,395 @@
             cursor: pointer;
             background: none;
             border: none;
-            padding: 5px;
+            padding: 8px;
         }
 
         .mobile-menu span {
-            width: 25px;
-            height: 3px;
-            background: var(--secondary);
+            width: 24px;
+            height: 2px;
+            background: var(--text);
             border-radius: 2px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
-        .mobile-menu:focus {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-        }
-
-        #hero {
-            padding: 140px 0 80px;
-            background: linear-gradient(135deg, #fff5eb 0%, #ffffff 100%);
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+            position: relative;
         }
 
         .hero-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            gap: 80px;
             align-items: center;
         }
 
-        .hero-text h1 {
-            font-size: 3rem;
-            color: var(--secondary);
-            margin-bottom: 20px;
-            line-height: 1.2;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            color: var(--amber);
+            margin-bottom: 24px;
         }
 
-        .hero-text p {
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--amber);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 7vw, 5rem);
+            line-height: 1;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
             font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: 30px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            max-width: 500px;
         }
 
         .hero-buttons {
             display: flex;
-            gap: 15px;
+            gap: 16px;
             flex-wrap: wrap;
         }
 
-        .hero-mockup {
-            display: flex;
-            justify-content: center;
+        /* Barber Card Preview */
+        .barber-preview {
+            position: relative;
         }
 
         .barber-card {
-            background: white;
-            border-radius: var(--radius);
-            padding: 25px;
-            box-shadow: var(--shadow-lg);
-            max-width: 320px;
-            width: 100%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .barber-card-header {
+        .barber-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--amber), var(--orange));
+        }
+
+        .barber-header {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
         .barber-avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, var(--amber), var(--orange));
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
+            color: var(--bg-dark);
         }
 
         .barber-info h3 {
-            font-size: 1.2rem;
-            color: var(--secondary);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 4px;
         }
 
         .barber-info p {
-            color: var(--text-light);
+            color: var(--text-muted);
             font-size: 0.9rem;
         }
 
         .barber-rating {
-            color: #f1c40f;
-            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .barber-rating .stars {
+            color: var(--amber);
+        }
+
+        .barber-rating span {
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
 
         .barber-services {
             border-top: 1px solid var(--border);
-            padding-top: 15px;
-            margin-bottom: 15px;
+            padding-top: 20px;
+            margin-bottom: 20px;
         }
 
         .barber-services h4 {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            margin-bottom: 10px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
         }
 
         .service-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px dashed var(--border);
+            padding: 12px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
         }
 
         .service-item:last-child {
             border-bottom: none;
         }
 
-        .barber-card .btn {
-            width: 100%;
+        .service-item span:last-child {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .card-badge {
             text-align: center;
-            margin-top: 10px;
+            padding: 12px;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 12px;
+            color: var(--amber);
+            font-size: 0.85rem;
+            font-weight: 500;
         }
 
+        /* Floating elements */
+        .float-element {
+            position: absolute;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            opacity: 0.5;
+        }
+
+        .float-1 {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: -40px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .float-2 {
+            width: 120px;
+            height: 120px;
+            bottom: 10%;
+            right: -60px;
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* Marquee */
+        .marquee-section {
+            padding: 24px 0;
+            background: rgba(245, 158, 11, 0.05);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .marquee-track {
+            display: flex;
+            animation: marquee 25s linear infinite;
+        }
+
+        .marquee-content {
+            display: flex;
+            align-items: center;
+            gap: 48px;
+            padding: 0 24px;
+        }
+
+        .marquee-item {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            opacity: 0.5;
+            white-space: nowrap;
+        }
+
+        .marquee-dot {
+            color: var(--amber);
+            font-size: 1.2rem;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Section styles */
         section {
-            padding: 80px 0;
+            padding: 120px 0;
         }
 
-        section:nth-child(even) {
-            background: var(--bg-light);
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            display: inline-block;
+            color: var(--amber);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
         }
 
         .section-title {
-            text-align: center;
-            margin-bottom: 50px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            letter-spacing: 2px;
+            margin-bottom: 16px;
         }
 
-        .section-title h2 {
-            font-size: 2.2rem;
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
-
-        .section-title p {
-            color: var(--text-light);
+        .section-desc {
+            color: var(--text-muted);
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
         }
 
+        /* Benefits Grid */
         .benefits-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
+            gap: 24px;
         }
 
         .benefit-card {
             text-align: center;
-            padding: 30px 20px;
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            transition: transform 0.3s;
-        }
-
-        .benefit-card:hover {
-            transform: translateY(-5px);
+            padding: 40px 24px;
         }
 
         .benefit-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #fff5eb, #ffe8d6);
-            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(234, 88, 12, 0.1));
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 1.8rem;
+            margin: 0 auto 24px;
+            font-size: 2rem;
         }
 
         .benefit-card h3 {
-            font-size: 1.1rem;
-            color: var(--secondary);
-            margin-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
         }
 
         .benefit-card p {
-            color: var(--text-light);
+            color: var(--text-muted);
             font-size: 0.95rem;
         }
 
-        .features-grid {
+        /* Features Bento Grid */
+        .features-bento {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            grid-template-rows: repeat(2, auto);
+            gap: 24px;
         }
 
         .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            transition: transform 0.3s;
+            padding: 32px;
         }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
+        .feature-card.large {
+            grid-column: span 2;
         }
 
         .feature-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--primary);
-            border-radius: var(--radius-sm);
+            width: 56px;
+            height: 56px;
+            background: var(--amber);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
-            color: white;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
         }
 
         .feature-card h3 {
-            font-size: 1.2rem;
-            color: var(--secondary);
-            margin-bottom: 10px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
         }
 
         .feature-card p {
-            color: var(--text-light);
+            color: var(--text-muted);
             font-size: 0.95rem;
         }
 
+        /* Two Column Layout */
         .two-column {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            gap: 80px;
             align-items: center;
         }
 
+        .info-content h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .info-content > p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 32px;
+        }
+
+        /* Steps */
         .steps {
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 24px;
         }
 
         .step {
@@ -377,358 +609,282 @@
         }
 
         .step-number {
-            width: 45px;
-            height: 45px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--amber), var(--orange));
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
+            font-weight: 800;
             font-size: 1.2rem;
+            color: var(--bg-dark);
             flex-shrink: 0;
         }
 
         .step-content h3 {
             font-size: 1.1rem;
-            color: var(--secondary);
-            margin-bottom: 5px;
+            font-weight: 700;
+            margin-bottom: 4px;
         }
 
         .step-content p {
-            color: var(--text-light);
+            color: var(--text-muted);
             font-size: 0.95rem;
         }
 
-        .info-box {
-            background: white;
-            padding: 40px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-        }
-
-        .info-box h2 {
-            font-size: 1.8rem;
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
-
-        .info-box > p {
-            color: var(--text-light);
-            margin-bottom: 30px;
-        }
-
-        .testimonials {
+        /* Testimonials */
+        .testimonials-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            margin-top: 40px;
+            gap: 24px;
         }
 
-        .testimonial {
-            background: white;
-            padding: 25px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+        .testimonial-card {
+            padding: 32px;
         }
 
-        .testimonial p {
+        .testimonial-rating {
+            color: var(--amber);
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-card blockquote {
+            font-size: 1rem;
+            color: var(--text-muted);
             font-style: italic;
-            color: var(--text);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            line-height: 1.7;
         }
 
         .testimonial-author {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .author-avatar {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--amber), var(--orange));
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 600;
-        }
-
-        .author-info span {
-            display: block;
+            font-weight: 700;
+            color: var(--bg-dark);
         }
 
         .author-info .name {
             font-weight: 600;
-            color: var(--secondary);
+            font-size: 0.95rem;
         }
 
         .author-info .location {
+            color: var(--text-muted);
             font-size: 0.85rem;
-            color: var(--text-light);
         }
 
+        /* Pricing */
         .pricing-card {
-            max-width: 450px;
+            max-width: 480px;
             margin: 0 auto;
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
             overflow: hidden;
         }
 
         .pricing-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 30px;
+            background: linear-gradient(135deg, var(--amber), var(--orange));
+            padding: 40px;
             text-align: center;
         }
 
         .pricing-header h3 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--bg-dark);
+            margin-bottom: 8px;
         }
 
         .pricing-amount {
-            font-size: 3rem;
-            font-weight: 700;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: var(--bg-dark);
+            line-height: 1;
         }
 
         .pricing-amount span {
-            font-size: 1rem;
-            font-weight: 400;
+            font-size: 1.2rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         .pricing-body {
-            padding: 30px;
+            padding: 40px;
+            background: var(--bg-surface);
         }
 
         .pricing-features {
             list-style: none;
-            margin-bottom: 30px;
+            margin-bottom: 32px;
         }
 
         .pricing-features li {
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
         }
 
         .pricing-features li:last-child {
             border-bottom: none;
         }
 
-        .check-icon {
-            color: #27ae60;
-            font-weight: 700;
+        .pricing-features .check {
+            color: var(--amber);
+            font-size: 1.2rem;
         }
 
-        .pricing-body .btn {
-            width: 100%;
+        .pricing-badge {
             text-align: center;
+        }
+
+        .coming-badge {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--amber);
+            padding: 12px 32px;
+            border-radius: 100px;
+            font-weight: 600;
+            border: 1px solid var(--border);
         }
 
         .pricing-note {
             text-align: center;
-            margin-top: 20px;
-            color: var(--text-light);
-            font-size: 0.95rem;
+            margin-top: 24px;
+            color: var(--text-muted);
         }
 
-        .coming-soon-badge {
-            margin-top: 30px;
-        }
-
-        .badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-        }
-
-        .coming-soon-badge p {
-            margin-top: 15px;
-            color: var(--text-light);
-            font-size: 1rem;
-        }
-
-        .badge-small {
-            display: inline-block;
-            background: linear-gradient(135deg, #27ae60, #1e8449);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .coming-soon-inline {
-            margin-top: 30px;
-        }
-
-        .card-badge {
-            text-align: center;
-            padding: 10px;
-            background: var(--bg-light);
-            color: var(--text-light);
-            font-size: 0.85rem;
-            border-radius: 0 0 var(--radius) var(--radius);
-            margin: 15px -25px -25px -25px;
-        }
-
-        .pricing-coming-soon {
-            text-align: center;
-            padding-top: 10px;
-        }
-
-        .contact-info-box {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: var(--radius);
-            text-align: center;
-        }
-
-        .contact-info-box h3 {
-            color: var(--secondary);
-            margin-bottom: 20px;
-            font-size: 1.4rem;
-        }
-
-        .contact-info-box p {
-            color: var(--text-light);
-            margin-bottom: 25px;
-        }
-
-        .contact-email {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 15px 30px;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: background 0.3s;
-        }
-
-        .contact-email:hover {
-            background: var(--primary-dark);
-        }
-
-        .coming-soon-note {
-            margin-top: 25px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-sm);
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.95rem;
-        }
-
+        /* FAQ */
         .faq-list {
             max-width: 800px;
             margin: 0 auto;
         }
 
         .faq-item {
-            background: white;
-            margin-bottom: 15px;
-            border-radius: var(--radius-sm);
-            box-shadow: var(--shadow);
-            overflow: hidden;
+            margin-bottom: 16px;
         }
 
         .faq-question {
-            padding: 20px 25px;
+            width: 100%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px 32px;
+            text-align: left;
+            color: var(--text);
+            font-size: 1.1rem;
             font-weight: 600;
-            color: var(--secondary);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.3s;
         }
 
         .faq-question:hover {
-            color: var(--primary);
+            border-color: var(--amber);
+        }
+
+        .faq-question .icon {
+            color: var(--amber);
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-question .icon {
+            transform: rotate(45deg);
         }
 
         .faq-answer {
-            padding: 0 25px 20px;
-            color: var(--text-light);
+            padding: 0 32px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 24px 32px;
+        }
+
+        .faq-answer p {
+            color: var(--text-muted);
             line-height: 1.7;
         }
 
-        #iletisim {
-            background: var(--secondary);
-            color: white;
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, var(--bg-surface), var(--bg-dark));
         }
 
-        #iletisim .section-title h2 {
-            color: white;
-        }
-
-        #iletisim .section-title p {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .contact-form {
+        .contact-card {
             max-width: 600px;
             margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: var(--radius);
+            text-align: center;
+            padding: 64px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        .contact-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--amber), var(--orange));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 2rem;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--secondary);
+        .contact-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
         }
 
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 1rem;
-            font-family: inherit;
-            transition: border-color 0.3s;
+        .contact-card p {
+            color: var(--text-muted);
+            margin-bottom: 32px;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
+        .contact-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--amber), var(--orange));
+            color: var(--bg-dark);
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s;
         }
 
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
+        .contact-email:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
         }
 
-        .contact-form .btn {
-            width: 100%;
-        }
-
+        /* Footer */
         footer {
-            background: #1a252f;
-            color: white;
-            padding: 40px 0 20px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border);
+            padding: 48px 0 24px;
         }
 
         .footer-content {
@@ -736,81 +892,112 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .footer-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
         .footer-links {
             display: flex;
-            gap: 25px;
+            gap: 32px;
         }
 
         .footer-links a {
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
             transition: color 0.3s;
         }
 
         .footer-links a:hover {
-            color: var(--primary);
+            color: var(--amber);
         }
 
         .footer-social {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
 
         .social-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.3s;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
         }
 
         .social-icon:hover {
-            background: var(--primary);
+            background: var(--amber);
+            color: var(--bg-dark);
+            border-color: var(--amber);
         }
 
         .footer-bottom {
             text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
             font-size: 0.9rem;
         }
 
-        @media (max-width: 992px) {
-            .benefits-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .animate-in {
+            animation: slideUp 0.6s ease-out forwards;
+        }
 
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
             .hero-content {
                 grid-template-columns: 1fr;
                 text-align: center;
+            }
+
+            .hero p {
+                margin: 0 auto 32px;
             }
 
             .hero-buttons {
                 justify-content: center;
             }
 
-            .two-column {
+            .barber-preview {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features-bento {
                 grid-template-columns: 1fr;
             }
 
-            .testimonials {
+            .feature-card.large {
+                grid-column: span 1;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .testimonials-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -819,13 +1006,15 @@
             nav {
                 display: none;
                 position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: white;
+                top: calc(100% + 16px);
+                left: 24px;
+                right: 24px;
+                background: var(--bg-surface);
+                border: 1px solid var(--border);
+                border-radius: 24px;
+                padding: 24px;
                 flex-direction: column;
-                padding: 20px;
-                box-shadow: var(--shadow);
+                gap: 16px;
             }
 
             nav.active {
@@ -836,16 +1025,16 @@
                 display: flex;
             }
 
-            .hero-text h1 {
-                font-size: 2.2rem;
-            }
-
             .benefits-grid {
                 grid-template-columns: 1fr;
             }
 
-            .features-grid {
-                grid-template-columns: 1fr;
+            section {
+                padding: 80px 0;
+            }
+
+            .contact-card {
+                padding: 40px 24px;
             }
 
             .footer-content {
@@ -857,54 +1046,42 @@
                 flex-wrap: wrap;
                 justify-content: center;
             }
-
-            section {
-                padding: 60px 0;
-            }
-
-            .section-title h2 {
-                font-size: 1.8rem;
-            }
         }
 
         @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
             .hero-buttons {
                 flex-direction: column;
-            }
-
-            .hero-buttons .btn {
                 width: 100%;
-                text-align: center;
             }
 
-            .barber-card {
-                margin: 0 10px;
-            }
-
-            .info-box {
-                padding: 25px;
-            }
-
-            .contact-form {
-                padding: 25px;
+            .btn {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <div class="container">
-            <a href="#" class="logo">BerberBul</a>
-            <nav id="main-nav" role="navigation" aria-label="Ana menü">
-                <a href="#neden">Neden BerberBul?</a>
+        <div class="header-inner">
+            <a href="#" class="logo">
+                <div class="logo-icon">✂️</div>
+                <div class="logo-text">Berber<span>Bul</span></div>
+            </a>
+            <nav id="main-nav">
+                <a href="#neden">Neden Biz?</a>
                 <a href="#ozellikler">Özellikler</a>
-                <a href="#berberler-icin">Berberler İçin</a>
-                <a href="#musteriler-icin">Müşteriler İçin</a>
-                <a href="#ucretlendirme">Ücretlendirme</a>
+                <a href="#berberler">Berberler</a>
+                <a href="#musteriler">Müşteriler</a>
+                <a href="#ucret">Ücret</a>
                 <a href="#sss">SSS</a>
-                <a href="#iletisim">İletişim</a>
+                <a href="#iletisim" class="nav-cta">İletişim</a>
             </nav>
-            <button class="mobile-menu" aria-label="Menüyü aç" aria-expanded="false" aria-controls="main-nav">
+            <button class="mobile-menu" aria-label="Menü">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -912,360 +1089,410 @@
         </div>
     </header>
 
-    <main>
-        <section id="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <div class="hero-text">
-                        <h1>Berberler için akıllı randevu sistemi</h1>
-                        <p>Müşterilerinizi kolayca bulun, randevularınızı profesyonelce yönetin ve işletmenizin görünürlüğünü artırın. BerberBul ile berberlik işinizi dijital dünyaya taşıyın.</p>
-                        <div class="coming-soon-badge">
-                            <span class="badge">Yakında</span>
-                            <p>Platformumuz geliştirme aşamasında. Çok yakında hizmetinizde olacağız!</p>
+    <!-- Hero Section -->
+    <section class="hero gradient-bg grid-pattern">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge animate-in">
+                        <span class="hero-badge-dot"></span>
+                        <span>Yakında Hizmetinizde</span>
+                    </div>
+                    <h1 class="animate-in delay-1">
+                        Berberler İçin
+                        <span class="gradient-text">Akıllı Randevu</span>
+                        Sistemi
+                    </h1>
+                    <p class="animate-in delay-2">
+                        Müşterilerinizi kolayca bulun, randevularınızı profesyonelce yönetin. 
+                        BerberBul ile işletmenizi dijital dünyaya taşıyın.
+                    </p>
+                    <div class="hero-buttons animate-in delay-3">
+                        <a href="#ozellikler" class="btn btn-primary">
+                            Özellikleri Keşfet
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                        <a href="#berberler" class="btn btn-secondary">
+                            Nasıl Çalışır?
+                        </a>
+                    </div>
+                </div>
+                <div class="barber-preview">
+                    <div class="float-element float-1"></div>
+                    <div class="float-element float-2"></div>
+                    <div class="barber-card glow">
+                        <div class="barber-header">
+                            <div class="barber-avatar">AK</div>
+                            <div class="barber-info">
+                                <h3>Ahmet Kuaför</h3>
+                                <p>Kadıköy, İstanbul</p>
+                                <div class="barber-rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span>4.9 (127 yorum)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="barber-services">
+                            <h4>Hizmetler</h4>
+                            <div class="service-item">
+                                <span>Saç Kesimi</span>
+                                <span>150 ₺</span>
+                            </div>
+                            <div class="service-item">
+                                <span>Sakal Tıraşı</span>
+                                <span>80 ₺</span>
+                            </div>
+                            <div class="service-item">
+                                <span>Saç + Sakal</span>
+                                <span>200 ₺</span>
+                            </div>
+                        </div>
+                        <div class="card-badge">✨ Örnek Profil Kartı</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-content">
+                <span class="marquee-item">Online Randevu</span>
+                <span class="marquee-dot">◆</span>
+                <span class="marquee-item">Konum Bazlı</span>
+                <span class="marquee-dot">◆</span>
+                <span class="marquee-item">Müşteri Yorumları</span>
+                <span class="marquee-dot">◆</span>
+                <span class="marquee-item">Takvim Yönetimi</span>
+                <span class="marquee-dot">◆</span>
+                <span class="marquee-item">Uygun Fiyat</span>
+                <span class="marquee-dot">◆</span>
+                <span class="marquee-item">Profesyonel Profil</span>
+                <span class="marquee-dot">◆</span>
+            </div>
+            <div class="marquee-content">
+                <span class="marquee-item">Online Randevu</span>
+                <span class="marquee-dot">◆</span>
+                <span class="marquee-item">Konum Bazlı</span>
+                <span class="marquee-dot">◆</span>
+                <span class="marquee-item">Müşteri Yorumları</span>
+                <span class="marquee-dot">◆</span>
+                <span class="marquee-item">Takvim Yönetimi</span>
+                <span class="marquee-dot">◆</span>
+                <span class="marquee-item">Uygun Fiyat</span>
+                <span class="marquee-dot">◆</span>
+                <span class="marquee-item">Profesyonel Profil</span>
+                <span class="marquee-dot">◆</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <section id="neden">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Neden BerberBul?</span>
+                <h2 class="section-title">İşletmenizi <span class="gradient-text">Büyütün</span></h2>
+                <p class="section-desc">Binlerce berber ve müşteri BerberBul'u tercih ediyor</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card glass-card">
+                    <div class="benefit-icon">📍</div>
+                    <h3>Daha Fazla Görünürlük</h3>
+                    <p>Yakınınızdaki potansiyel müşteriler sizi kolayca bulsun</p>
+                </div>
+                <div class="benefit-card glass-card">
+                    <div class="benefit-icon">📅</div>
+                    <h3>Kolay Randevu</h3>
+                    <p>Takvim entegrasyonu ile randevularınızı tek yerden yönetin</p>
+                </div>
+                <div class="benefit-card glass-card">
+                    <div class="benefit-icon">⭐</div>
+                    <h3>Güven İnşa Edin</h3>
+                    <p>Müşteri yorumları ile itibarınızı güçlendirin</p>
+                </div>
+                <div class="benefit-card glass-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Uygun Fiyat</h3>
+                    <p>Sadece aylık küçük bir ücret. Müşteriler için ücretsiz!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="ozellikler" class="gradient-bg">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Özellikler</span>
+                <h2 class="section-title">Güçlü <span class="gradient-text">Araçlar</span></h2>
+                <p class="section-desc">BerberBul'un sunduğu tüm özelliklerle işinizi kolaylaştırın</p>
+            </div>
+            <div class="features-bento">
+                <div class="feature-card glass-card large">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>Konuma Göre Berber Bulma</h3>
+                    <p>Müşteriler bulundukları konuma en yakın berberleri anında görebilir ve karşılaştırabilir. Harita görünümü ile kolayca yol tarifi alabilirler.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Online Randevu</h3>
+                    <p>7/24 online randevu alın. Müşteriler istedikleri zaman rezervasyon yapabilir.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">👤</div>
+                    <h3>Profesyonel Profil</h3>
+                    <p>Fotoğraflar, hizmetler, fiyatlar ve çalışma saatleri ile etkileyici bir profil.</p>
+                </div>
+                <div class="feature-card glass-card large">
+                    <div class="feature-icon">📊</div>
+                    <h3>Takvim ve Raporlama</h3>
+                    <p>Günlük ve haftalık takvim görünümü ile randevularınızı takip edin. Detaylı raporlarla işinizi analiz edin, büyüme fırsatlarını keşfedin.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Barbers Section -->
+    <section id="berberler">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Berberler İçin</span>
+                <h2 class="section-title">3 Adımda <span class="gradient-text">Başlayın</span></h2>
+            </div>
+            <div class="two-column">
+                <div class="info-content">
+                    <h2>İşletmenizi Dijitale Taşıyın</h2>
+                    <p>Aylık sadece 100 TL ile sınırsız randevu yönetimi, profesyonel profil sayfası ve müşteri yorumları özelliklerine erişin.</p>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Kayıt Olun</h3>
+                                <p>Temel bilgilerinizi girerek hızlıca üye olun.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Profilinizi Doldurun</h3>
+                                <p>Hizmetlerinizi, fiyatlarınızı ve çalışma saatlerinizi ekleyin.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Randevu Almaya Başlayın</h3>
+                                <p>Profiliniz yayına alındığında müşteriler sizi bulabilir.</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="hero-mockup">
-                        <div class="barber-card">
-                            <div class="barber-card-header">
-                                <div class="barber-avatar">AK</div>
-                                <div class="barber-info">
-                                    <h3>Ahmet Kuaför</h3>
-                                    <p>Kadıköy, İstanbul</p>
-                                    <div class="barber-rating">★★★★★ 4.9 (127 yorum)</div>
+                </div>
+                <div class="barber-preview">
+                    <div class="barber-card glass-card">
+                        <div class="barber-header">
+                            <div class="barber-avatar">MB</div>
+                            <div class="barber-info">
+                                <h3>Mehmet Berber</h3>
+                                <p>Beşiktaş, İstanbul</p>
+                                <div class="barber-rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span>4.8 (89 yorum)</span>
                                 </div>
                             </div>
-                            <div class="barber-services">
-                                <h4>Hizmetler</h4>
-                                <div class="service-item">
-                                    <span>Saç Kesimi</span>
-                                    <span>150 ₺</span>
-                                </div>
-                                <div class="service-item">
-                                    <span>Sakal Tıraşı</span>
-                                    <span>80 ₺</span>
-                                </div>
-                                <div class="service-item">
-                                    <span>Saç + Sakal</span>
-                                    <span>200 ₺</span>
-                                </div>
+                        </div>
+                        <div class="barber-services">
+                            <h4>Bugünkü Randevular</h4>
+                            <div class="service-item">
+                                <span>10:00 - Ali Y.</span>
+                                <span>Saç Kesimi</span>
                             </div>
-                            <div class="card-badge">Örnek Profil</div>
+                            <div class="service-item">
+                                <span>11:30 - Burak K.</span>
+                                <span>Saç + Sakal</span>
+                            </div>
+                            <div class="service-item">
+                                <span>14:00 - Emre S.</span>
+                                <span>Sakal Tıraşı</span>
+                            </div>
+                        </div>
+                        <div class="card-badge">📊 Bu hafta: 24 randevu</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Customers Section -->
+    <section id="musteriler" class="gradient-bg">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Müşteriler İçin</span>
+                <h2 class="section-title">Randevu <span class="gradient-text">Hiç Bu Kadar Kolay</span> Olmamıştı</h2>
+                <p class="section-desc">En yakın berberi bul, yorumları karşılaştır, kolayca randevu al</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card glass-card">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <blockquote>
+                        "Artık berbere gitmeden önce saatlerce bekleme derdi yok. BerberBul ile randevumu alıp tam saatinde gidiyorum."
+                    </blockquote>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">CK</div>
+                        <div class="author-info">
+                            <span class="name">Cem K.</span>
+                            <span class="location">Ankara</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card glass-card">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <blockquote>
+                        "Yeni taşındığım mahallede berberleri aramak zordu. BerberBul sayesinde yakınımdaki en iyi puanlı berberi kolayca buldum."
+                    </blockquote>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SA</div>
+                        <div class="author-info">
+                            <span class="name">Serkan A.</span>
+                            <span class="location">İzmir</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card glass-card">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <blockquote>
+                        "Fiyatları önceden görebilmek harika. Sürpriz hesaplarla karşılaşmıyorum artık."
+                    </blockquote>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">OT</div>
+                        <div class="author-info">
+                            <span class="name">Oğuz T.</span>
+                            <span class="location">İstanbul</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="neden">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Neden BerberBul?</h2>
-                    <p>Binlerce berber ve müşteri BerberBul'u tercih ediyor. İşte nedenleri:</p>
+    <!-- Pricing Section -->
+    <section id="ucret">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Ücretlendirme</span>
+                <h2 class="section-title">Şeffaf <span class="gradient-text">Fiyatlandırma</span></h2>
+            </div>
+            <div class="pricing-card glass-card">
+                <div class="pricing-header">
+                    <h3>Berberler İçin</h3>
+                    <div class="pricing-amount">100 ₺<span>/ay</span></div>
                 </div>
-                <div class="benefits-grid">
-                    <div class="benefit-card">
-                        <div class="benefit-icon">📍</div>
-                        <h3>Daha Fazla Görünürlük</h3>
-                        <p>Yakınınızdaki potansiyel müşteriler sizi kolayca bulsun. Profiliniz binlerce kişiye ulaşsın.</p>
-                    </div>
-                    <div class="benefit-card">
-                        <div class="benefit-icon">📅</div>
-                        <h3>Kolay Randevu Yönetimi</h3>
-                        <p>Takvim entegrasyonu ile randevularınızı tek yerden yönetin, çakışmaları önleyin.</p>
-                    </div>
-                    <div class="benefit-card">
-                        <div class="benefit-icon">⭐</div>
-                        <h3>Güven İnşa Edin</h3>
-                        <p>Müşteri yorumları ve puanları ile itibarınızı güçlendirin, yeni müşteriler kazanın.</p>
-                    </div>
-                    <div class="benefit-card">
-                        <div class="benefit-icon">💰</div>
-                        <h3>Uygun Fiyatlı</h3>
-                        <p>Sadece berberlerden aylık küçük bir ücret. Müşteriler için tamamen ücretsiz!</p>
+                <div class="pricing-body">
+                    <ul class="pricing-features">
+                        <li><span class="check">✓</span> Sınırsız randevu yönetimi</li>
+                        <li><span class="check">✓</span> Profesyonel profil sayfası</li>
+                        <li><span class="check">✓</span> Müşteri yorum ve puanları</li>
+                        <li><span class="check">✓</span> Takvim entegrasyonu</li>
+                        <li><span class="check">✓</span> Temel raporlama</li>
+                        <li><span class="check">✓</span> Müşteri bildirimleri</li>
+                    </ul>
+                    <div class="pricing-badge">
+                        <span class="coming-badge">🚀 Yakında Aktif</span>
                     </div>
                 </div>
             </div>
-        </section>
+            <p class="pricing-note">Müşteriler için kullanım tamamen ücretsizdir.</p>
+        </div>
+    </section>
 
-        <section id="ozellikler">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Özellikler</h2>
-                    <p>BerberBul'un sunduğu tüm özelliklerle işinizi büyütün</p>
+    <!-- FAQ Section -->
+    <section id="sss" class="gradient-bg">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">SSS</span>
+                <h2 class="section-title">Sıkça Sorulan <span class="gradient-text">Sorular</span></h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        BerberBul nedir?
+                        <span class="icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>BerberBul, berberlerin müşteri bulmasını ve randevu yönetmesini kolaylaştıran, müşterilerin ise yakınlarındaki berberleri keşfedip online randevu almasını sağlayan bir platformdur.</p>
+                    </div>
                 </div>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">🗺️</div>
-                        <h3>Konuma Göre Berber Bulma</h3>
-                        <p>Müşteriler bulundukları konuma en yakın berberleri anında görebilir ve karşılaştırabilir.</p>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Hangi şehirlerde kullanılabilir?
+                        <span class="icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>BerberBul Türkiye genelinde tüm illerde kullanılabilir. Kayıtlı berberlerimizin çoğunluğu İstanbul, Ankara, İzmir, Bursa ve Antalya'da bulunmaktadır.</p>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📱</div>
-                        <h3>Online Randevu Oluşturma</h3>
-                        <p>7/24 online randevu alın. Müşteriler istedikleri zaman uygun saati seçip randevu oluşturabilir.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Ödemeler nasıl yapılıyor?
+                        <span class="icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Berberler aylık abonelik ücretini kredi kartı veya banka kartı ile ödeyebilir. Ödemeler güvenli altyapımız üzerinden otomatik olarak her ay işlenir.</p>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">👤</div>
-                        <h3>Detaylı Berber Profili</h3>
-                        <p>Fotoğraflar, hizmet listesi, fiyatlar ve çalışma saatleri ile profesyonel bir profil oluşturun.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Müşteriler için ücret var mı?
+                        <span class="icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Hayır, müşteriler için BerberBul'u kullanmak tamamen ücretsizdir. Sadece berberlere aylık abonelik ücreti uygulanmaktadır.</p>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">💬</div>
-                        <h3>Yorum ve Puan Sistemi</h3>
-                        <p>Müşteriler deneyimlerini paylaşsın, yeni müşteriler güvenle sizi tercih etsin.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h3>Takvim ve Randevu Yönetimi</h3>
-                        <p>Günlük ve haftalık takvim görünümü ile randevularınızı kolayca takip edin.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📈</div>
-                        <h3>Basit Raporlama</h3>
-                        <p>Günlük, haftalık ve aylık randevu istatistiklerinizi görüntüleyin, işinizi analiz edin.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Randevu iptali nasıl yapılır?
+                        <span class="icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Müşteriler randevularını randevu saatinden en az 2 saat önce iptal edebilir. Berberler ise herhangi bir randevuyu panellerinden iptal edebilir.</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="berberler-icin">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Berberler İçin</h2>
-                    <p>BerberBul'a katılmak çok kolay. 3 basit adımda başlayın!</p>
-                </div>
-                <div class="two-column">
-                    <div class="info-box">
-                        <h2>İşletmenizi Büyütün</h2>
-                        <p>Aylık sadece 100 TL ile sınırsız randevu yönetimi, profesyonel profil sayfası ve müşteri yorumları özelliklerine erişin. Yeni müşteriler kazanın, mevcut müşterilerinizi memnun edin.</p>
-                        <div class="steps">
-                            <div class="step">
-                                <div class="step-number">1</div>
-                                <div class="step-content">
-                                    <h3>Kayıt Olun</h3>
-                                    <p>Temel bilgilerinizi girerek hızlıca üye olun.</p>
-                                </div>
-                            </div>
-                            <div class="step">
-                                <div class="step-number">2</div>
-                                <div class="step-content">
-                                    <h3>Profilinizi Doldurun</h3>
-                                    <p>Hizmetlerinizi, fiyatlarınızı ve çalışma saatlerinizi ekleyin.</p>
-                                </div>
-                            </div>
-                            <div class="step">
-                                <div class="step-number">3</div>
-                                <div class="step-content">
-                                    <h3>Randevu Almaya Başlayın</h3>
-                                    <p>Profiliniz yayına alındığında müşteriler sizi bulabilir.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="coming-soon-inline">
-                            <span class="badge-small">Yakında Aktif</span>
-                        </div>
-                    </div>
-                    <div class="hero-mockup">
-                        <div class="barber-card">
-                            <div class="barber-card-header">
-                                <div class="barber-avatar">MB</div>
-                                <div class="barber-info">
-                                    <h3>Mehmet Berber</h3>
-                                    <p>Beşiktaş, İstanbul</p>
-                                    <div class="barber-rating">★★★★★ 4.8 (89 yorum)</div>
-                                </div>
-                            </div>
-                            <div class="barber-services">
-                                <h4>Bugünkü Randevular</h4>
-                                <div class="service-item">
-                                    <span>10:00 - Ali Y.</span>
-                                    <span>Saç Kesimi</span>
-                                </div>
-                                <div class="service-item">
-                                    <span>11:30 - Burak K.</span>
-                                    <span>Saç + Sakal</span>
-                                </div>
-                                <div class="service-item">
-                                    <span>14:00 - Emre S.</span>
-                                    <span>Sakal Tıraşı</span>
-                                </div>
-                            </div>
-                            <div style="text-align: center; color: var(--text-light); font-size: 0.9rem;">
-                                Bu hafta: 24 randevu
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Contact Section -->
+    <section id="iletisim" class="contact-section">
+        <div class="container">
+            <div class="contact-card glass-card">
+                <div class="contact-icon">✉️</div>
+                <h3>Bizimle İletişime Geçin</h3>
+                <p>Sorularınız veya önerileriniz için bize e-posta gönderebilirsiniz. Platform aktif olduğunda buradan doğrudan iletişim kurabileceksiniz.</p>
+                <a href="mailto:info@berberbul.com" class="contact-email">
+                    <span>📧</span>
+                    info@berberbul.com
+                </a>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="musteriler-icin">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Müşteriler İçin</h2>
-                    <p>En yakın berberi bul, yorumları karşılaştır, kolayca randevu al</p>
-                </div>
-                <div class="two-column">
-                    <div class="info-box">
-                        <h2>Randevu Almak Hiç Bu Kadar Kolay Olmamıştı</h2>
-                        <p>Artık berbere gidip sıra beklemeye son! BerberBul ile yakınınızdaki berberleri keşfedin, fiyatları ve yorumları karşılaştırın, size en uygun saati seçin.</p>
-                        <div class="steps">
-                            <div class="step">
-                                <div class="step-number">1</div>
-                                <div class="step-content">
-                                    <h3>Konumunuzu Seçin</h3>
-                                    <p>Bulunduğunuz yeri veya gitmek istediğiniz semti belirtin.</p>
-                                </div>
-                            </div>
-                            <div class="step">
-                                <div class="step-number">2</div>
-                                <div class="step-content">
-                                    <h3>Berberi Seçin</h3>
-                                    <p>Yorumları okuyun, fiyatları karşılaştırın, size uygun berberi bulun.</p>
-                                </div>
-                            </div>
-                            <div class="step">
-                                <div class="step-number">3</div>
-                                <div class="step-content">
-                                    <h3>Randevu Saati Seçin</h3>
-                                    <p>Uygun olan saatten randevunuzu oluşturun, onay alın.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="coming-soon-inline">
-                            <span class="badge-small">Yakında Aktif</span>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 style="text-align: center; margin-bottom: 20px; color: var(--secondary);">Kullanıcılarımız Ne Diyor?</h3>
-                        <div class="testimonials" style="grid-template-columns: 1fr;">
-                            <div class="testimonial">
-                                <p>"Artık berbere gitmeden önce saatlerce bekleme derdi yok. BerberBul ile randevumu alıp tam saatinde gidiyorum."</p>
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">CK</div>
-                                    <div class="author-info">
-                                        <span class="name">Cem K.</span>
-                                        <span class="location">Ankara</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="testimonial">
-                                <p>"Yeni taşındığım mahallede berberleri aramak zordu. BerberBul sayesinde yakınımdaki en iyi puanlı berberi kolayca buldum."</p>
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">SA</div>
-                                    <div class="author-info">
-                                        <span class="name">Serkan A.</span>
-                                        <span class="location">İzmir</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="testimonial">
-                                <p>"Fiyatları önceden görebilmek harika. Sürpriz hesaplarla karşılaşmıyorum artık."</p>
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">OT</div>
-                                    <div class="author-info">
-                                        <span class="name">Oğuz T.</span>
-                                        <span class="location">İstanbul</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="ucretlendirme">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Ücretlendirme</h2>
-                    <p>Şeffaf ve uygun fiyatlandırma</p>
-                </div>
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3>Berberler İçin</h3>
-                        <div class="pricing-amount">100 ₺<span>/ay</span></div>
-                    </div>
-                    <div class="pricing-body">
-                        <ul class="pricing-features">
-                            <li><span class="check-icon">✓</span> Sınırsız randevu yönetimi</li>
-                            <li><span class="check-icon">✓</span> Profesyonel profil sayfası</li>
-                            <li><span class="check-icon">✓</span> Müşteri yorum ve puanları</li>
-                            <li><span class="check-icon">✓</span> Takvim entegrasyonu</li>
-                            <li><span class="check-icon">✓</span> Temel raporlama</li>
-                            <li><span class="check-icon">✓</span> Müşteri bildirimleri</li>
-                        </ul>
-                        <div class="pricing-coming-soon">
-                            <span class="badge">Yakında</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="pricing-note">Müşteriler için kullanım tamamen ücretsizdir.</p>
-            </div>
-        </section>
-
-        <section id="sss">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Sıkça Sorulan Sorular</h2>
-                    <p>Merak ettiklerinize hızlı yanıtlar</p>
-                </div>
-                <div class="faq-list">
-                    <div class="faq-item">
-                        <div class="faq-question">BerberBul nedir?</div>
-                        <div class="faq-answer">BerberBul, berberlerin müşteri bulmasını ve randevu yönetmesini kolaylaştıran, müşterilerin ise yakınlarındaki berberleri keşfedip online randevu almasını sağlayan bir SaaS platformudur.</div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">Hangi şehirlerde kullanılabilir?</div>
-                        <div class="faq-answer">BerberBul şu anda Türkiye genelinde tüm illerde kullanılabilir. Kayıtlı berberlerimizin çoğunluğu İstanbul, Ankara, İzmir, Bursa ve Antalya'da bulunmaktadır.</div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">Ödemeler nasıl yapılıyor?</div>
-                        <div class="faq-answer">Berberler aylık abonelik ücretini kredi kartı veya banka kartı ile ödeyebilir. Ödemeler güvenli altyapımız üzerinden otomatik olarak her ay işlenir.</div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">Randevu iptali nasıl yapılır?</div>
-                        <div class="faq-answer">Müşteriler randevularını randevu saatinden en az 2 saat önce uygulama veya web sitesi üzerinden iptal edebilir. Berberler ise herhangi bir randevuyu kendi panellerinden iptal edebilir ve müşteriye otomatik bildirim gönderilir.</div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">Müşteriler için ücret var mı?</div>
-                        <div class="faq-answer">Hayır, müşteriler için BerberBul'u kullanmak tamamen ücretsizdir. Sadece berberlere aylık abonelik ücreti uygulanmaktadır.</div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">Berber profilime fotoğraf ekleyebilir miyim?</div>
-                        <div class="faq-answer">Evet, berber profilinize sınırsız sayıda fotoğraf ekleyebilirsiniz. Dükkanınızın, çalışmalarınızın ve kendinizin fotoğraflarını yükleyerek müşterilerin sizi daha iyi tanımasını sağlayabilirsiniz.</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="iletisim">
-            <div class="container">
-                <div class="section-title">
-                    <h2>İletişim</h2>
-                    <p>Sorularınız mı var? Bize ulaşın!</p>
-                </div>
-                <div class="contact-info-box">
-                    <h3>Bizimle İletişime Geçin</h3>
-                    <p>BerberBul hakkında sorularınız veya önerileriniz için bize e-posta gönderebilirsiniz.</p>
-                    <a href="mailto:info@berberbul.com" class="contact-email">info@berberbul.com</a>
-                    <div class="coming-soon-note">
-                        Platform aktif olduğunda bu sayfadan doğrudan iletişim kurabileceksiniz.
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">BerberBul</div>
+                <a href="#" class="logo">
+                    <div class="logo-icon">✂️</div>
+                    <div class="logo-text">Berber<span>Bul</span></div>
+                </a>
                 <div class="footer-links">
                     <a href="#">KVKK</a>
                     <a href="#">Gizlilik Politikası</a>
                     <a href="#">Kullanım Koşulları</a>
-                    <a href="mailto:info@berberbul.com">info@berberbul.com</a>
+                    <a href="mailto:info@berberbul.com">İletişim</a>
                 </div>
                 <div class="footer-social">
                     <a href="#" class="social-icon">f</a>
@@ -1280,31 +1507,64 @@
     </footer>
 
     <script>
+        // Mobile menu toggle
         const mobileMenu = document.querySelector('.mobile-menu');
         const nav = document.querySelector('#main-nav');
 
-        mobileMenu.addEventListener('click', function() {
-            const isExpanded = nav.classList.toggle('active');
-            this.setAttribute('aria-expanded', isExpanded);
-            this.setAttribute('aria-label', isExpanded ? 'Menüyü kapat' : 'Menüyü aç');
+        mobileMenu.addEventListener('click', () => {
+            nav.classList.toggle('active');
         });
 
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
                 if (href === '#' || href.length <= 1) return;
                 e.preventDefault();
                 const target = document.querySelector(href);
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     nav.classList.remove('active');
-                    mobileMenu.setAttribute('aria-expanded', 'false');
-                    mobileMenu.setAttribute('aria-label', 'Menüyü aç');
                 }
             });
+        });
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                // Close all
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                
+                // Open clicked if it wasn't active
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card, .benefit-card, .feature-card, .testimonial-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
         });
     </script>
 </body>
