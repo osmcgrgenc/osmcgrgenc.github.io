@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cyber Rush 3D</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Arka Plan Efektleri -->
+    <div id="stars"></div>
+    <div id="horizon-glow"></div>
+
+    <!-- Oyun UI Katmanı -->
+    <div id="ui-layer">
+        <!-- Skor ve Combo -->
+        <div id="hud">
+            <div id="score-board">
+                <div class="hud-label">SKOR</div>
+                <div id="score">0</div>
+            </div>
+            <div id="combo-board" class="hidden">
+                <div class="hud-label">COMBO</div>
+                <div id="combo">x1</div>
+            </div>
+            <div id="speed-board">
+                <div class="hud-label">HIZ</div>
+                <div id="speed-display">1.0x</div>
+            </div>
+        </div>
+
+        <!-- High Score -->
+        <div id="high-score-display">
+            <span class="trophy">🏆</span>
+            <span id="high-score">0</span>
+        </div>
+        
+        <!-- Game Over Ekranı -->
+        <div id="game-over-screen" class="overlay hidden">
+            <div class="overlay-content">
+                <h1 class="glitch" data-text="GAME OVER">GAME OVER</h1>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">SKOR</span>
+                        <span id="final-score" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">EN YÜKSEK</span>
+                        <span id="final-high-score" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">MESAFE</span>
+                        <span id="final-distance" class="stat-value">0m</span>
+                    </div>
+                </div>
+                <button id="restart-btn" class="neon-btn">
+                    <span>TEKRAR OYNA</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Başlangıç Ekranı -->
+        <div id="start-screen" class="overlay">
+            <div class="overlay-content">
+                <h1 class="title-glitch" data-text="CYBER RUSH">CYBER RUSH</h1>
+                <p class="subtitle">Neon Dünyasında Sonsuz Koşu</p>
+                <div class="controls-info">
+                    <div class="control-item">
+                        <kbd>←</kbd> <kbd>→</kbd>
+                        <span>Şerit Değiştir</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd>↑</kbd> <kbd>SPACE</kbd>
+                        <span>Zıpla</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd>↓</kbd>
+                        <span>Kayarak Geç</span>
+                    </div>
+                </div>
+                <button id="start-btn" class="neon-btn pulse">
+                    <span>BAŞLA</span>
+                </button>
+                <p class="mobile-hint">Mobil: Ekrana dokun ve kaydır</p>
+            </div>
+        </div>
+
+        <!-- Pause Ekranı -->
+        <div id="pause-screen" class="overlay hidden">
+            <div class="overlay-content">
+                <h2>DURAKLATILDI</h2>
+                <button id="resume-btn" class="neon-btn">
+                    <span>DEVAM ET</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3D Sahne -->
+    <div id="scene">
+        <div id="world">
+            <!-- Zemin -->
+            <div id="ground"></div>
+            
+            <!-- Şerit Çizgileri -->
+            <div id="lane-markers">
+                <div class="lane-line left"></div>
+                <div class="lane-line right"></div>
+            </div>
+
+            <!-- Oyuncu Karakteri -->
+            <div id="player">
+                <div class="player-body">
+                    <div class="player-core"></div>
+                    <div class="player-glow"></div>
+                    <div class="player-trail"></div>
+                </div>
+                <div class="player-shadow"></div>
+            </div>
+            
+            <!-- Engeller ve Bonuslar buraya eklenecek -->
+            <div id="obstacles-container"></div>
+            <div id="collectibles-container"></div>
+            <div id="particles-container"></div>
+        </div>
+    </div>
+
+    <!-- Ekran Efektleri -->
+    <div id="screen-flash"></div>
+    <div id="speed-lines" class="hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

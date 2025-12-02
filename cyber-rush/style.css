@@ -1,0 +1,805 @@
+/* 
+    Cyber Rush 3D - Gelişmiş Stil Dosyası
+    Neon cyberpunk temalı endless runner
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap');
+
+:root {
+    --lane-width: 100px;
+    --bg-dark: #050510;
+    --bg-gradient: linear-gradient(180deg, #0a0a1a 0%, #1a0a2e 50%, #0f0f2a 100%);
+    --neon-cyan: #00ffff;
+    --neon-pink: #ff00aa;
+    --neon-purple: #aa00ff;
+    --neon-yellow: #ffff00;
+    --neon-green: #00ff88;
+    --ground-color: rgba(0, 255, 255, 0.1);
+    --player-size: 40px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    touch-action: none;
+}
+
+body {
+    background: var(--bg-dark);
+    font-family: 'Rajdhani', sans-serif;
+    color: white;
+    user-select: none;
+}
+
+/* ==================== ARKA PLAN EFEKTLERİ ==================== */
+#stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, white, transparent),
+        radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 160px 120px, white, transparent);
+    background-size: 200px 200px;
+    animation: twinkle 4s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.8; }
+}
+
+#horizon-glow {
+    position: fixed;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200%;
+    height: 300px;
+    background: radial-gradient(ellipse at center, rgba(170, 0, 255, 0.3) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ==================== UI KATMANI ==================== */
+#ui-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    pointer-events: none;
+}
+
+#hud {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    gap: 30px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#score-board, #combo-board, #speed-board {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 8px;
+    padding: 10px 20px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+.hud-label {
+    font-size: 10px;
+    color: var(--neon-cyan);
+    letter-spacing: 2px;
+    opacity: 0.8;
+}
+
+#score, #combo, #speed-display {
+    font-size: 28px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+#combo {
+    color: var(--neon-yellow);
+    text-shadow: 0 0 10px var(--neon-yellow);
+}
+
+#combo-board {
+    border-color: var(--neon-yellow);
+    box-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
+    transition: transform 0.1s;
+}
+
+#combo-board.pop {
+    transform: scale(1.2);
+}
+
+#high-score-display {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--neon-pink);
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    box-shadow: 0 0 15px rgba(255, 0, 170, 0.3);
+}
+
+.trophy {
+    margin-right: 8px;
+}
+
+/* ==================== OVERLAY EKRANLARI ==================== */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 5, 16, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    transition: opacity 0.5s ease;
+    backdrop-filter: blur(10px);
+}
+
+.overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.overlay-content {
+    text-align: center;
+    animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Glitch Efekti */
+.title-glitch, .glitch {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 64px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 
+        0 0 10px var(--neon-cyan),
+        0 0 20px var(--neon-cyan),
+        0 0 40px var(--neon-cyan);
+    position: relative;
+    animation: glitch 2s infinite;
+}
+
+.title-glitch::before,
+.title-glitch::after,
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.title-glitch::before, .glitch::before {
+    color: var(--neon-pink);
+    animation: glitch-1 0.3s infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+    transform: translate(-2px, -2px);
+}
+
+.title-glitch::after, .glitch::after {
+    color: var(--neon-cyan);
+    animation: glitch-2 0.3s infinite;
+    clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+    transform: translate(2px, 2px);
+}
+
+@keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-5px, 0); }
+    94% { transform: translate(5px, 0); }
+    96% { transform: translate(-3px, 0); }
+    98% { transform: translate(3px, 0); }
+}
+
+@keyframes glitch-1 {
+    0%, 100% { transform: translate(-2px, -2px); }
+    50% { transform: translate(2px, 2px); }
+}
+
+@keyframes glitch-2 {
+    0%, 100% { transform: translate(2px, 2px); }
+    50% { transform: translate(-2px, -2px); }
+}
+
+.subtitle {
+    font-size: 18px;
+    color: var(--neon-pink);
+    margin-bottom: 40px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* Kontrol Bilgisi */
+.controls-info {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.control-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+kbd {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    color: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.control-item span {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Neon Buton */
+.neon-btn {
+    position: relative;
+    padding: 15px 50px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: white;
+    background: transparent;
+    border: 2px solid var(--neon-cyan);
+    border-radius: 5px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 0 20px rgba(0, 255, 255, 0.4),
+        inset 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+.neon-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+}
+
+.neon-btn:hover::before {
+    left: 100%;
+}
+
+.neon-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 
+        0 0 40px rgba(0, 255, 255, 0.6),
+        inset 0 0 30px rgba(0, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.neon-btn.pulse {
+    animation: btnPulse 2s infinite;
+}
+
+@keyframes btnPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); }
+    50% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.8); }
+}
+
+.mobile-hint {
+    margin-top: 30px;
+    font-size: 12px;
+    color: #666;
+}
+
+/* İstatistikler */
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 40px 0;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--neon-pink);
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+/* ==================== 3D SAHNE ==================== */
+#scene {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    perspective: 500px;
+    perspective-origin: 50% 40%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#world {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: rotateX(60deg);
+    transform-origin: 50% 100%;
+}
+
+/* Zemin */
+#ground {
+    position: absolute;
+    width: 600px;
+    height: 2000px;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) translateZ(-50px);
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            transparent 98px,
+            rgba(0, 255, 255, 0.3) 98px,
+            rgba(0, 255, 255, 0.3) 100px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 98px,
+            rgba(0, 255, 255, 0.15) 98px,
+            rgba(0, 255, 255, 0.15) 100px
+        );
+    background-size: 100px 100px;
+    animation: groundScroll 0.5s linear infinite;
+    box-shadow: 
+        0 0 100px rgba(0, 255, 255, 0.2),
+        inset 0 0 100px rgba(170, 0, 255, 0.1);
+}
+
+@keyframes groundScroll {
+    from { background-position-y: 0; }
+    to { background-position-y: 100px; }
+}
+
+/* Şerit Çizgileri */
+#lane-markers {
+    position: absolute;
+    width: 300px;
+    height: 2000px;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) translateZ(-49px);
+    pointer-events: none;
+}
+
+.lane-line {
+    position: absolute;
+    width: 4px;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        var(--neon-pink) 0px,
+        var(--neon-pink) 30px,
+        transparent 30px,
+        transparent 60px
+    );
+    animation: groundScroll 0.5s linear infinite;
+    box-shadow: 0 0 10px var(--neon-pink);
+}
+
+.lane-line.left { left: calc(50% - 50px); }
+.lane-line.right { left: calc(50% + 50px); }
+
+/* ==================== OYUNCU ==================== */
+#player {
+    position: absolute;
+    width: var(--player-size);
+    height: var(--player-size);
+    left: 50%;
+    bottom: 80px;
+    transform: translateX(-50%) translateZ(100px);
+    transform-style: preserve-3d;
+    transition: left 0.15s ease-out;
+    z-index: 10;
+}
+
+.player-body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+.player-core {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+    border-radius: 8px;
+    box-shadow: 
+        0 0 30px var(--neon-cyan),
+        0 0 60px rgba(0, 255, 255, 0.5),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
+    animation: playerPulse 1s ease-in-out infinite;
+}
+
+@keyframes playerPulse {
+    0%, 100% { 
+        box-shadow: 
+            0 0 30px var(--neon-cyan),
+            0 0 60px rgba(0, 255, 255, 0.5);
+    }
+    50% { 
+        box-shadow: 
+            0 0 40px var(--neon-cyan),
+            0 0 80px rgba(0, 255, 255, 0.7);
+    }
+}
+
+.player-glow {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: glowPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 0.4; }
+}
+
+.player-trail {
+    position: absolute;
+    width: 20px;
+    height: 100px;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, var(--neon-cyan), transparent);
+    opacity: 0.6;
+    filter: blur(5px);
+}
+
+.player-shadow {
+    position: absolute;
+    width: 60px;
+    height: 20px;
+    left: 50%;
+    bottom: -30px;
+    transform: translateX(-50%) rotateX(90deg);
+    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.5) 0%, transparent 70%);
+}
+
+/* Oyuncu Durumları */
+#player.jumping .player-core {
+    animation: none;
+    box-shadow: 
+        0 0 50px var(--neon-yellow),
+        0 0 100px rgba(255, 255, 0, 0.7);
+}
+
+#player.jumping .player-glow {
+    background: radial-gradient(circle, rgba(255, 255, 0, 0.5) 0%, transparent 70%);
+}
+
+#player.sliding {
+    height: 20px;
+}
+
+#player.sliding .player-core {
+    border-radius: 4px;
+}
+
+/* ==================== ENGELLER ==================== */
+.obstacle {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform-style: preserve-3d;
+    transform: translateX(-50%) translateZ(var(--z));
+}
+
+.obstacle-box {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    transform-style: preserve-3d;
+}
+
+.obstacle-face {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(255, 0, 100, 0.8), rgba(255, 0, 170, 0.6));
+    border: 2px solid var(--neon-pink);
+    box-shadow: 
+        0 0 20px var(--neon-pink),
+        inset 0 0 20px rgba(255, 0, 170, 0.3);
+}
+
+.obstacle-face.front { transform: translateZ(30px); }
+.obstacle-face.back { transform: rotateY(180deg) translateZ(30px); }
+.obstacle-face.left { transform: rotateY(-90deg) translateZ(30px); }
+.obstacle-face.right { transform: rotateY(90deg) translateZ(30px); }
+.obstacle-face.top { transform: rotateX(90deg) translateZ(30px); }
+.obstacle-face.bottom { transform: rotateX(-90deg) translateZ(30px); }
+
+/* Farklı Engel Tipleri */
+.obstacle.tall .obstacle-box {
+    height: 120px;
+}
+
+.obstacle.tall .obstacle-face {
+    height: 120px;
+}
+
+.obstacle.tall .obstacle-face.top { transform: rotateX(90deg) translateZ(60px); }
+.obstacle.tall .obstacle-face.bottom { transform: rotateX(-90deg) translateZ(60px); }
+
+.obstacle.low .obstacle-box {
+    height: 30px;
+}
+
+.obstacle.low .obstacle-face {
+    height: 30px;
+    background: linear-gradient(135deg, rgba(255, 170, 0, 0.8), rgba(255, 100, 0, 0.6));
+    border-color: var(--neon-yellow);
+    box-shadow: 0 0 20px var(--neon-yellow);
+}
+
+.obstacle.low .obstacle-face.top { transform: rotateX(90deg) translateZ(15px); }
+.obstacle.low .obstacle-face.bottom { transform: rotateX(-90deg) translateZ(15px); }
+
+/* ==================== TOPLANABİLİRLER ==================== */
+.collectible {
+    position: absolute;
+    left: 50%;
+    bottom: 50px;
+    width: 30px;
+    height: 30px;
+    transform: translateX(-50%) translateZ(var(--z));
+    animation: collectibleFloat 1s ease-in-out infinite, collectibleSpin 2s linear infinite;
+}
+
+.collectible-inner {
+    width: 100%;
+    height: 100%;
+    background: var(--neon-green);
+    border-radius: 50%;
+    box-shadow: 
+        0 0 20px var(--neon-green),
+        0 0 40px rgba(0, 255, 136, 0.5);
+}
+
+@keyframes collectibleFloat {
+    0%, 100% { transform: translateX(-50%) translateZ(var(--z)) translateY(0); }
+    50% { transform: translateX(-50%) translateZ(var(--z)) translateY(-10px); }
+}
+
+@keyframes collectibleSpin {
+    from { transform: translateX(-50%) translateZ(var(--z)) rotateY(0deg); }
+    to { transform: translateX(-50%) translateZ(var(--z)) rotateY(360deg); }
+}
+
+/* ==================== PARTİKÜLLER ==================== */
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particleFade 0.5s ease-out forwards;
+}
+
+@keyframes particleFade {
+    0% { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+    100% { 
+        opacity: 0; 
+        transform: scale(0) translateY(-50px); 
+    }
+}
+
+/* ==================== EKRAN EFEKTLERİ ==================== */
+#screen-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 200;
+    transition: opacity 0.1s;
+}
+
+#screen-flash.flash {
+    opacity: 0.8;
+}
+
+#speed-lines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 20px,
+        rgba(255, 255, 255, 0.03) 20px,
+        rgba(255, 255, 255, 0.03) 22px
+    );
+    pointer-events: none;
+    z-index: 50;
+    animation: speedLinesMove 0.1s linear infinite;
+}
+
+#speed-lines.hidden {
+    display: none;
+}
+
+@keyframes speedLinesMove {
+    from { transform: translateX(0); }
+    to { transform: translateX(22px); }
+}
+
+/* ==================== MOBİL UYUMLULUK ==================== */
+@media (max-width: 768px) {
+    :root {
+        --lane-width: 70px;
+        --player-size: 35px;
+    }
+
+    .title-glitch, .glitch {
+        font-size: 36px;
+    }
+
+    #hud {
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    #score-board, #combo-board, #speed-board {
+        padding: 8px 12px;
+    }
+
+    #score, #combo, #speed-display {
+        font-size: 20px;
+    }
+
+    .controls-info {
+        gap: 20px;
+    }
+
+    kbd {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .stats {
+        gap: 20px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+
+    #ground {
+        width: 400px;
+    }
+
+    #lane-markers {
+        width: 210px;
+    }
+
+    .obstacle-box, .obstacle-face {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-glitch, .glitch {
+        font-size: 28px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .neon-btn {
+        padding: 12px 30px;
+        font-size: 14px;
+    }
+}
+
+/* ==================== ANİMASYON YARDIMCILARI ==================== */
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+}
