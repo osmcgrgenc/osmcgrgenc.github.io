@@ -1039,47 +1039,113 @@
 
       function createTiles() {
         const cfg = DIFFICULTIES[difficulty];
-        const positions = generateLayout();
-        const symbols = ALL_SYMBOLS.slice(0, cfg.symbols);
+        let attempts = 0;
+        const maxAttempts = 1250;
+        let lastTestTiles = null;
         
-        // Her sembolden 3'ün katı sayıda taş oluştur
-        const symbolList = [];
-        const tilesPerSymbol = Math.floor(positions.length / symbols.length / 3) * 3;
-        
-        for (const sym of symbols) {
-          for (let i = 0; i < tilesPerSymbol; i++) {
-            symbolList.push(sym);
+        while (attempts < maxAttempts) {
+          attempts++;
+          
+          // Layout oluştur
+          const positions = generateLayout();
+          const symbols = ALL_SYMBOLS.slice(0, cfg.symbols);
+          
+          // Her sembolden 3'ün katı sayıda taş oluştur
+          const symbolList = [];
+          const tilesPerSymbol = Math.floor(positions.length / symbols.length / 3) * 3;
+          
+          for (const sym of symbols) {
+            for (let i = 0; i < tilesPerSymbol; i++) {
+              symbolList.push(sym);
+            }
+          }
+          
+          // Kalan taşları dağıt
+          let remaining = positions.length - symbolList.length;
+          let idx = 0;
+          while (remaining > 0) {
+            symbolList.push(symbols[idx % symbols.length]);
+            remaining--;
+            idx++;
+          }
+          
+          // 3'ün katı olduğundan emin ol
+          let finalPositions = [...positions];
+          while (symbolList.length % 3 !== 0) {
+            symbolList.push(symbols[Math.floor(Math.random() * symbols.length)]);
+            finalPositions.push({ 
+              ...positions[0], 
+              layer: 0, 
+              col: finalPositions.length % cfg.cols, 
+              row: Math.floor(finalPositions.length / cfg.cols) 
+            });
+          }
+
+          shuffle(symbolList);
+
+          // Test tiles oluştur
+          const testTiles = finalPositions.map((pos, i) => ({
+            id: i,
+            symbol: symbolList[i],
+            layer: pos.layer,
+            col: pos.col,
+            row: pos.row,
+            matched: false,
+            inSlot: false
+          }));
+          
+          lastTestTiles = testTiles;
+          
+          // Çözülebilir mi kontrol et
+          if (attempts === 1 || attempts % 10 === 0) {
+            console.log(`🔍 Seviye ${attempts}. deneme: Çözülebilirlik kontrol ediliyor...`);
+          }
+          
+          const solution = solveLevel(testTiles, 2000);
+          
+          if (solution.solved) {
+            console.log(`✅ Seviye çözülebilir! ${solution.moves} hamle ile çözüldü.`);
+            tiles = testTiles;
+            totalTiles = tiles.length;
+            return; // Başarılı, çık
+          } else {
+            if (attempts % 10 === 0) {
+              console.log(`❌ Seviye çözülemedi (${solution.reason}, ${solution.moves} hamle). Yeniden deneniyor...`);
+            }
+            // Devam et, yeniden dene
           }
         }
         
-        // Kalan taşları dağıt
-        let remaining = positions.length - symbolList.length;
-        let idx = 0;
-        while (remaining > 0) {
-          symbolList.push(symbols[idx % symbols.length]);
-          remaining--;
-          idx++;
+        // Max deneme sayısına ulaşıldı, son denemeyi kullan
+        console.warn(`⚠️ ${maxAttempts} deneme sonrası çözülebilir seviye bulunamadı. Son deneme kullanılıyor.`);
+        if (lastTestTiles) {
+          tiles = lastTestTiles;
+          totalTiles = tiles.length;
+        } else {
+          // Fallback: Basit seviye oluştur
+          const positions = generateLayout();
+          const symbols = ALL_SYMBOLS.slice(0, cfg.symbols);
+          const symbolList = [];
+          const tilesPerSymbol = Math.floor(positions.length / symbols.length / 3) * 3;
+          
+          for (const sym of symbols) {
+            for (let i = 0; i < tilesPerSymbol; i++) {
+              symbolList.push(sym);
+            }
+          }
+          
+          shuffle(symbolList);
+          tiles = positions.map((pos, i) => ({
+            id: i,
+            symbol: symbolList[i % symbolList.length],
+            layer: pos.layer,
+            col: pos.col,
+            row: pos.row,
+            matched: false,
+            inSlot: false
+          }));
+          totalTiles = tiles.length;
         }
-        
-        // 3'ün katı olduğundan emin ol
-        while (symbolList.length % 3 !== 0) {
-          symbolList.push(symbols[Math.floor(Math.random() * symbols.length)]);
-          positions.push({ ...positions[0], layer: 0, col: 0, row: 0 });
-        }
-
-        shuffle(symbolList);
-
-        tiles = positions.map((pos, i) => ({
-          id: i,
-          symbol: symbolList[i],
-          layer: pos.layer,
-          col: pos.col,
-          row: pos.row,
-          matched: false,
-          inSlot: false
-        }));
-
-        totalTiles = tiles.length;
       }
 
       // === CHECK IF TILE IS BLOCKED ===
@@ -1112,6 +1178,161 @@
         );
 
         return hasLeft && hasRight;
+      }
+
+      // === SOLVER ALGORİTMASI (Seviye çözülebilirlik kontrolü) ===
+      function solveLevel(testTiles, maxDepth = 2000) {
+        // Deep copy
+        const gameTiles = testTiles.map(t => ({ 
+          ...t, 
+          matched: false, 
+          inSlot: false 
+        }));
+        const slots = [];
+        const moves = [];
+        let depth = 0;
+        
+        function isTileBlockedInSolver(tile) {
+          if (tile.matched || tile.inSlot) return true;
+          
+          // Üstünde taş var mı?
+          const hasAbove = gameTiles.some(t => 
+            !t.matched && !t.inSlot &&
+            t.layer > tile.layer &&
+            Math.abs(t.col - tile.col) <= 0.5 &&
+            Math.abs(t.row - tile.row) <= 0.5
+          );
+          
+          if (hasAbove) return true;
+          
+          // Sol ve sağda taş var mı?
+          const hasLeft = gameTiles.some(t =>
+            !t.matched && !t.inSlot &&
+            t.layer === tile.layer &&
+            t.row === tile.row &&
+            t.col === tile.col - 1
+          );
+          
+          const hasRight = gameTiles.some(t =>
+            !t.matched && !t.inSlot &&
+            t.layer === tile.layer &&
+            t.row === tile.row &&
+            t.col === tile.col + 1
+          );
+          
+          return hasLeft && hasRight;
+        }
+        
+        function checkTriples() {
+          const counts = {};
+          for (const slot of slots) {
+            counts[slot.symbol] = (counts[slot.symbol] || 0) + 1;
+          }
+          
+          const matchSymbol = Object.keys(counts).find(s => counts[s] >= 3);
+          if (!matchSymbol) return false;
+          
+          // Remove 3 tiles
+          const toRemove = [];
+          for (let i = 0; i < slots.length && toRemove.length < 3; i++) {
+            if (slots[i].symbol === matchSymbol) {
+              toRemove.push(i);
+            }
+          }
+          
+          toRemove.sort((a, b) => b - a);
+          for (const idx of toRemove) {
+            const slotInfo = slots[idx];
+            const tile = gameTiles.find(t => t.id === slotInfo.id);
+            if (tile) {
+              tile.matched = true;
+              tile.inSlot = false;
+            }
+            slots.splice(idx, 1);
+          }
+          
+          return true;
+        }
+        
+        function getAvailableTiles() {
+          return gameTiles.filter(t => 
+            !t.matched && !t.inSlot && !isTileBlockedInSolver(t)
+          );
+        }
+        
+        function getBestMove() {
+          const availableTiles = getAvailableTiles();
+          if (availableTiles.length === 0) return null;
+          
+          const slotCounts = {};
+          slots.forEach(s => {
+            slotCounts[s.symbol] = (slotCounts[s.symbol] || 0) + 1;
+          });
+          
+          // Priority 1: Complete triple (2 in slot)
+          for (const [symbol, count] of Object.entries(slotCounts)) {
+            if (count >= 2) {
+              const tile = availableTiles.find(t => t.symbol === symbol);
+              if (tile) return tile;
+            }
+          }
+          
+          // Priority 2: Make pair (1 in slot)
+          for (const [symbol, count] of Object.entries(slotCounts)) {
+            if (count === 1) {
+              const tile = availableTiles.find(t => t.symbol === symbol);
+              if (tile) return tile;
+            }
+          }
+          
+          // Priority 3: Most common symbol on board
+          const boardCounts = {};
+          availableTiles.forEach(t => {
+            boardCounts[t.symbol] = (boardCounts[t.symbol] || 0) + 1;
+          });
+          
+          const sorted = Object.entries(boardCounts).sort((a, b) => b[1] - a[1]);
+          if (sorted.length > 0) {
+            const tile = availableTiles.find(t => t.symbol === sorted[0][0]);
+            if (tile) return tile;
+          }
+          
+          return availableTiles[0] || null;
+        }
+        
+        // Main solving loop
+        while (depth < maxDepth) {
+          // Check win
+          const remaining = gameTiles.filter(t => !t.matched).length;
+          if (remaining === 0) {
+            return { solved: true, moves: moves.length };
+          }
+          
+          // Check game over
+          if (slots.length > MAX_SLOT) {
+            return { solved: false, moves: moves.length, reason: 'slot_overflow' };
+          }
+          
+          // Check for triples first
+          if (checkTriples()) {
+            continue;
+          }
+          
+          // Get best move
+          const bestMove = getBestMove();
+          if (!bestMove) {
+            return { solved: false, moves: moves.length, reason: 'no_moves' };
+          }
+          
+          // Make move
+          bestMove.inSlot = true;
+          slots.push({ id: bestMove.id, symbol: bestMove.symbol });
+          moves.push({ id: bestMove.id, symbol: bestMove.symbol });
+          
+          depth++;
+        }
+        
+        return { solved: false, moves: moves.length, reason: 'max_depth' };
       }
 
       // === RENDER ===
@@ -1454,18 +1675,26 @@
         selectedTile = null;
         hintedIds = [];
 
-        createTiles();
+        // Loading mesajı göster
+        setStatus("Seviye oluşturuluyor ve çözülebilirlik kontrol ediliyor...");
+        renderBoard(); // Boş board göster
         
-        levelBadgeEl.textContent = `Seviye ${level} • ${difficulty === 'easy' ? 'Kolay' : difficulty === 'medium' ? 'Orta' : 'Zor'}`;
-        timerEl.textContent = "00:00";
+        // createTiles içinde console.log var, bu yüzden kısa bir delay ile çalıştır
+        setTimeout(() => {
+          createTiles();
+          
+          levelBadgeEl.textContent = `Seviye ${level} • ${difficulty === 'easy' ? 'Kolay' : difficulty === 'medium' ? 'Orta' : 'Zor'}`;
+          timerEl.textContent = "00:00";
+          
+          loadBestMoves();
+          renderBoard();
+          renderSlots();
+          updateStats();
+          setStatus("Serbest taşları seçerek eşleştir. Üstteki taşlar önce kaldırılmalı!");
+          
+          startTimer();
+        }, 50);
         
-        loadBestMoves();
-        renderBoard();
-        renderSlots();
-        updateStats();
-        setStatus("Serbest taşları seçerek eşleştir. Üstteki taşlar önce kaldırılmalı!");
-        
-        startTimer();
         closeModal();
       }
 
