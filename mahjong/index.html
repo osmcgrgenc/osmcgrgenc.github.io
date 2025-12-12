@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mahjong Wonders - 3D Katmanlı</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0a0f;
+      --bg-panel: #12121a;
+      --bg-card: #1a1a24;
+      --accent: #f59e0b;
+      --accent-glow: rgba(245, 158, 11, 0.3);
+      --accent-soft: rgba(245, 158, 11, 0.15);
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.3);
+      --danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.3);
+      --text-main: #f8fafc;
+      --text-muted: #64748b;
+      --text-dim: #475569;
+      --border: rgba(255, 255, 255, 0.08);
+      --tile-face: linear-gradient(145deg, #fefce8, #fef3c7);
+      --tile-side: #d97706;
+      --tile-shadow: rgba(0, 0, 0, 0.5);
+      --glass: rgba(255, 255, 255, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      touch-action: manipulation;
+    }
+
+    /* === MOBILE FIRST LAYOUT === */
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      max-width: 100vw;
+      overflow: hidden;
+    }
+
+    /* Header - Mobile */
+    .header {
+      padding: 12px 16px;
+      background: linear-gradient(180deg, rgba(18, 18, 26, 0.98), rgba(18, 18, 26, 0.9));
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), #ea580c);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 4px 12px var(--accent-glow);
+    }
+
+    .logo-text {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .logo-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .level-badge {
+      background: linear-gradient(135deg, var(--accent), #ea580c);
+      color: #1a1a24;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .stat {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-main);
+    }
+
+    .stat-value.accent { color: var(--accent); }
+    .stat-value.success { color: var(--success); }
+    .stat-value.danger { color: var(--danger); }
+
+    .stat-label {
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 2px;
+    }
+
+    /* Main Game Area */
+    .game-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Board Container */
+    .board-wrapper {
+      flex: 1;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      background: 
+        radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+        var(--bg-dark);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .board {
+      position: relative;
+      transform-style: preserve-3d;
+      perspective: 1200px;
+    }
+
+    /* 3D Tile Styling */
+    .tile {
+      position: absolute;
+      width: 44px;
+      height: 56px;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease, opacity 0.2s ease, filter 0.15s ease;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .tile-body {
+      position: absolute;
+      inset: 0;
+      border-radius: 6px;
+      background: var(--tile-face);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow:
+        0 4px 0 0 var(--tile-side),
+        0 6px 0 0 #b45309,
+        0 8px 20px var(--tile-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      transform: translateZ(0);
+    }
+
+    .tile::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 4px;
+      background: linear-gradient(180deg, var(--tile-side), #b45309);
+      border-radius: 0 0 6px 6px;
+      transform: translateZ(-1px);
+    }
+
+    .tile:not(.blocked):hover {
+      transform: translate(-50%, -50%) translateY(-4px) scale(1.05);
+      z-index: 1000 !important;
+    }
+
+    .tile:not(.blocked):hover .tile-body {
+      box-shadow:
+        0 8px 0 0 var(--tile-side),
+        0 10px 0 0 #b45309,
+        0 14px 30px var(--tile-shadow),
+        0 0 20px var(--accent-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .tile:not(.blocked):active {
+      transform: translate(-50%, -50%) translateY(0) scale(0.98);
+    }
+
+    .tile.blocked {
+      cursor: not-allowed;
+      filter: brightness(0.6) saturate(0.5);
+    }
+
+    .tile.blocked .tile-body {
+      box-shadow:
+        0 4px 0 0 #78716c,
+        0 6px 0 0 #57534e,
+        0 8px 16px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .tile.selected .tile-body {
+      background: linear-gradient(145deg, #fef08a, #fde047);
+      box-shadow:
+        0 4px 0 0 #ca8a04,
+        0 6px 0 0 #a16207,
+        0 8px 24px var(--accent-glow),
+        0 0 30px var(--accent-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      animation: selected-pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes selected-pulse {
+      0%, 100% { box-shadow: 0 4px 0 0 #ca8a04, 0 6px 0 0 #a16207, 0 8px 24px var(--accent-glow), 0 0 30px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
+      50% { box-shadow: 0 4px 0 0 #ca8a04, 0 6px 0 0 #a16207, 0 8px 24px var(--accent-glow), 0 0 50px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
+    }
+
+    .tile.matched {
+      pointer-events: none;
+      animation: tile-match 0.4s ease forwards;
+    }
+
+    @keyframes tile-match {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+      100% { transform: translate(-50%, -50%) scale(0) translateY(-30px); opacity: 0; }
+    }
+
+    .tile.hinted .tile-body {
+      animation: hint-glow 0.8s ease-in-out infinite;
+    }
+
+    @keyframes hint-glow {
+      0%, 100% { box-shadow: 0 4px 0 0 var(--tile-side), 0 6px 0 0 #b45309, 0 8px 20px var(--tile-shadow), 0 0 15px var(--success-glow), inset 0 1px 0 rgba(255, 255, 255, 0.8); }
+      50% { box-shadow: 0 4px 0 0 var(--tile-side), 0 6px 0 0 #b45309, 0 8px 20px var(--tile-shadow), 0 0 35px var(--success-glow), inset 0 1px 0 rgba(255, 255, 255, 0.8); }
+    }
+
+    /* Slot Tray - Mobile Fixed Bottom */
+    .slot-section {
+      flex-shrink: 0;
+      background: linear-gradient(0deg, rgba(18, 18, 26, 0.98), rgba(18, 18, 26, 0.95));
+      border-top: 1px solid var(--border);
+      padding: 12px 16px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom, 0));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .slot-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .slot-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .slot-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .slot-count.danger { color: var(--danger); }
+
+    .slot-tray {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      min-height: 60px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .slot {
+      width: 44px;
+      height: 56px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px dashed rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .slot.filled {
+      background: linear-gradient(145deg, #fefce8, #fef3c7);
+      border: 2px solid var(--accent);
+      box-shadow: 0 4px 12px var(--accent-glow);
+      animation: slot-fill 0.3s ease;
+    }
+
+    @keyframes slot-fill {
+      0% { transform: scale(0.8); opacity: 0; }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .slot.overflow {
+      border-color: var(--danger);
+      background: linear-gradient(145deg, #fef2f2, #fee2e2);
+      box-shadow: 0 4px 12px var(--danger-glow);
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .controls::-webkit-scrollbar { display: none; }
+
+    .btn {
+      flex-shrink: 0;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #ea580c);
+      color: #1a1a24;
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--accent-glow);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-ghost {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-ghost:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-icon {
+      font-size: 16px;
+    }
+
+    .btn-badge {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 11px;
+    }
+
+    /* Status Message */
+    .status {
+      padding: 8px 16px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success-glow);
+    }
+
+    .status-dot.danger {
+      background: var(--danger);
+      box-shadow: 0 0 8px var(--danger-glow);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .modal-backdrop.visible {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 360px;
+      background: var(--bg-panel);
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+      animation: modal-in 0.3s ease;
+    }
+
+    @keyframes modal-in {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      background: linear-gradient(135deg, var(--accent), #ea580c);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 8px 32px var(--accent-glow);
+    }
+
+    .modal-icon.lose {
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+      box-shadow: 0 8px 32px var(--danger-glow);
+    }
+
+    .modal-title {
+      font-size: 22px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .modal-message {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .modal-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .modal-stat {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .modal-stat-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .modal-stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 4px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .modal-actions .btn {
+      flex: 1;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    /* Difficulty Selection */
+    .difficulty-select {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .diff-btn {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--glass);
+      color: var(--text-main);
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .diff-btn:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .diff-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .diff-btn span {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    /* Progress Bar */
+    .progress-wrap {
+      margin-top: 12px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--success));
+      border-radius: 3px;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* TABLET & DESKTOP */
+    @media (min-width: 768px) {
+      .header {
+        padding: 16px 24px;
+      }
+
+      .header-top {
+        margin-bottom: 12px;
+      }
+
+      .logo-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+      }
+
+      .logo-text {
+        font-size: 20px;
+      }
+
+      .stats-row {
+        gap: 12px;
+      }
+
+      .stat {
+        padding: 12px 16px;
+      }
+
+      .stat-value {
+        font-size: 24px;
+      }
+
+      .stat-label {
+        font-size: 10px;
+      }
+
+      .tile {
+        width: 52px;
+        height: 66px;
+      }
+
+      .tile-body {
+        font-size: 28px;
+        border-radius: 8px;
+      }
+
+      .slot {
+        width: 52px;
+        height: 66px;
+        font-size: 26px;
+      }
+
+      .controls {
+        justify-content: center;
+        padding: 12px 24px;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        font-size: 14px;
+      }
+
+      .slot-section {
+        padding: 16px 24px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .app {
+        max-width: 1200px;
+        margin: 0 auto;
+        height: 100vh;
+        border-left: 1px solid var(--border);
+        border-right: 1px solid var(--border);
+      }
+
+      .tile {
+        width: 58px;
+        height: 72px;
+      }
+
+      .tile-body {
+        font-size: 30px;
+      }
+
+      .slot {
+        width: 58px;
+        height: 72px;
+        font-size: 28px;
+      }
+    }
+
+    /* Layer indicator */
+    .layer-indicator {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 8px;
+      color: var(--tile-side);
+      font-weight: 600;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header-top">
+        <div class="logo">
+          <div class="logo-icon">🀄</div>
+          <div>
+            <div class="logo-text">Mahjong Wonders</div>
+            <div class="logo-sub">3D Katmanlı Bulmaca</div>
+          </div>
+        </div>
+        <div class="level-badge" id="levelBadge">Seviye 1</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-value" id="tilesLeft">0</div>
+          <div class="stat-label">Kalan Taş</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value accent" id="moves">0</div>
+          <div class="stat-label">Hamle</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="timer">00:00</div>
+          <div class="stat-label">Süre</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value success" id="bestMoves">—</div>
+          <div class="stat-label">Rekor</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="controls">
+      <button class="btn btn-primary" id="newGameBtn">
+        <span class="btn-icon">🔄</span>
+        Yeni Oyun
+      </button>
+      <button class="btn btn-ghost" id="undoBtn">
+        <span class="btn-icon">↩️</span>
+        Geri Al
+      </button>
+      <button class="btn btn-ghost" id="hintBtn">
+        <span class="btn-icon">💡</span>
+        İpucu
+      </button>
+      <button class="btn btn-ghost" id="shuffleBtn">
+        <span class="btn-icon">🔀</span>
+        Karıştır
+        <span class="btn-badge" id="shuffleBadge">2</span>
+      </button>
+    </div>
+
+    <div class="status" id="statusBar">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">Serbest taşları seçerek eşleştir. Üstteki taşlar önce kaldırılmalı!</span>
+    </div>
+
+    <div class="game-area">
+      <div class="board-wrapper">
+        <div class="board" id="board"></div>
+      </div>
+    </div>
+
+    <section class="slot-section">
+      <div class="slot-header">
+        <span class="slot-title">Seçim Barı • 3 aynı = Eşleşme</span>
+        <span class="slot-count" id="slotCount">0 / 7</span>
+      </div>
+      <div class="slot-tray" id="slotTray"></div>
+      <div class="progress-wrap">
+        <div class="progress-header">
+          <span>İlerleme</span>
+          <span id="progressLabel">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <div class="modal-icon" id="modalIcon">🎉</div>
+      <div class="modal-title" id="modalTitle">Tebrikler!</div>
+      <div class="modal-message" id="modalMessage">Tüm taşları temizledin.</div>
+      
+      <div class="difficulty-select" id="difficultySelect">
+        <button class="diff-btn active" data-diff="easy">
+          <span>🌱</span>
+          Kolay
+        </button>
+        <button class="diff-btn" data-diff="medium">
+          <span>🔥</span>
+          Orta
+        </button>
+        <button class="diff-btn" data-diff="hard">
+          <span>💀</span>
+          Zor
+        </button>
+      </div>
+
+      <div class="modal-stats" id="modalStats">
+        <div class="modal-stat">
+          <div class="modal-stat-value" id="modalMoves">0</div>
+          <div class="modal-stat-label">Hamle</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-value" id="modalTime">00:00</div>
+          <div class="modal-stat-label">Süre</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-value" id="modalLevel">1</div>
+          <div class="modal-stat-label">Seviye</div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="closeModalBtn">Kapat</button>
+        <button class="btn btn-primary" id="playAgainBtn">
+          <span class="btn-icon">▶️</span>
+          Oyna
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // === CONFIG ===
+      const DIFFICULTIES = {
+        easy: { layers: 2, cols: 8, rows: 5, symbols: 8, shuffles: 3 },
+        medium: { layers: 3, cols: 10, rows: 6, symbols: 12, shuffles: 2 },
+        hard: { layers: 4, cols: 12, rows: 7, symbols: 15, shuffles: 1 }
+      };
+
+      const ALL_SYMBOLS = [
+        "🐉", "🀄", "🍀", "⭐", "🌙", "🔥", "💧", "🍁", "⚡", "🌸",
+        "🦋", "🎯", "💎", "🍎", "🌺", "🦊", "🐼", "🎭", "🎪", "🎨"
+      ];
+
+      const MAX_SLOT = 7;
+      const TILE_W = 48;
+      const TILE_H = 60;
+      const LAYER_OFFSET_X = 6;
+      const LAYER_OFFSET_Y = 6;
+
+      // === DOM ===
+      const boardEl = document.getElementById("board");
+      const slotTrayEl = document.getElementById("slotTray");
+      const tilesLeftEl = document.getElementById("tilesLeft");
+      const movesEl = document.getElementById("moves");
+      const timerEl = document.getElementById("timer");
+      const bestMovesEl = document.getElementById("bestMoves");
+      const levelBadgeEl = document.getElementById("levelBadge");
+      const slotCountEl = document.getElementById("slotCount");
+      const statusTextEl = document.getElementById("statusText");
+      const statusDotEl = document.getElementById("statusDot");
+      const progressFillEl = document.getElementById("progressFill");
+      const progressLabelEl = document.getElementById("progressLabel");
+      const shuffleBadgeEl = document.getElementById("shuffleBadge");
+
+      const newGameBtn = document.getElementById("newGameBtn");
+      const undoBtn = document.getElementById("undoBtn");
+      const hintBtn = document.getElementById("hintBtn");
+      const shuffleBtn = document.getElementById("shuffleBtn");
+
+      const modalEl = document.getElementById("modal");
+      const modalIconEl = document.getElementById("modalIcon");
+      const modalTitleEl = document.getElementById("modalTitle");
+      const modalMessageEl = document.getElementById("modalMessage");
+      const modalStatsEl = document.getElementById("modalStats");
+      const difficultySelectEl = document.getElementById("difficultySelect");
+      const modalMovesEl = document.getElementById("modalMoves");
+      const modalTimeEl = document.getElementById("modalTime");
+      const modalLevelEl = document.getElementById("modalLevel");
+      const closeModalBtn = document.getElementById("closeModalBtn");
+      const playAgainBtn = document.getElementById("playAgainBtn");
+
+      // === STATE ===
+      let tiles = [];
+      let slots = [];
+      let moves = 0;
+      let level = 1;
+      let difficulty = "easy";
+      let isLocked = false;
+      let history = [];
+      let shufflesLeft = 2;
+      let timerInterval = null;
+      let startTime = null;
+      let elapsedTime = 0;
+      let selectedTile = null;
+      let hintedIds = [];
+      let totalTiles = 0;
+
+      // === UTILS ===
+      function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      function formatTime(ms) {
+        const s = Math.floor(ms / 1000);
+        const m = String(Math.floor(s / 60)).padStart(2, "0");
+        const sec = String(s % 60).padStart(2, "0");
+        return `${m}:${sec}`;
+      }
+
+      // === TIMER ===
+      function startTimer() {
+        stopTimer();
+        startTime = Date.now() - elapsedTime;
+        timerInterval = setInterval(() => {
+          elapsedTime = Date.now() - startTime;
+          timerEl.textContent = formatTime(elapsedTime);
+        }, 1000);
+      }
+
+      function stopTimer() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+      }
+
+      // === BEST SCORE ===
+      function loadBestMoves() {
+        const key = `mw_best_${difficulty}`;
+        const stored = localStorage.getItem(key);
+        bestMovesEl.textContent = stored || "—";
+      }
+
+      function saveBestMoves() {
+        const key = `mw_best_${difficulty}`;
+        const stored = Number(localStorage.getItem(key)) || Infinity;
+        if (moves < stored) {
+          localStorage.setItem(key, String(moves));
+          bestMovesEl.textContent = String(moves);
+        }
+      }
+
+      // === TILE GENERATION (Layered Pyramid) ===
+      function generateLayout() {
+        const cfg = DIFFICULTIES[difficulty];
+        const positions = [];
+        
+        // Her katman için pozisyonlar oluştur
+        for (let layer = 0; layer < cfg.layers; layer++) {
+          // Üst katmanlar daha küçük olacak
+          const shrink = layer;
+          const layerCols = cfg.cols - shrink * 2;
+          const layerRows = cfg.rows - shrink;
+          
+          if (layerCols < 2 || layerRows < 2) continue;
+          
+          for (let row = 0; row < layerRows; row++) {
+            for (let col = 0; col < layerCols; col++) {
+              // Piramit şekli için kenarları kes
+              const centerCol = layerCols / 2;
+              const centerRow = layerRows / 2;
+              const distFromCenter = Math.abs(col - centerCol) / centerCol + Math.abs(row - centerRow) / centerRow;
+              
+              // Rastgele bazı pozisyonları atla (daha organik görünüm)
+              if (layer > 0 && Math.random() < 0.15) continue;
+              if (distFromCenter > 1.4 && Math.random() < 0.5) continue;
+              
+              positions.push({
+                layer,
+                col: col + shrink,
+                row: row + Math.floor(shrink / 2),
+                x: 0,
+                y: 0
+              });
+            }
+          }
+        }
+
+        // 3'ün katı olacak şekilde ayarla
+        while (positions.length % 3 !== 0) {
+          positions.pop();
+        }
+
+        return positions;
+      }
+
+      function createTiles() {
+        const cfg = DIFFICULTIES[difficulty];
+        const positions = generateLayout();
+        const symbols = ALL_SYMBOLS.slice(0, cfg.symbols);
+        
+        // Her sembolden 3'ün katı sayıda taş oluştur
+        const symbolList = [];
+        const tilesPerSymbol = Math.floor(positions.length / symbols.length / 3) * 3;
+        
+        for (const sym of symbols) {
+          for (let i = 0; i < tilesPerSymbol; i++) {
+            symbolList.push(sym);
+          }
+        }
+        
+        // Kalan taşları dağıt
+        let remaining = positions.length - symbolList.length;
+        let idx = 0;
+        while (remaining > 0) {
+          symbolList.push(symbols[idx % symbols.length]);
+          remaining--;
+          idx++;
+        }
+        
+        // 3'ün katı olduğundan emin ol
+        while (symbolList.length % 3 !== 0) {
+          symbolList.push(symbols[Math.floor(Math.random() * symbols.length)]);
+          positions.push({ ...positions[0], layer: 0, col: 0, row: 0 });
+        }
+
+        shuffle(symbolList);
+
+        tiles = positions.map((pos, i) => ({
+          id: i,
+          symbol: symbolList[i],
+          layer: pos.layer,
+          col: pos.col,
+          row: pos.row,
+          matched: false,
+          inSlot: false
+        }));
+
+        totalTiles = tiles.length;
+      }
+
+      // === CHECK IF TILE IS BLOCKED ===
+      function isTileBlocked(tile) {
+        if (tile.matched || tile.inSlot) return true;
+
+        // Üstünde taş var mı?
+        const hasAbove = tiles.some(t => 
+          !t.matched && !t.inSlot &&
+          t.layer > tile.layer &&
+          Math.abs(t.col - tile.col) <= 0.5 &&
+          Math.abs(t.row - tile.row) <= 0.5
+        );
+        
+        if (hasAbove) return true;
+
+        // Sol ve sağda taş var mı? (Her iki tarafta da taş varsa bloke)
+        const hasLeft = tiles.some(t =>
+          !t.matched && !t.inSlot &&
+          t.layer === tile.layer &&
+          t.row === tile.row &&
+          t.col === tile.col - 1
+        );
+
+        const hasRight = tiles.some(t =>
+          !t.matched && !t.inSlot &&
+          t.layer === tile.layer &&
+          t.row === tile.row &&
+          t.col === tile.col + 1
+        );
+
+        return hasLeft && hasRight;
+      }
+
+      // === RENDER ===
+      function renderBoard() {
+        const cfg = DIFFICULTIES[difficulty];
+        
+        // Board boyutunu hesapla
+        const maxCol = Math.max(...tiles.map(t => t.col));
+        const maxRow = Math.max(...tiles.map(t => t.row));
+        const maxLayer = Math.max(...tiles.map(t => t.layer));
+        
+        const boardW = (maxCol + 1) * TILE_W + maxLayer * LAYER_OFFSET_X + TILE_W;
+        const boardH = (maxRow + 1) * TILE_H + maxLayer * LAYER_OFFSET_Y + TILE_H;
+        
+        boardEl.style.width = `${boardW}px`;
+        boardEl.style.height = `${boardH}px`;
+        boardEl.innerHTML = "";
+
+        // Katmana göre sırala (alttakiler önce render)
+        const sortedTiles = [...tiles].sort((a, b) => a.layer - b.layer);
+
+        for (const tile of sortedTiles) {
+          if (tile.matched) continue;
+
+          const tileEl = document.createElement("div");
+          tileEl.className = "tile";
+          tileEl.dataset.id = tile.id;
+
+          const blocked = isTileBlocked(tile);
+          if (blocked) tileEl.classList.add("blocked");
+          if (tile.inSlot) tileEl.classList.add("in-slot");
+          if (selectedTile === tile.id) tileEl.classList.add("selected");
+          if (hintedIds.includes(tile.id)) tileEl.classList.add("hinted");
+          if (isLocked && !tile.inSlot) tileEl.classList.add("blocked");
+
+          // Pozisyon hesapla
+          const x = tile.col * TILE_W + tile.layer * LAYER_OFFSET_X + TILE_W / 2;
+          const y = tile.row * TILE_H + tile.layer * LAYER_OFFSET_Y + TILE_H / 2;
+          
+          tileEl.style.left = `${x}px`;
+          tileEl.style.top = `${y}px`;
+          tileEl.style.zIndex = tile.layer * 100 + tile.row;
+          tileEl.style.transform = `translate(-50%, -50%)`;
+
+          const body = document.createElement("div");
+          body.className = "tile-body";
+          body.textContent = tile.symbol;
+          
+          if (tile.layer > 0) {
+            const layerInd = document.createElement("span");
+            layerInd.className = "layer-indicator";
+            layerInd.textContent = `L${tile.layer + 1}`;
+            body.appendChild(layerInd);
+          }
+
+          tileEl.appendChild(body);
+          tileEl.addEventListener("click", () => handleTileClick(tile.id));
+          
+          boardEl.appendChild(tileEl);
+        }
+      }
+
+      function renderSlots() {
+        slotTrayEl.innerHTML = "";
+        
+        for (let i = 0; i < MAX_SLOT; i++) {
+          const slotEl = document.createElement("div");
+          slotEl.className = "slot";
+          
+          const tile = slots[i];
+          if (tile) {
+            slotEl.classList.add("filled");
+            slotEl.textContent = tile.symbol;
+          }
+          
+          if (slots.length > MAX_SLOT && i === MAX_SLOT - 1) {
+            slotEl.classList.add("overflow");
+          }
+          
+          slotTrayEl.appendChild(slotEl);
+        }
+
+        const countClass = slots.length >= 6 ? "danger" : "";
+        slotCountEl.className = `slot-count ${countClass}`;
+        slotCountEl.textContent = `${slots.length} / ${MAX_SLOT}`;
+      }
+
+      function updateStats() {
+        const remaining = tiles.filter(t => !t.matched).length;
+        tilesLeftEl.textContent = remaining;
+        movesEl.textContent = moves;
+        
+        const cleared = totalTiles - remaining;
+        const percent = Math.round((cleared / totalTiles) * 100);
+        progressFillEl.style.width = `${percent}%`;
+        progressLabelEl.textContent = `${percent}%`;
+        
+        shuffleBadgeEl.textContent = shufflesLeft;
+        shuffleBtn.disabled = shufflesLeft <= 0 || isLocked;
+        undoBtn.disabled = history.length === 0 || isLocked;
+      }
+
+      function setStatus(text, danger = false) {
+        statusTextEl.textContent = text;
+        statusDotEl.classList.toggle("danger", danger);
+      }
+
+      // === GAME LOGIC ===
+      function handleTileClick(id) {
+        if (isLocked) return;
+
+        const tile = tiles.find(t => t.id === id);
+        if (!tile || tile.matched || tile.inSlot) return;
+        if (isTileBlocked(tile)) {
+          setStatus("Bu taş bloke! Önce üstündeki veya yanındaki taşları kaldır.", true);
+          return;
+        }
+
+        // Clear hints
+        hintedIds = [];
+
+        // Add to slot
+        tile.inSlot = true;
+        slots.push({ id: tile.id, symbol: tile.symbol });
+        moves++;
+        history.push({ type: 'add', tileId: tile.id });
+
+        renderBoard();
+        renderSlots();
+        updateStats();
+
+        checkTriples();
+        checkGameOver();
+        checkWin();
+      }
+
+      function checkTriples() {
+        const counts = {};
+        for (const slot of slots) {
+          counts[slot.symbol] = (counts[slot.symbol] || 0) + 1;
+        }
+
+        const matchSymbol = Object.keys(counts).find(s => counts[s] >= 3);
+        if (!matchSymbol) {
+          setStatus("3 aynı sembolü topla!");
+          return;
+        }
+
+        // Find 3 tiles to remove
+        const toRemove = [];
+        for (let i = 0; i < slots.length && toRemove.length < 3; i++) {
+          if (slots[i].symbol === matchSymbol) {
+            toRemove.push(i);
+          }
+        }
+
+        // Remove from slots (reverse order)
+        toRemove.sort((a, b) => b - a);
+        for (const idx of toRemove) {
+          const slotInfo = slots[idx];
+          const tile = tiles.find(t => t.id === slotInfo.id);
+          if (tile) {
+            tile.matched = true;
+            tile.inSlot = false;
+            
+            // Animate
+            const tileEl = boardEl.querySelector(`[data-id="${tile.id}"]`);
+            if (tileEl) {
+              tileEl.classList.add("matched");
+            }
+          }
+          slots.splice(idx, 1);
+        }
+
+        setStatus(`🎯 ${matchSymbol} eşleşti! +3 taş temizlendi.`);
+        
+        setTimeout(() => {
+          renderBoard();
+          renderSlots();
+          updateStats();
+        }, 400);
+      }
+
+      function checkGameOver() {
+        if (slots.length > MAX_SLOT) {
+          isLocked = true;
+          stopTimer();
+          setStatus("Bar taştı! Oyun bitti.", true);
+          showModal("lose");
+        }
+      }
+
+      function checkWin() {
+        const remaining = tiles.filter(t => !t.matched).length;
+        if (remaining === 0) {
+          isLocked = true;
+          stopTimer();
+          saveBestMoves();
+          setStatus("🎉 Tebrikler! Tüm taşları temizledin!");
+          showModal("win");
+        }
+      }
+
+      // === CONTROLS ===
+      function undoMove() {
+        if (isLocked || history.length === 0) return;
+
+        const lastAction = history.pop();
+        if (lastAction.type === 'add') {
+          const slotIdx = slots.findIndex(s => s.id === lastAction.tileId);
+          if (slotIdx !== -1) {
+            const tile = tiles.find(t => t.id === lastAction.tileId);
+            if (tile) {
+              tile.inSlot = false;
+            }
+            slots.splice(slotIdx, 1);
+            moves = Math.max(0, moves - 1);
+          }
+        }
+
+        renderBoard();
+        renderSlots();
+        updateStats();
+        setStatus("Son hamle geri alındı.");
+      }
+
+      function shuffleBoard() {
+        if (isLocked || shufflesLeft <= 0) return;
+
+        const movable = tiles.filter(t => !t.matched && !t.inSlot);
+        const symbols = movable.map(t => t.symbol);
+        shuffle(symbols);
+        
+        movable.forEach((t, i) => {
+          t.symbol = symbols[i];
+        });
+
+        shufflesLeft--;
+        renderBoard();
+        updateStats();
+        setStatus("Taşlar karıştırıldı! Yeni fırsatlar ara.");
+      }
+
+      function showHint() {
+        if (isLocked) return;
+
+        // Find a playable pair
+        const playable = tiles.filter(t => !t.matched && !t.inSlot && !isTileBlocked(t));
+        
+        // Group by symbol
+        const groups = {};
+        for (const t of playable) {
+          if (!groups[t.symbol]) groups[t.symbol] = [];
+          groups[t.symbol].push(t.id);
+        }
+
+        // Check slots for near-complete
+        const slotCounts = {};
+        for (const s of slots) {
+          slotCounts[s.symbol] = (slotCounts[s.symbol] || 0) + 1;
+        }
+
+        // Priority: symbols that already have 2 in slot
+        for (const [sym, count] of Object.entries(slotCounts)) {
+          if (count >= 2 && groups[sym] && groups[sym].length > 0) {
+            hintedIds = [groups[sym][0]];
+            renderBoard();
+            setStatus(`💡 ${sym} sembolünden bir tane daha ekle!`);
+            setTimeout(() => { hintedIds = []; renderBoard(); }, 2500);
+            return;
+          }
+        }
+
+        // Otherwise find any pair
+        for (const [sym, ids] of Object.entries(groups)) {
+          if (ids.length >= 2) {
+            hintedIds = ids.slice(0, 2);
+            renderBoard();
+            setStatus(`💡 Bu ${sym} taşlarını dene!`);
+            setTimeout(() => { hintedIds = []; renderBoard(); }, 2500);
+            return;
+          }
+        }
+
+        setStatus("İpucu bulunamadı. Strateji değiştir!");
+      }
+
+      // === MODAL ===
+      function showModal(type) {
+        if (type === "win") {
+          modalIconEl.textContent = "🎉";
+          modalIconEl.classList.remove("lose");
+          modalTitleEl.textContent = "Tebrikler!";
+          modalMessageEl.textContent = "Tüm taşları temizleyerek seviyeyi tamamladın!";
+          modalStatsEl.style.display = "grid";
+          difficultySelectEl.style.display = "none";
+        } else if (type === "lose") {
+          modalIconEl.textContent = "💥";
+          modalIconEl.classList.add("lose");
+          modalTitleEl.textContent = "Oyun Bitti";
+          modalMessageEl.textContent = "Seçim barı doldu! Tekrar dene.";
+          modalStatsEl.style.display = "grid";
+          difficultySelectEl.style.display = "none";
+        } else {
+          modalIconEl.textContent = "🀄";
+          modalIconEl.classList.remove("lose");
+          modalTitleEl.textContent = "Yeni Oyun";
+          modalMessageEl.textContent = "Zorluk seviyesi seç ve oyna!";
+          modalStatsEl.style.display = "none";
+          difficultySelectEl.style.display = "flex";
+        }
+
+        modalMovesEl.textContent = moves;
+        modalTimeEl.textContent = formatTime(elapsedTime);
+        modalLevelEl.textContent = level;
+
+        modalEl.classList.add("visible");
+      }
+
+      function closeModal() {
+        modalEl.classList.remove("visible");
+      }
+
+      // === RESET ===
+      function resetGame(showDiffSelect = false) {
+        if (showDiffSelect) {
+          showModal("new");
+          return;
+        }
+
+        const cfg = DIFFICULTIES[difficulty];
+        
+        tiles = [];
+        slots = [];
+        moves = 0;
+        history = [];
+        shufflesLeft = cfg.shuffles;
+        elapsedTime = 0;
+        isLocked = false;
+        selectedTile = null;
+        hintedIds = [];
+
+        createTiles();
+        
+        levelBadgeEl.textContent = `Seviye ${level} • ${difficulty === 'easy' ? 'Kolay' : difficulty === 'medium' ? 'Orta' : 'Zor'}`;
+        timerEl.textContent = "00:00";
+        
+        loadBestMoves();
+        renderBoard();
+        renderSlots();
+        updateStats();
+        setStatus("Serbest taşları seçerek eşleştir. Üstteki taşlar önce kaldırılmalı!");
+        
+        startTimer();
+        closeModal();
+      }
+
+      // === EVENT LISTENERS ===
+      newGameBtn.addEventListener("click", () => resetGame(true));
+      undoBtn.addEventListener("click", undoMove);
+      hintBtn.addEventListener("click", showHint);
+      shuffleBtn.addEventListener("click", shuffleBoard);
+      closeModalBtn.addEventListener("click", closeModal);
+      playAgainBtn.addEventListener("click", () => resetGame(false));
+
+      // Difficulty selection
+      difficultySelectEl.addEventListener("click", (e) => {
+        const btn = e.target.closest(".diff-btn");
+        if (!btn) return;
+        
+        difficultySelectEl.querySelectorAll(".diff-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        difficulty = btn.dataset.diff;
+      });
+
+      // === INIT ===
+      resetGame(true);
+    })();
+  </script>
+</body>
+</html>
