@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Pathbreak TD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Üst Bar -->
+        <div id="top-bar">
+            <div class="stat-item">
+                <span class="stat-icon">❤️</span>
+                <span class="stat-label">Can</span>
+                <span id="health">20</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">🌊</span>
+                <span class="stat-label">Dalga</span>
+                <span id="wave-number">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💰</span>
+                <span class="stat-label">Altın</span>
+                <span id="gold">100</span>
+            </div>
+        </div>
+
+        <!-- Ana Oyun Alanı -->
+        <div id="game-area">
+            <canvas id="game-canvas"></canvas>
+            
+            <!-- Aktif Artifactler -->
+            <div id="active-artifacts" class="hidden">
+                <h4>Artifactler</h4>
+                <div id="active-artifacts-list"></div>
+            </div>
+            
+            <!-- Sağ Panel -->
+            <div id="right-panel">
+                <div id="tower-selection">
+                    <h3>Kule Seç</h3>
+                    <div class="tower-btn" data-tower="archer">
+                        <div class="tower-icon">🏹</div>
+                        <div class="tower-name">Okçu</div>
+                        <div class="tower-cost">50</div>
+                    </div>
+                    <div class="tower-btn" data-tower="freeze">
+                        <div class="tower-icon">❄️</div>
+                        <div class="tower-name">Donmuş</div>
+                        <div class="tower-cost">75</div>
+                    </div>
+                    <div class="tower-btn" data-tower="cannon">
+                        <div class="tower-icon">💣</div>
+                        <div class="tower-name">Topçu</div>
+                        <div class="tower-cost">100</div>
+                    </div>
+                    <div class="tower-btn" data-tower="mage">
+                        <div class="tower-icon">🔮</div>
+                        <div class="tower-name">Büyücü</div>
+                        <div class="tower-cost">90</div>
+                    </div>
+                </div>
+
+                <div id="selected-tower-info" class="hidden">
+                    <h3 id="selected-tower-name"></h3>
+                    <div id="tower-stats"></div>
+                    <div id="tower-upgrades">
+                        <button id="upgrade-btn" class="upgrade-button">Yükselt (Seviye <span id="tower-level">1</span>)</button>
+                        <div id="upgrade-cost"></div>
+                    </div>
+                    <button id="sell-btn" class="sell-button">Sat</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alt Kontroller -->
+        <div id="bottom-controls">
+            <button id="start-btn" class="control-btn">Başlat</button>
+            <button id="pause-btn" class="control-btn hidden">Duraklat</button>
+            <div class="speed-controls">
+                <button id="speed-1x" class="speed-btn active">1x</button>
+                <button id="speed-2x" class="speed-btn">2x</button>
+            </div>
+            <button id="panic-btn" class="panic-button">Panic Token (1)</button>
+        </div>
+
+        <!-- Hazırlık Ekranı -->
+        <div id="preparation-screen" class="hidden">
+            <div class="preparation-content">
+                <h2>Dalga Hazırlığı</h2>
+                <p id="next-wave-info"></p>
+                <button id="ready-btn" class="control-btn">Hazırım</button>
+            </div>
+        </div>
+
+        <!-- Oyun Bitiş Ekranı -->
+        <div id="game-over-screen" class="hidden">
+            <div class="game-over-content">
+                <h2 id="game-over-title"></h2>
+                <p id="final-score"></p>
+                <button id="restart-btn" class="control-btn">Yeniden Başla</button>
+            </div>
+        </div>
+
+        <!-- Artifact Seçim Ekranı -->
+        <div id="artifact-selection-screen" class="hidden">
+            <div class="artifact-selection-content">
+                <h2>Artifact Seç</h2>
+                <p class="artifact-subtitle">3'ten 1 seçim yap</p>
+                <div id="artifact-options" class="artifact-options">
+                    <!-- Artifact kartları buraya dinamik olarak eklenecek -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Skor Tablosu Ekranı -->
+        <div id="scoreboard-screen" class="hidden">
+            <div class="scoreboard-content">
+                <h2>Skor Tablosu</h2>
+                <div id="scoreboard-list" class="scoreboard-list"></div>
+                <button id="close-scoreboard-btn" class="control-btn">Kapat</button>
+            </div>
+        </div>
+
+        <!-- Achievement Ekranı -->
+        <div id="achievement-popup" class="hidden">
+            <div class="achievement-popup-content">
+                <div class="achievement-icon"></div>
+                <h3 class="achievement-title"></h3>
+                <p class="achievement-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="game.js"></script>
+</body>
+</html>
+
