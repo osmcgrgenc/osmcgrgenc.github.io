@@ -13,6 +13,8 @@
     "nobetci"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.1.2"
+  }
 }
-
