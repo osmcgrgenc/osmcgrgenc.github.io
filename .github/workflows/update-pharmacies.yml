@@ -1,0 +1,45 @@
+name: Update Pharmacies Data
+
+on:
+  schedule:
+    # Her gün saat 00:00'da (UTC) çalışır (Türkiye saati ile 03:00)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Manuel tetikleme için
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Update pharmacies data
+        working-directory: nobetci-eczaneler
+        run: |
+          node update-pharmacies.js
+
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add nobetci-eczaneler/pharmacies.json
+          git commit -m "🔄 Nöbetçi eczane verileri güncellendi [$(date +'%Y-%m-%d')]"
+          git push
+

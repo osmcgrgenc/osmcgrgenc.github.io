@@ -1,0 +1,199 @@
+[
+  {
+    "region": "1. BÖLGE (SELÇUKLU)",
+    "district": "KARATAY",
+    "name": "NENE HATUN",
+    "address": "ŞEMS-İ TEBRİZİ MAHALLESİ ŞERAFETTİN CADDESİ NO:92A ŞEMS-İ TEBRİZİ MAHALLESİ BÖLÜM SOKAK NO:1A KARATAY_(KONYA HOSPİTAL KARŞISI, MERKEZ İMAM HATİP LİSESİ YANI)_",
+    "phone": "03322383920"
+  },
+  {
+    "region": "2. BÖLGE (SELÇUKLU)",
+    "district": "SELÇUKLU",
+    "name": "ADAKALE",
+    "address": "KILINÇARSLAN MAHALLESİ ADAKALE CADDESİ NO:17B SELÇUKLU_(ADAKALE CADDESİ ÜZERİ, ELMAS KURAN KURSU YAKINI)_",
+    "phone": "03322479997"
+  },
+  {
+    "region": "3. BÖLGE (MERAM - SELÇUKLU)",
+    "district": "SELÇUKLU",
+    "name": "SEVİM",
+    "address": "AKŞEMSETTİN MAHALLESİ SARAY CADDESİ NO:6H SELÇUKLU_(BAŞKENT HASTANESİ KARŞISI)_",
+    "phone": "03322476262"
+  },
+  {
+    "region": "4. BÖLGE (MERAM)",
+    "district": "MERAM",
+    "name": "KAVAKLILAR",
+    "address": "OSMAN GAZİ MAHALLESİ DARÜŞŞİFA SOKAK NO:3A MERAM_(ATİKER PETROL ARKASI,54 NOLU SAĞLIK OCAĞI YANI)_",
+    "phone": "03323205656"
+  },
+  {
+    "region": "5. BÖLGE (KARATAY - SELÇUKLU)",
+    "district": "KARATAY",
+    "name": "SARAY",
+    "address": "KARACİĞAN MAHALLESİ ALİ ULVİ KURUCU CADDESİ NO:111D KARATAY_(NECMETTİN ERBAKAN DİŞ HEKİMLİĞİ FAKÜLTESİ ÇAPRAZI, ESKİ ROTA YÜZME HAVUZU KARŞISI)_",
+    "phone": "03323557510"
+  },
+  {
+    "region": "6. BÖLGE (MERAM - SELÇUKLU - KARATAY)",
+    "district": "MERAM",
+    "name": "ŞEREF YAVUZ",
+    "address": "AYDOĞDU MAHALLESİ SÖĞÜTLÜ SOKAK NO:71H MERAM_(ABİDİN SANİYE ERÇAL SAĞLIK OCAĞI KARŞISI)_",
+    "phone": "03323201185"
+  },
+  {
+    "region": "7. BÖLGE (KARATAY)",
+    "district": "KARATAY",
+    "name": "EBRU ESEROĞLU",
+    "address": "DOĞUŞ MAHALLESİ FETİH CADDESİ NO:276A KARATAY_(72 NOLU SAĞLIK OCAĞI YANI, FETİH CADDESİ ÜZERİ)_",
+    "phone": "05413239323"
+  },
+  {
+    "region": "8. BÖLGE (SELÇUKLU)",
+    "district": "SELÇUKLU",
+    "name": "AHENK",
+    "address": "AKŞEMSEDDİN MAHALLESİ TOZLUKBELİ SOKAK NO:6A SELÇUKLU_(14 NOLU ASM ARKASI)_",
+    "phone": "03322479747"
+  },
+  {
+    "region": "9. BÖLGE (SELÇUKLU)",
+    "district": "SELÇUKLU",
+    "name": "ŞİMŞİR",
+    "address": "MALAZGİRT MAHALLESİ EYÜP SULTAN CADDESİ B BLOK 1. GİRİŞ NO:57A SELÇUKLU_(EYÜP SULTAN CADDESİ ÜZERİ 6 NOLU SAĞLIK OCAĞI KARŞISI FORUM CENTER AVM KÖŞESİ)_",
+    "phone": "05415103594"
+  },
+  {
+    "region": "10. BÖLGE (SELÇUKLU)",
+    "district": "SELÇUKLU",
+    "name": "YENİ ÇAMLICA",
+    "address": "YENİ ÇAMLICA MAHALLESİ MEHMET AKİF ERSOY CADDESİ NO:10A SELÇUKLU_(YENİ ÇAMLICA MAHALLESİ MEHMET AKİF ERSOY CADDESİ ÜZERİ)_",
+    "phone": "03322479999"
+  },
+  {
+    "region": "11. BÖLGE (SELÇUKLU)",
+    "district": "SELÇUKLU",
+    "name": "ÖZEL",
+    "address": "YAZIR MAHALLESİ KONYA CADDESİ NO:47A SELÇUKLU_(YAZIR MAHALLESİ KONYA CADDESİ ÜZERİ)_",
+    "phone": "03322479999"
+  },
+  {
+    "region": "12. BÖLGE (SELÇUKLU)",
+    "district": "SELÇUKLU",
+    "name": "GÜL",
+    "address": "SELAHATTİN EYYUBİ MAHALLESİ KONYA CADDESİ NO:47A SELÇUKLU_(SELAHATTİN EYYUBİ MAHALLESİ KONYA CADDESİ ÜZERİ)_",
+    "phone": "03322479999"
+  },
+  {
+    "region": "13. BÖLGE (SELÇUKLU)",
+    "district": "SELÇUKLU",
+    "name": "ÖZEL",
+    "address": "SELAHATTİN EYYUBİ MAHALLESİ KONYA CADDESİ NO:47A SELÇUKLU_(SELAHATTİN EYYUBİ MAHALLESİ KONYA CADDESİ ÜZERİ)_",
+    "phone": "03322479999"
+  },
+  {
+    "region": "14. BÖLGE (SELÇUKLU)",
+    "district": "SELÇUKLU",
+    "name": "ÖZEL",
+    "address": "SELAHATTİN EYYUBİ MAHALLESİ KONYA CADDESİ NO:47A SELÇUKLU_(SELAHATTİN EYYUBİ MAHALLESİ KONYA CADDESİ ÜZERİ)_",
+    "phone": "03322479999"
+  },
+  {
+    "region": "AKŞEHİR",
+    "district": "AKŞEHİR",
+    "name": "ÖZTAVŞANÇALI",
+    "address": "BAHÇELİEVLER MAHALLESİ 70619.SOKAK NO:6A",
+    "phone": "03328712777"
+  },
+  {
+    "region": "ÇUMRA",
+    "district": "ÇUMRA",
+    "name": "OKÇU",
+    "address": "İZZETBEY MAHALLESİ GAZİ CADDESİ NO:24B",
+    "phone": "03324475148"
+  },
+  {
+    "region": "DOĞANHİSAR",
+    "district": "DOĞANHİSAR",
+    "name": "UYSAL",
+    "address": "KUZ MAHALLESİ 84815 SOKAK NO:4/1",
+    "phone": "03325562021"
+  },
+  {
+    "region": "EREĞLİ",
+    "district": "EREĞLİ",
+    "name": "DEMİRTAŞ",
+    "address": "CAHI MAHALLESİ ŞEHİT MURAT AKUTAY CADDESİ AKSOY APARTMANI NO:61E _(OTOGAR YANI 4 NOLU SAĞLIK OCAĞI KARŞISI)_",
+    "phone": "03327102626"
+  },
+  {
+    "region": "EREĞLİ",
+    "district": "EREĞLİ",
+    "name": "YASEMİN",
+    "address": "TALATPAŞA MAHALLESİ KAZIM KARABEKİR CADDESİ ŞELALE APATMANI NO:69B _(KAZIM KARABEKİR CADDESİ ZAFER ORTAOKULU KARŞISI)_",
+    "phone": "03327102055"
+  },
+  {
+    "region": "HÜYÜK",
+    "district": "HÜYÜK",
+    "name": "HÜYÜK",
+    "address": "BAHÇELİ EVLER YILDIRIM BEYAZIT CADDESİ NO:2A",
+    "phone": "03325431255"
+  },
+  {
+    "region": "ILGIN",
+    "district": "ILGIN",
+    "name": "ÖZLEM",
+    "address": "FAHRETTİN ALTAY MAHALLESİ 115829. SOKAK NO:3C _(YENİ DEVLET HASTANESİ KARŞISI)_",
+    "phone": "03328813300"
+  },
+  {
+    "region": "KADINHANI",
+    "district": "KADINHANI",
+    "name": "GÜNEŞ",
+    "address": "TEPEBAŞI MAHALLESİ KONYA CADDESİ NO:26D",
+    "phone": "03328343150"
+  },
+  {
+    "region": "KARAPINAR",
+    "district": "KARAPINAR",
+    "name": "SEZER",
+    "address": "SELİMİYE MAHALLESİ KONYA CADDESİ NO:9B",
+    "phone": "03327553516"
+  },
+  {
+    "region": "KULU",
+    "district": "KULU",
+    "name": "ÖZTAVŞANÇALI",
+    "address": "CAMİKEBİR MAHALLESİ ATATÜRK CADDESİ NO:2070B",
+    "phone": "03326413112"
+  },
+  {
+    "region": "SARAYÖNÜ",
+    "district": "SARAYÖNÜ",
+    "name": "ANADOLU",
+    "address": "DOĞU İSTASYON MH. YALÇIN CD. NO:6",
+    "phone": "05454924245"
+  },
+  {
+    "region": "SEYDİŞEHİR",
+    "district": "SEYDİŞEHİR",
+    "name": "KUTSAL",
+    "address": "HACISEYİTALİ MAHALLESİ ATATÜRK CADDESİ NO:28A",
+    "phone": "03325821781"
+  },
+  {
+    "region": "TUZLUKÇU",
+    "district": "TUZLUKÇU",
+    "name": "ELÇİN",
+    "address": "PAZAR MAHALLESİ AKŞEHİR CADDESİ NO: 43A",
+    "phone": "03328612747"
+  },
+  {
+    "region": "YUNAK",
+    "district": "YUNAK",
+    "name": "KURTOĞLU",
+    "address": "YENİ MAHALLE BADEMLİK CADDESİ NO:6B",
+    "phone": "03328512115"
+  }
+]
+

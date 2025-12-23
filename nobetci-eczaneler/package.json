@@ -1,0 +1,18 @@
+{
+  "name": "konya-nobetci-eczaneler",
+  "version": "1.0.0",
+  "description": "Konya nöbetçi eczaneler güncelleme scripti",
+  "main": "update-pharmacies.js",
+  "scripts": {
+    "update": "node update-pharmacies.js",
+    "update-pharmacies": "node update-pharmacies.js"
+  },
+  "keywords": [
+    "konya",
+    "eczane",
+    "nobetci"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+
