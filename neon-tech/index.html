@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEON HEIST: Micro-Extraction Arena</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="game-canvas" width="1280" height="720"></canvas>
+
+    <div id="hud" class="overlay hidden">
+      <div class="hud-top">
+        <div class="hud-block">
+          <div id="timer">06:00</div>
+          <div id="extraction-status">Extraction: Locked</div>
+        </div>
+        <div class="hud-block">
+          <div>Loot: <span id="loot">0</span></div>
+          <div>Credits: <span id="credits">0</span></div>
+        </div>
+        <div class="hud-block">
+          <div>Health: <span id="health">100</span></div>
+          <div>Ammo: <span id="ammo">30</span> / <span id="reserve">90</span></div>
+        </div>
+        <div class="hud-block">
+          <div id="role-name">Role: Runner</div>
+          <div id="ability">Ability: Ready</div>
+        </div>
+      </div>
+
+      <div class="hud-bottom">
+        <div id="hit-marker" class="hit-marker hidden">✕</div>
+        <div id="minimap-container">
+          <canvas id="minimap" width="160" height="160"></canvas>
+        </div>
+      </div>
+
+      <div id="damage-floaters"></div>
+    </div>
+
+    <div id="menu" class="overlay">
+      <div class="menu-panel">
+        <h1>NEON HEIST</h1>
+        <p class="subtitle">Micro-Extraction Arena</p>
+        <div class="menu-buttons">
+          <button data-action="play">Play</button>
+          <button data-action="loadout">Loadout</button>
+          <button data-action="hideout">Hideout</button>
+          <button data-action="settings">Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="loadout" class="overlay hidden">
+      <div class="menu-panel">
+        <h2>Loadout</h2>
+        <p>Select Role</p>
+        <div class="role-grid">
+          <button data-role="runner">Runner</button>
+          <button data-role="hacker">Hacker</button>
+          <button data-role="bruiser">Bruiser</button>
+        </div>
+        <button data-action="back">Back</button>
+      </div>
+    </div>
+
+    <div id="hideout" class="overlay hidden">
+      <div class="menu-panel">
+        <h2>Hideout</h2>
+        <div class="upgrade-grid">
+          <div class="upgrade" data-upgrade="storage">
+            <h3>Storage</h3>
+            <p>Loot capacity</p>
+            <span class="level">Lv 1</span>
+            <button>Upgrade</button>
+          </div>
+          <div class="upgrade" data-upgrade="scanner">
+            <h3>Scanner</h3>
+            <p>Minimap range</p>
+            <span class="level">Lv 1</span>
+            <button>Upgrade</button>
+          </div>
+          <div class="upgrade" data-upgrade="workbench">
+            <h3>Workbench</h3>
+            <p>Weapon damage</p>
+            <span class="level">Lv 1</span>
+            <button>Upgrade</button>
+          </div>
+        </div>
+        <button data-action="back">Back</button>
+      </div>
+    </div>
+
+    <div id="settings" class="overlay hidden">
+      <div class="menu-panel">
+        <h2>Settings</h2>
+        <label>Master Volume <input type="range" id="volume-master" min="0" max="1" step="0.01" /></label>
+        <label>SFX Volume <input type="range" id="volume-sfx" min="0" max="1" step="0.01" /></label>
+        <label>Music Volume <input type="range" id="volume-music" min="0" max="1" step="0.01" /></label>
+        <button data-action="back">Back</button>
+      </div>
+    </div>
+
+    <div id="results" class="overlay hidden">
+      <div class="menu-panel">
+        <h2 id="results-title">Extraction Complete</h2>
+        <p id="results-summary"></p>
+        <button data-action="return">Return to Menu</button>
+      </div>
+    </div>
+
+    <div id="debug" class="overlay hidden"></div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
