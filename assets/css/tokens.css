@@ -54,4 +54,37 @@
     /* Transitions */
     --transition-fast: 150ms ease;
     --transition-normal: 300ms ease;
+    --transition-spring: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    /* Colors: Light Base */
+    --bg-body: #f0f2f5;
+    --bg-surface: #ffffff;
+    --bg-surface-hover: #f8f9fa;
+    --bg-glass: rgba(255, 255, 255, 0.85);
+
+    /* Colors: Accents (Adjusted for Light) */
+    --accent-primary: #007bff;
+    /* Brighter Blue */
+    --accent-secondary: #6f42c1;
+    /* Deep Purple */
+    --accent-success: #198754;
+    --accent-warning: #ffc107;
+    --accent-error: #dc3545;
+
+    /* Colors: Text */
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a5568;
+    --text-tertiary: #a0aec0;
+    --text-on-accent: #ffffff;
+
+    /* Colors: Borders */
+    --border-subtle: rgba(0, 0, 0, 0.08);
+    --border-focus: rgba(0, 123, 255, 0.3);
+
+    /* Effects */
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-glow: 0 0 15px rgba(0, 123, 255, 0.2);
 }

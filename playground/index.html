@@ -23,6 +23,7 @@
     <!-- Scripts -->
     <script src="/assets/js/site.config.js"></script>
     <script src="/assets/js/seo.js"></script>
+    <script src="/assets/js/i18n.js"></script>
     <script src="/assets/js/ui.js" defer></script>
 
     <script>
@@ -45,15 +46,24 @@
                 <span>Osman Cagri Genc</span>
             </a>
 
-            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
-                <i class="fas fa-bars"></i>
-            </button>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button class="lang-toggle btn-ghost" type="button" aria-label="Switch Language"
+                    style="padding: 4px 8px; font-size: 0.8em; font-weight: bold;">
+                    EN
+                </button>
+                <button class="theme-toggle" type="button" aria-label="Toggle Theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
 
             <nav class="nav-menu">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/projects/">Projects</a>
-                <a class="nav-link active" href="/playground/">Playground</a>
-                <a class="nav-link" href="/labs/">Labs</a>
+                <a class="nav-link" href="/" data-i18n="nav_home">Home</a>
+                <a class="nav-link" href="/projects/" data-i18n="nav_projects">Projects</a>
+                <a class="nav-link active" href="/playground/" data-i18n="nav_playground">Playground</a>
+                <a class="nav-link" href="/labs/" data-i18n="nav_labs">Labs</a>
                 <a class="btn btn-primary btn-sm" href="/nobetci-eczaneler/">Nobetci Eczaneler</a>
             </nav>
         </div>
@@ -62,9 +72,9 @@
     <main id="main">
         <section class="hero-section">
             <div class="container">
-                <div class="badge badge-accent">Playground</div>
-                <h1 class="hero-title">Oyunlar ve Prototipler</h1>
-                <p style="margin: 0 auto;">
+                <div class="badge badge-accent" data-i18n="nav_playground">Playground</div>
+                <h1 class="hero-title" data-i18n="playground_title">Oyunlar ve Prototipler</h1>
+                <p style="margin: 0 auto;" data-i18n="playground_desc">
                     Saf HTML/CSS/JS ile gelistirdigim oyunlar, deneyler ve etkileşimli demolar.
                 </p>
             </div>
@@ -72,90 +82,131 @@
 
         <section class="section">
             <div class="container">
-                <div class="grid grid-2">
-                    <article class="card">
-                        <h3>Tower Defense</h3>
-                        <p>Mobil uyumlu, tam ozellikli kule savunma oyunu. Dalga mekanigi ve kule gelistirmeleri icerir.
-                        </p>
-                        <div style="margin-bottom: 1rem;">
-                            <span class="badge">Game Dev</span>
-                            <span class="badge">Canvas</span>
+                <!-- Filters -->
+                <div class="filters" style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary btn-sm filter-btn" data-filter="all">All</button>
+                    <button class="btn btn-secondary btn-sm filter-btn" data-filter="game-dev">Game Dev</button>
+                    <button class="btn btn-secondary btn-sm filter-btn" data-filter="3d">3D</button>
+                    <button class="btn btn-secondary btn-sm filter-btn" data-filter="puzzle">Puzzle</button>
+                    <button class="btn btn-secondary btn-sm filter-btn" data-filter="prototype">Prototypes</button>
+                </div>
+
+                <div class="grid grid-2" id="playground-grid">
+                    <article class="card card-media" data-category="game-dev">
+                        <img src="/assets/img/playground/tower.png" alt="Tower Defense Game" class="card-img-top">
+                        <div class="card-body">
+                            <h3>Tower Defense</h3>
+                            <p>Mobil uyumlu, tam ozellikli kule savunma oyunu. Dalga mekanigi ve kule gelistirmeleri
+                                icerir.</p>
+                            <div style="margin-bottom: 1rem;">
+                                <span class="badge">Canvas</span>
+                                <span class="badge">Game Dev</span>
+                            </div>
+                            <a class="btn btn-primary" href="/tower/" data-i18n="btn_play">Oyna</a>
                         </div>
-                        <a class="btn btn-primary" href="/tower/">Oyna</a>
                     </article>
 
-                    <article class="card">
-                        <h3>Cyber Rush 3D</h3>
-                        <p>Neon temali 3D sonsuz kosu oyunu. WebGL olmadan CSS 3D donusumleri ve perspektif hileleri
-                            kullanir.</p>
-                        <div style="margin-bottom: 1rem;">
-                            <span class="badge">3D CSS</span>
-                            <span class="badge">Arcade</span>
+                    <article class="card card-media" data-category="3d">
+                        <img src="/assets/img/playground/cyber.png" alt="Cyber Rush 3D" class="card-img-top">
+                        <div class="card-body">
+                            <h3>Cyber Rush 3D</h3>
+                            <p>Neon temali 3D endless runner. Three.js ile gelistirilmiş yuksek performansli deneyim.
+                            </p>
+                            <div style="margin-bottom: 1rem;">
+                                <span class="badge">Three.js</span>
+                                <span class="badge">3D</span>
+                            </div>
+                            <a class="btn btn-primary" href="/cyber-rush/" data-i18n="btn_play">Oyna</a>
                         </div>
-                        <a class="btn btn-primary" href="/cyber-rush/">Oyna</a>
                     </article>
 
-                    <article class="card">
-                        <h3>Sudoku</h3>
-                        <p>Tek bir HTML dosyasi icinde calisan, mobil odakli ve hizli Sudoku deneyimi.</p>
-                        <div style="margin-bottom: 1rem;">
-                            <span class="badge">Logic</span>
-                            <span class="badge">Single File</span>
+                    <article class="card card-media" data-category="puzzle">
+                        <img src="/assets/img/playground/sudoku.png" alt="Sudoku Game" class="card-img-top">
+                        <div class="card-body">
+                            <h3>Sudoku</h3>
+                            <p>Tek dosyali, mobil odakli sudoku deneyimi. Algoritmik bulmaca uretimi.</p>
+                            <div style="margin-bottom: 1rem;">
+                                <span class="badge">Algorithm</span>
+                                <span class="badge">PWA</span>
+                            </div>
+                            <a class="btn btn-primary" href="/sudoku/" data-i18n="btn_play">Oyna</a>
                         </div>
-                        <a class="btn btn-primary" href="/sudoku/">Oyna</a>
                     </article>
 
-                    <article class="card">
-                        <h3>Pokemon Battle</h3>
-                        <p>Sira tabanli klasik Pokemon savas sistemi simulasyonu. Strateji ve sans faktorleri icerir.
-                        </p>
-                        <div style="margin-bottom: 1rem;">
-                            <span class="badge">Simulation</span>
-                            <span class="badge">Turn-based</span>
+                    <article class="card card-media" data-category="game-dev">
+                        <img src="/assets/img/playground/pokemon.png" alt="Pokemon Battle" class="card-img-top">
+                        <div class="card-body">
+                            <h3>Pokemon Battle</h3>
+                            <p>Sira tabanli klasik Pokemon savasi simulasyonu. Retro UI ve ozel animasyonlar.</p>
+                            <div style="margin-bottom: 1rem;">
+                                <span class="badge">Retro</span>
+                                <span class="badge">Simulation</span>
+                            </div>
+                            <a class="btn btn-primary" href="/pokemon-battle/" data-i18n="btn_play">Oyna</a>
                         </div>
-                        <a class="btn btn-primary" href="/pokemon-battle/">Oyna</a>
                     </article>
 
-                    <article class="card">
-                        <h3>Mayin Tarlasi</h3>
-                        <p>Klasik mayin tarlasi oyunu. Recursion ve grid algoritmalarini test etmek icin yazildi.</p>
-                        <div style="margin-bottom: 1rem;">
-                            <span class="badge">Puzzle</span>
-                            <span class="badge">Classic</span>
-                        </div>
-                        <a class="btn btn-primary" href="/mayin-tarlasi/">Oyna</a>
-                    </article>
-
-                    <article class="card">
+                    <article class="card" data-category="puzzle">
                         <h3>Mahjong</h3>
                         <p>Geleneksel Mahjong eslestirme oyunu.</p>
                         <div style="margin-bottom: 1rem;">
                             <span class="badge">Puzzle</span>
                             <span class="badge">Classic</span>
                         </div>
-                        <a class="btn btn-primary" href="/mahjong/">Oyna</a>
+                        <a class="btn btn-primary" href="/mahjong/" data-i18n="btn_play">Oyna</a>
                     </article>
-                    <article class="card">
+
+                    <article class="card" data-category="prototype">
                         <h3>Candy Crush Clone</h3>
                         <p>Match-3 oyun mekanigi prototipi.</p>
                         <div style="margin-bottom: 1rem;">
                             <span class="badge">Match-3</span>
                             <span class="badge">Prototype</span>
                         </div>
-                        <a class="btn btn-primary" href="/candy-crush/">Oyna</a>
+                        <a class="btn btn-primary" href="/candy-crush/" data-i18n="btn_play">Oyna</a>
                     </article>
-                    <article class="card">
+
+                    <article class="card" data-category="game-dev">
                         <h3>At Yarisi</h3>
                         <p>Basit sans ve olasilik temelli yaris oyunu.</p>
                         <div style="margin-bottom: 1rem;">
                             <span class="badge">Chance</span>
-                            <span class="badge">Multiplayer (Local)</span>
+                            <span class="badge">Multiplayer</span>
                         </div>
-                        <a class="btn btn-primary" href="/horce-race/">Oyna</a>
+                        <a class="btn btn-primary" href="/horce-race/" data-i18n="btn_play">Oyna</a>
                     </article>
                 </div>
             </div>
         </section>
+
+        <script>
+            // Simple Filter Logic
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active state
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('btn-primary');
+                        b.classList.add('btn-secondary');
+                    });
+                    btn.classList.remove('btn-secondary');
+                    btn.classList.add('btn-primary');
+
+                    // Filter items
+                    const filter = btn.getAttribute('data-filter');
+                    const items = document.querySelectorAll('#playground-grid .card');
+
+                    items.forEach(item => {
+                        if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                            item.style.display = 'block'; // Or 'flex' if card needs it, but block is safe for grid child
+                            // Reset grid layout issues? CSS Grid handles hidden items automatically usually? 
+                            // Actually display:none removes it from grid flow.
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        </script>
     </main>
 
     <footer style="border-top: 1px solid var(--border-subtle); padding: 2rem 0; margin-top: auto;">

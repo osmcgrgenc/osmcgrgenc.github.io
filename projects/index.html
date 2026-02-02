@@ -23,6 +23,7 @@
     <!-- Scripts -->
     <script src="/assets/js/site.config.js"></script>
     <script src="/assets/js/seo.js"></script>
+    <script src="/assets/js/i18n.js"></script>
     <script src="/assets/js/ui.js" defer></script>
 
     <script>
@@ -51,15 +52,24 @@
                 <span>Osman Cagri Genc</span>
             </a>
 
-            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
-                <i class="fas fa-bars"></i>
-            </button>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button class="lang-toggle btn-ghost" type="button" aria-label="Switch Language"
+                    style="padding: 4px 8px; font-size: 0.8em; font-weight: bold;">
+                    EN
+                </button>
+                <button class="theme-toggle" type="button" aria-label="Toggle Theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
 
             <nav class="nav-menu">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/projects/">Projects</a>
-                <a class="nav-link" href="/playground/">Playground</a>
-                <a class="nav-link" href="/labs/">Labs</a>
+                <a class="nav-link" href="/" data-i18n="nav_home">Home</a>
+                <a class="nav-link" href="/projects/" data-i18n="nav_projects">Projects</a>
+                <a class="nav-link" href="/playground/" data-i18n="nav_playground">Playground</a>
+                <a class="nav-link" href="/labs/" data-i18n="nav_labs">Labs</a>
                 <a class="btn btn-primary btn-sm" href="/nobetci-eczaneler/">Nobetci Eczaneler</a>
             </nav>
         </div>
@@ -68,9 +78,9 @@
     <main id="main">
         <section class="hero-section">
             <div class="container">
-                <div class="badge badge-accent">Projects</div>
-                <h1 class="hero-title">Urun ve Platform Calismalari</h1>
-                <p style="margin: 0 auto;">
+                <div class="badge badge-accent" data-i18n="nav_projects">Projects</div>
+                <h1 class="hero-title" data-i18n="projects_title">Urun ve Platform Calismalari</h1>
+                <p style="margin: 0 auto;" data-i18n="projects_desc">
                     Problem, cozum ve teknoloji secimlerine odaklanan
                     projeler. Canli urunler ve altyapi deneyimleri burada.
                 </p>
@@ -80,47 +90,57 @@
         <section class="section">
             <div class="container">
                 <div class="grid grid-3">
-                    <article class="card">
-                        <h3>Codifya Zam Radar</h3>
-                        <p>
-                            Fisleri dijitalleştiren, fiyat gecmisi ve tasarruf oneren akilli alisveris asistani.
-                        </p>
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
-                            <span class="badge">React Native</span>
-                            <span class="badge">OCR & AI</span>
-                            <span class="badge">Realtime</span>
+                    <article class="card card-media">
+                        <img src="/assets/img/projects/codifya.png" alt="Codifya Dashboard" class="card-img-top">
+                        <div class="card-body">
+                            <h3>Codifya Zam Radar</h3>
+                            <p>
+                                Fisleri dijitalleştiren, fiyat gecmisi ve tasarruf oneren akilli alisveris asistani.
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                                <span class="badge badge-accent">Live</span>
+                                <span class="badge">React Native</span>
+                                <span class="badge">OCR & AI</span>
+                            </div>
+                            <a class="btn btn-secondary" href="/projects/codifya/" data-i18n="btn_details">
+                                Detaylar
+                            </a>
                         </div>
-                        <a class="btn btn-secondary" href="/projects/codifya/">
-                            Detaylar
-                        </a>
                     </article>
-                    <article class="card">
-                        <h3>BerberBul</h3>
-                        <p>
-                            Berberler icin randevu, kasa ve musteri yonetimini tek platformda birlestiren SaaS urunu.
-                        </p>
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
-                            <span class="badge">React Native</span>
-                            <span class="badge">Node.js</span>
-                            <span class="badge">Subscription</span>
+                    <article class="card card-media">
+                        <img src="/assets/img/projects/berberbul.png" alt="BerberBul App" class="card-img-top">
+                        <div class="card-body">
+                            <h3>BerberBul</h3>
+                            <p>
+                                Berberler icin randevu, kasa ve musteri yonetimini tek platformda birlestiren SaaS
+                                urunu.
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                                <span class="badge badge-accent">Live</span>
+                                <span class="badge">React Native</span>
+                                <span class="badge">Node.js</span>
+                            </div>
+                            <a class="btn btn-secondary" href="/projects/berberbul/" data-i18n="btn_details">
+                                Detaylar
+                            </a>
                         </div>
-                        <a class="btn btn-secondary" href="/projects/berberbul/">
-                            Detaylar
-                        </a>
                     </article>
-                    <article class="card">
-                        <h3>Nobetci Eczaneler</h3>
-                        <p>
-                            Konya icin guncel nobetci eczane listesi ve arama/filtreleme deneyimi.
-                        </p>
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
-                            <span class="badge">Static</span>
-                            <span class="badge">SEO</span>
-                            <span class="badge">Automation</span>
+                    <article class="card card-media">
+                        <img src="/assets/img/projects/nobetci.png" alt="Nobetci Eczaneler Map" class="card-img-top">
+                        <div class="card-body">
+                            <h3>Nobetci Eczaneler</h3>
+                            <p>
+                                Konya icin guncel nobetci eczane listesi ve arama/filtreleme deneyimi.
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                                <span class="badge badge-accent">Live</span>
+                                <span class="badge">Static</span>
+                                <span class="badge">SEO</span>
+                            </div>
+                            <a class="btn btn-secondary" href="/nobetci-eczaneler/" data-i18n="btn_visit">
+                                Uygulamaya Git
+                            </a>
                         </div>
-                        <a class="btn btn-secondary" href="/nobetci-eczaneler/">
-                            Uygulamaya Git
-                        </a>
                     </article>
                 </div>
             </div>

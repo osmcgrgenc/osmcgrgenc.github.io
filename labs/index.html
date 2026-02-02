@@ -23,6 +23,7 @@
     <!-- Scripts -->
     <script src="/assets/js/site.config.js"></script>
     <script src="/assets/js/seo.js"></script>
+    <script src="/assets/js/i18n.js"></script>
     <script src="/assets/js/ui.js" defer></script>
 
     <script>
@@ -45,15 +46,24 @@
                 <span>Osman Cagri Genc</span>
             </a>
 
-            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
-                <i class="fas fa-bars"></i>
-            </button>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button class="lang-toggle btn-ghost" type="button" aria-label="Switch Language"
+                    style="padding: 4px 8px; font-size: 0.8em; font-weight: bold;">
+                    EN
+                </button>
+                <button class="theme-toggle" type="button" aria-label="Toggle Theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
 
             <nav class="nav-menu">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/projects/">Projects</a>
-                <a class="nav-link" href="/playground/">Playground</a>
-                <a class="nav-link active" href="/labs/">Labs</a>
+                <a class="nav-link" href="/" data-i18n="nav_home">Home</a>
+                <a class="nav-link" href="/projects/" data-i18n="nav_projects">Projects</a>
+                <a class="nav-link" href="/playground/" data-i18n="nav_playground">Playground</a>
+                <a class="nav-link active" href="/labs/" data-i18n="nav_labs">Labs</a>
                 <a class="btn btn-primary btn-sm" href="/nobetci-eczaneler/">Nobetci Eczaneler</a>
             </nav>
         </div>
@@ -62,9 +72,9 @@
     <main id="main">
         <section class="hero-section">
             <div class="container">
-                <div class="badge badge-accent">Labs</div>
-                <h1 class="hero-title">Deneysel Calismalar</h1>
-                <p style="margin: 0 auto;">
+                <div class="badge badge-accent" data-i18n="nav_labs">Labs</div>
+                <h1 class="hero-title" data-i18n="labs_title">Deneysel Calismalar</h1>
+                <p style="margin: 0 auto;" data-i18n="labs_desc">
                     Framework denemeleri, arayuz testleri ve teknik prototipler. Urun degil; deneme alani.
                 </p>
             </div>
@@ -80,7 +90,7 @@
                             <span class="badge">Vanilla JS</span>
                             <span class="badge">Framework</span>
                         </div>
-                        <a class="btn btn-secondary" href="/v-framework/">Incele</a>
+                        <a class="btn btn-secondary" href="/v-framework/" data-i18n="btn_details">Incele</a>
                     </article>
 
                     <article class="card">
