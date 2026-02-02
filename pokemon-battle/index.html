@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pokemon Savasi</title>
-  <script src="/assets/js/site.config.js"></script>
-  <script src="/assets/js/seo.js"></script>
-  <script>
-      window.Seo.apply({
-          title: "Pokemon Savasi | Playground",
-          description: "Sira tabanli mini Pokemon savasi. Pikachu vs Charmander.",
-          canonicalPath: "/pokemon-battle/",
-          type: "website",
-          imagePath: "/assets/og/default.png",
-          schema: {
-              "@type": "SoftwareApplication",
-              name: "Pokemon Savasi",
-              applicationCategory: "Game",
-              operatingSystem: "Web",
-              url: "https://osmcgrgenc.github.io/pokemon-battle/",
-              description: "Sira tabanli mini Pokemon savasi. Pikachu vs Charmander.",
-              author: { "@type": "Person", name: "Osman Cagri Genc" },
-          },
-      });
-  </script>
-  <style>
-      .back-link {
-          position: fixed;
-          top: 1rem;
-          left: 1rem;
-          z-index: 2000;
-          background: rgba(0, 0, 0, 0.6);
-          color: #fff;
-          padding: 0.4rem 0.75rem;
-          border-radius: 999px;
-          text-decoration: none;
-          font-size: 0.85rem;
-      }
-  </style>
+    <title>Pokemon Savasi</title>
+    <script src="/assets/js/site.config.js"></script>
+    <script src="/assets/js/seo.js"></script>
+    <script>
+        window.Seo.apply({
+            title: "Pokemon Savasi | Playground",
+            description: "Sira tabanli mini Pokemon savasi. Pikachu vs Charmander.",
+            canonicalPath: "/pokemon-battle/",
+            type: "website",
+            imagePath: "/assets/og/default.png",
+            schema: {
+                "@type": "SoftwareApplication",
+                name: "Pokemon Savasi",
+                applicationCategory: "Game",
+                operatingSystem: "Web",
+                url: "https://osmcgrgenc.github.io/pokemon-battle/",
+                description: "Sira tabanli mini Pokemon savasi. Pikachu vs Charmander.",
+                author: { "@type": "Person", name: "Osman Cagri Genc" },
+            },
+        });
+    </script>
+    <style>
+        .back-link {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 0.4rem 0.75rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+    </style>
     <style>
         /* Piksel Stili Font */
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -57,7 +58,8 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #c0d0c0; /* Gameboy yeşili */
+            background-color: #c0d0c0;
+            /* Gameboy yeşili */
             color: #333;
             font-size: 14px;
         }
@@ -68,7 +70,7 @@
             border: 4px solid var(--border-color);
             border-radius: 8px;
             background: #fff;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
 
@@ -78,7 +80,7 @@
             height: 300px;
             background: #f0f8f0;
             border-bottom: 4px solid var(--border-color);
-            background-image: 
+            background-image:
                 linear-gradient(to bottom, transparent 95%, #b0c0b0 95%),
                 linear-gradient(to right, #e0f0e0 50%, #d8e8d8 50%);
             background-size: 100% 20px, 20px 100%;
@@ -137,7 +139,8 @@
 
         .hp-bar {
             height: 100%;
-            width: 100%; /* JS ile değiştirilecek */
+            width: 100%;
+            /* JS ile değiştirilecek */
             background-color: var(--hp-green);
             transition: width 0.5s ease, background-color 0.5s ease;
         }
@@ -145,7 +148,8 @@
         /* MENÜ VE MESAJ KUTUSU */
         #menu-container {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 50% mesaj, 50% menü */
+            grid-template-columns: 1fr 1fr;
+            /* 50% mesaj, 50% menü */
             height: 120px;
         }
 
@@ -156,7 +160,8 @@
             overflow-y: auto;
         }
 
-        #menu-options, #attack-menu {
+        #menu-options,
+        #attack-menu {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 5px;
@@ -177,32 +182,47 @@
         button:hover {
             background: #ddd;
         }
-        
+
         button:disabled {
             color: #999;
             background: #eee;
             cursor: not-allowed;
         }
-        
+
         #attack-menu {
-            display: none; /* Başlangıçta gizli */
+            display: none;
+            /* Başlangıçta gizli */
         }
-        
+
         /* Animasyonlar */
         .attack-animation {
             animation: shake 0.3s;
         }
 
         @keyframes shake {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(-5px, 5px); }
-            50% { transform: translate(5px, -5px); }
-            75% { transform: translate(-5px, 5px); }
-            100% { transform: translate(0, 0); }
-        }
+            0% {
+                transform: translate(0, 0);
+            }
 
+            25% {
+                transform: translate(-5px, 5px);
+            }
+
+            50% {
+                transform: translate(5px, -5px);
+            }
+
+            75% {
+                transform: translate(-5px, 5px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
     </style>
 </head>
+
 <body>
     <a class="back-link" href="/playground/">← Playground</a>
 
@@ -214,7 +234,9 @@
                     <div id="opponent-hp-bar" class="hp-bar"></div>
                 </div>
             </div>
-            <img id="opponent-sprite" class="pokemon-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" alt="Charmander">
+            <img id="opponent-sprite" class="pokemon-sprite"
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" alt="Charmander"
+                loading="lazy">
 
             <div id="player-info" class="info-box">
                 <div id="player-name">PIKACHU</div>
@@ -222,19 +244,21 @@
                     <div id="player-hp-bar" class="hp-bar"></div>
                 </div>
             </div>
-            <img id="player-sprite" class="pokemon-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png" alt="Pikachu">
+            <img id="player-sprite" class="pokemon-sprite"
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png" alt="Pikachu"
+                loading="lazy">
         </div>
 
         <div id="menu-container">
             <div id="message-log">Savaş Başladı!</div>
-            
+
             <div id="menu-options">
                 <button id="attack-button">Saldırı</button>
                 <button id="restart-button" style="display: none;">Yeniden Başla</button>
-                </div>
+            </div>
 
             <div id="attack-menu">
-                </div>
+            </div>
         </div>
     </div>
 
@@ -266,9 +290,9 @@
 
             const attacks = {
                 "Thunder Shock": { power: 25, type: "Electric" },
-                "Quick Attack":  { power: 20, type: "Normal" },
-                "Ember":         { power: 25, type: "Fire" },
-                "Scratch":       { power: 20, type: "Normal" }
+                "Quick Attack": { power: 20, type: "Normal" },
+                "Ember": { power: 25, type: "Fire" },
+                "Scratch": { power: 20, type: "Normal" }
             };
 
             // Oyunu Başlatma
@@ -283,7 +307,7 @@
                     attacks: [attacks["Thunder Shock"], attacks["Quick Attack"]],
                     spriteElement: DOM.player.sprite
                 };
-                
+
                 opponentPokemon = {
                     name: "CHARMANDER",
                     hp: 100,
@@ -291,20 +315,20 @@
                     attacks: [attacks["Ember"], attacks["Scratch"]],
                     spriteElement: DOM.opponent.sprite
                 };
-                
+
                 // UI Güncelle
                 DOM.player.name.textContent = playerPokemon.name;
                 DOM.opponent.name.textContent = opponentPokemon.name;
                 updateHPBars();
-                
+
                 // Menüleri ayarla
                 DOM.attackButton.style.display = 'block';
                 DOM.restartButton.style.display = 'none';
                 DOM.menuOptions.style.display = 'grid';
                 DOM.attackMenu.style.display = 'none';
-                
+
                 logMessage(`Vahşi bir ${opponentPokemon.name} belirdi!`);
-                
+
                 // Saldırı menüsünü doldur
                 DOM.attackMenu.innerHTML = ''; // Menüyü temizle
                 playerPokemon.attacks.forEach(attack => {
@@ -320,11 +344,11 @@
                 updateSingleHPBar(playerPokemon, DOM.player.hpBar);
                 updateSingleHPBar(opponentPokemon, DOM.opponent.hpBar);
             }
-            
+
             function updateSingleHPBar(pokemon, hpBarElement) {
                 const hpPercent = (pokemon.hp / pokemon.maxHp) * 100;
                 hpBarElement.style.width = `${hpPercent}%`;
-                
+
                 // Rengi değiştir
                 if (hpPercent < 20) {
                     hpBarElement.style.backgroundColor = 'var(--hp-red)';
@@ -334,36 +358,36 @@
                     hpBarElement.style.backgroundColor = 'var(--hp-green)';
                 }
             }
-            
+
             // Mesaj Yazdır
             function logMessage(message) {
                 DOM.messageLog.textContent = message;
             }
-            
+
             // Saldırı Menüsünü Göster/Gizle
             DOM.attackButton.onclick = () => {
                 if (!isPlayerTurn || isGameOver) return;
                 DOM.menuOptions.style.display = 'none';
                 DOM.attackMenu.style.display = 'grid';
             };
-            
+
             // Saldırı Yap
             function performAttack(attack, attacker, target) {
                 if (!isPlayerTurn || isGameOver) return;
-                
+
                 // Oyuncu sırası
                 logMessage(`${attacker.name} ${attack.name} kullandı!`);
                 target.hp -= attack.power;
                 if (target.hp < 0) target.hp = 0;
-                
+
                 // Görsel efekt
                 animateAttack(target.spriteElement);
                 updateHPBars();
-                
+
                 // Sırayı kilitle
                 isPlayerTurn = false;
                 DOM.attackMenu.style.display = 'none';
-                
+
                 // Oyun bitti mi kontrol et
                 if (checkGameOver(target)) return;
 
@@ -372,20 +396,20 @@
                     opponentTurn();
                 }, 1500); // 1.5 saniye bekle
             }
-            
+
             // Rakip Sırası
             function opponentTurn() {
                 const randomAttack = opponentPokemon.attacks[Math.floor(Math.random() * opponentPokemon.attacks.length)];
-                
+
                 logMessage(`${opponentPokemon.name} ${randomAttack.name} kullandı!`);
                 playerPokemon.hp -= randomAttack.power;
                 if (playerPokemon.hp < 0) playerPokemon.hp = 0;
-                
+
                 animateAttack(playerPokemon.spriteElement);
                 updateHPBars();
-                
+
                 if (checkGameOver(playerPokemon)) return;
-                
+
                 // Sırayı oyuncuya geri ver
                 isPlayerTurn = true;
                 DOM.menuOptions.style.display = 'grid';
@@ -414,14 +438,15 @@
                     sprite.classList.remove('attack-animation');
                 }, 300); // Animasyon süresi (CSS ile aynı)
             }
-            
+
             // Yeniden Başlat Butonu
             DOM.restartButton.onclick = initGame;
-            
+
             // Oyunu Başlat
             initGame();
         });
     </script>
 
 </body>
+
 </html>

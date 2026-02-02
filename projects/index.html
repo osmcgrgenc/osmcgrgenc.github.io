@@ -1,151 +1,137 @@
 <!doctype html>
 <html lang="tr">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Projects</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
-            rel="stylesheet"
-        />
-        <link rel="stylesheet" href="/assets/css/theme.css" />
-        <link rel="stylesheet" href="/assets/css/base.css" />
-        <link rel="stylesheet" href="/assets/css/hub.css" />
-        <script src="/assets/js/site.config.js"></script>
-        <script src="/assets/js/seo.js"></script>
-        <script>
-            window.Seo.apply({
-                title: "Projects | Urun Calismalari",
-                description:
-                    "Olceklenebilir urunler ve canli platformlar: Codifya Zam Radar, BerberBul ve Nobetci Eczaneler.",
-                canonicalPath: "/projects/",
-                type: "website",
-                imagePath: "/assets/og/default.png",
-                schema: {
-                    "@type": "CollectionPage",
-                    name: "Projects",
-                    url: "https://osmcgrgenc.github.io/projects/",
-                },
-            });
-        </script>
-    </head>
-    <body>
-        <a class="skip-link" href="#main">Ana icerige gec</a>
-        <header class="site-nav">
-            <div class="container nav-inner">
-                <a class="nav-brand" href="/">
-                    <span>Osman Cagri Genc</span>
-                    <small>Frontend Lead • Product Builder</small>
-                </a>
-                <button
-                    class="nav-toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="nav-links"
-                >
-                    Menu
-                </button>
-                <ul class="nav-links" id="nav-links" data-open="false">
-                    <li><a href="/projects/">Projects</a></li>
-                    <li><a href="/playground/">Playground</a></li>
-                    <li><a href="/labs/">Labs</a></li>
-                    <li>
-                        <a class="nav-cta" href="/nobetci-eczaneler/">
-                            Nobetci Eczaneler
-                        </a>
-                    </li>
-                    <li><a href="/index.html#contact">Contact</a></li>
-                </ul>
-            </div>
-        </header>
 
-        <main id="main">
-            <section class="hub-hero">
-                <div class="container">
-                    <div class="pill">Projects</div>
-                    <h1>Urun ve Platform Calismalari</h1>
-                    <p>
-                        Problem, cozum ve teknoloji secimlerine odaklanan
-                        projeler. Canli urunler ve altyapi deneyimleri burada.
-                    </p>
-                </div>
-            </section>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | Osman Cagri Genc</title>
 
-            <section class="hub-section">
-                <div class="container">
-                    <div class="hub-grid">
-                        <article class="hub-card">
-                            <h3>Codifya Zam Radar</h3>
-                            <p>
-                                Fisleri dijitalleştirerek urun fiyat gecmisi ve
-                                tasarruf onerileri sunan akilli alisveris
-                                asistani.
-                            </p>
-                            <div class="hub-meta">
-                                <span>React Native</span>
-                                <span>OCR & AI</span>
-                                <span>Realtime</span>
-                            </div>
-                            <a class="btn btn-secondary" href="/projects/codifya/">
-                                Codifya Zam Radar detaylari
-                            </a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>BerberBul</h3>
-                            <p>
-                                Berberler icin randevu, kasa ve musteri
-                                yonetimini tek platformda birlestiren SaaS urunu.
-                            </p>
-                            <div class="hub-meta">
-                                <span>React Native</span>
-                                <span>Node.js</span>
-                                <span>Subscription</span>
-                            </div>
-                            <a
-                                class="btn btn-secondary"
-                                href="/projects/berberbul/"
-                            >
-                                BerberBul detaylari
-                            </a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Nobetci Eczaneler</h3>
-                            <p>
-                                Konya icin guncel nobetci eczane listesi ve
-                                arama/filtreleme deneyimi.
-                            </p>
-                            <div class="hub-meta">
-                                <span>Static</span>
-                                <span>SEO</span>
-                                <span>Automation</span>
-                            </div>
-                            <a class="btn btn-secondary" href="/nobetci-eczaneler/">
-                                Nobetci Eczaneler uygulamasi
-                            </a>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </main>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-        <footer>
+    <!-- Design System -->
+    <link rel="stylesheet" href="/assets/css/reset.css" />
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
+
+    <!-- Scripts -->
+    <script src="/assets/js/site.config.js"></script>
+    <script src="/assets/js/seo.js"></script>
+    <script src="/assets/js/ui.js" defer></script>
+
+    <script>
+        window.Seo.apply({
+            title: "Projects | Urun Calismalari",
+            description:
+                "Olceklenebilir urunler ve canli platformlar: Codifya Zam Radar, BerberBul ve Nobetci Eczaneler.",
+            canonicalPath: "/projects/",
+            type: "website",
+            imagePath: "/assets/og/default.png",
+            schema: {
+                "@type": "CollectionPage",
+                name: "Projects",
+                url: "https://osmcgrgenc.github.io/projects/",
+            },
+        });
+    </script>
+</head>
+
+<body>
+    <a class="skip-link" href="#main">Ana icerige gec</a>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a class="nav-logo" href="/">
+                <span>Osman Cagri Genc</span>
+            </a>
+
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="nav-menu">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/projects/">Projects</a>
+                <a class="nav-link" href="/playground/">Playground</a>
+                <a class="nav-link" href="/labs/">Labs</a>
+                <a class="btn btn-primary btn-sm" href="/nobetci-eczaneler/">Nobetci Eczaneler</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="hero-section">
             <div class="container">
-                Daha fazla oyun icin <a href="/playground/">Playground</a>.
+                <div class="badge badge-accent">Projects</div>
+                <h1 class="hero-title">Urun ve Platform Calismalari</h1>
+                <p style="margin: 0 auto;">
+                    Problem, cozum ve teknoloji secimlerine odaklanan
+                    projeler. Canli urunler ve altyapi deneyimleri burada.
+                </p>
             </div>
-        </footer>
+        </section>
 
-        <script>
-            const navToggle = document.querySelector(".nav-toggle");
-            const navLinks = document.getElementById("nav-links");
-            if (navToggle && navLinks) {
-                navToggle.addEventListener("click", () => {
-                    const isOpen = navLinks.dataset.open === "true";
-                    navLinks.dataset.open = isOpen ? "false" : "true";
-                    navToggle.setAttribute("aria-expanded", (!isOpen).toString());
-                });
-            }
-        </script>
-    </body>
+        <section class="section">
+            <div class="container">
+                <div class="grid grid-3">
+                    <article class="card">
+                        <h3>Codifya Zam Radar</h3>
+                        <p>
+                            Fisleri dijitalleştiren, fiyat gecmisi ve tasarruf oneren akilli alisveris asistani.
+                        </p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <span class="badge">React Native</span>
+                            <span class="badge">OCR & AI</span>
+                            <span class="badge">Realtime</span>
+                        </div>
+                        <a class="btn btn-secondary" href="/projects/codifya/">
+                            Detaylar
+                        </a>
+                    </article>
+                    <article class="card">
+                        <h3>BerberBul</h3>
+                        <p>
+                            Berberler icin randevu, kasa ve musteri yonetimini tek platformda birlestiren SaaS urunu.
+                        </p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <span class="badge">React Native</span>
+                            <span class="badge">Node.js</span>
+                            <span class="badge">Subscription</span>
+                        </div>
+                        <a class="btn btn-secondary" href="/projects/berberbul/">
+                            Detaylar
+                        </a>
+                    </article>
+                    <article class="card">
+                        <h3>Nobetci Eczaneler</h3>
+                        <p>
+                            Konya icin guncel nobetci eczane listesi ve arama/filtreleme deneyimi.
+                        </p>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <span class="badge">Static</span>
+                            <span class="badge">SEO</span>
+                            <span class="badge">Automation</span>
+                        </div>
+                        <a class="btn btn-secondary" href="/nobetci-eczaneler/">
+                            Uygulamaya Git
+                        </a>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="border-top: 1px solid var(--border-subtle); padding: 2rem 0; margin-top: auto;">
+        <div class="container" style="text-align: center; color: var(--text-tertiary); font-size: 0.9rem;">
+            Daha fazla oyun icin <a href="/playground/" style="color: var(--accent-primary);">Playground</a>.
+        </div>
+    </footer>
+</body>
+
 </html>

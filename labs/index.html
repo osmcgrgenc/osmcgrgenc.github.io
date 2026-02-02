@@ -1,141 +1,138 @@
-<!doctype html>
-<html lang="tr">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Labs</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
-            rel="stylesheet"
-        />
-        <link rel="stylesheet" href="/assets/css/theme.css" />
-        <link rel="stylesheet" href="/assets/css/base.css" />
-        <link rel="stylesheet" href="/assets/css/hub.css" />
-        <script src="/assets/js/site.config.js"></script>
-        <script src="/assets/js/seo.js"></script>
-        <script>
-            window.Seo.apply({
-                title: "Labs | Deneysel Calismalar",
-                description:
-                    "Framework denemeleri, UI testleri ve teknik prototipler. Urun degil, deneysel calisma alani.",
-                canonicalPath: "/labs/",
-                type: "website",
-                imagePath: "/assets/og/default.png",
-                noindex: true,
-                schema: {
-                    "@type": "WebPage",
-                    name: "Labs",
-                    url: "https://osmcgrgenc.github.io/labs/",
-                },
-            });
-        </script>
-    </head>
-    <body>
-        <a class="skip-link" href="#main">Ana icerige gec</a>
-        <header class="site-nav">
-            <div class="container nav-inner">
-                <a class="nav-brand" href="/">
-                    <span>Osman Cagri Genc</span>
-                    <small>Frontend Lead • Product Builder</small>
-                </a>
-                <button
-                    class="nav-toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="nav-links"
-                >
-                    Menu
-                </button>
-                <ul class="nav-links" id="nav-links" data-open="false">
-                    <li><a href="/projects/">Projects</a></li>
-                    <li><a href="/playground/">Playground</a></li>
-                    <li><a href="/labs/">Labs</a></li>
-                    <li>
-                        <a class="nav-cta" href="/nobetci-eczaneler/">
-                            Nobetci Eczaneler
-                        </a>
-                    </li>
-                    <li><a href="/index.html#contact">Contact</a></li>
-                </ul>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Labs | Osman Cagri Genc</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Design System -->
+    <link rel="stylesheet" href="/assets/css/reset.css" />
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
+
+    <!-- Scripts -->
+    <script src="/assets/js/site.config.js"></script>
+    <script src="/assets/js/seo.js"></script>
+    <script src="/assets/js/ui.js" defer></script>
+
+    <script>
+        window.Seo.apply({
+            title: "Labs | Deneysel Calismalar",
+            description: "Framework denemeleri, arayuz testleri ve teknik prototipler.",
+            canonicalPath: "/labs/",
+            type: "website",
+            imagePath: "/assets/og/default.png"
+        });
+    </script>
+</head>
+
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a class="nav-logo" href="/">
+                <span>Osman Cagri Genc</span>
+            </a>
+
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="nav-menu">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/projects/">Projects</a>
+                <a class="nav-link" href="/playground/">Playground</a>
+                <a class="nav-link active" href="/labs/">Labs</a>
+                <a class="btn btn-primary btn-sm" href="/nobetci-eczaneler/">Nobetci Eczaneler</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="hero-section">
+            <div class="container">
+                <div class="badge badge-accent">Labs</div>
+                <h1 class="hero-title">Deneysel Calismalar</h1>
+                <p style="margin: 0 auto;">
+                    Framework denemeleri, arayuz testleri ve teknik prototipler. Urun degil; deneme alani.
+                </p>
             </div>
-        </header>
+        </section>
 
-        <main id="main">
-            <section class="hub-hero">
-                <div class="container">
-                    <div class="pill">Labs</div>
-                    <h1>Deneysel Calismalar</h1>
-                    <p>
-                        Burasi, urunlestirilmeyen ama ogrenme ve deneme icin
-                        uretilen arayuz ve teknoloji prototiplerini barindirir.
-                    </p>
+        <section class="section">
+            <div class="container">
+                <div class="grid grid-3">
+                    <article class="card">
+                        <h3>V-Framework</h3>
+                        <p>React-benzeri hafif vanilla JS framework deneyi. Virtual DOM ve state yonetimi icerir.</p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">Vanilla JS</span>
+                            <span class="badge">Framework</span>
+                        </div>
+                        <a class="btn btn-secondary" href="/v-framework/">Incele</a>
+                    </article>
+
+                    <article class="card">
+                        <h3>HTML5 Inputs</h3>
+                        <p>Mobil tarayicilarda input tiplerinin davranislarini test etmek icin hazirlanmis test sayfasi.
+                        </p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">HTML5</span>
+                            <span class="badge">Forms</span>
+                        </div>
+                        <a class="btn btn-secondary" href="/inputTest.html">Test Et</a>
+                    </article>
+
+                    <article class="card">
+                        <h3>Date & Time</h3>
+                        <p>Tarayicilar arasi tarih ve saat formatlama tutarlilik testleri.</p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">JS Date</span>
+                            <span class="badge">Intl</span>
+                        </div>
+                        <a class="btn btn-secondary" href="/dateTimeTest.html">Test Et</a>
+                    </article>
+
+                    <article class="card">
+                        <h3>Canvas Runner</h3>
+                        <p>Hizli prototiplenmis canvas tabanli sonsuz kosu oyunu denemesi.</p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">Canvas</span>
+                            <span class="badge">Game Loop</span>
+                        </div>
+                        <a class="btn btn-secondary" href="/runner.html">Oyna</a>
+                    </article>
+
+                    <article class="card">
+                        <h3>AR Prototype</h3>
+                        <p>A-Frame ve AR.js kullanilarak hazirlanmis web tabanli artirilmis gerceklik denemesi.</p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">AR.js</span>
+                            <span class="badge">A-Frame</span>
+                        </div>
+                        <a class="btn btn-secondary" href="/ar-game/">Goruntule</a>
+                    </article>
                 </div>
-            </section>
+            </div>
+        </section>
+    </main>
 
-            <section class="hub-section">
-                <div class="container">
-                    <div class="hub-grid">
-                        <article class="hub-card">
-                            <h3>V-Framework Demo</h3>
-                            <p>React-benzeri vanilla JS framework denemesi.</p>
-                            <div class="hub-meta"><span>Framework</span></div>
-                            <a class="btn btn-secondary" href="/v-framework/">
-                                Gor
-                            </a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Runner Test</h3>
-                            <p>Basit hareket ve animasyon testleri.</p>
-                            <div class="hub-meta"><span>UI Test</span></div>
-                            <a class="btn btn-secondary" href="/runner.html">
-                                Gor
-                            </a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Input Test</h3>
-                            <p>Mobil input davranislari ve formatlama denemesi.</p>
-                            <div class="hub-meta"><span>Form</span></div>
-                            <a class="btn btn-secondary" href="/inputTest.html">
-                                Gor
-                            </a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>DateTime Test</h3>
-                            <p>Tarih/saat cevirim senaryolari.</p>
-                            <div class="hub-meta"><span>Utility</span></div>
-                            <a class="btn btn-secondary" href="/dateTimeTest.html">
-                                Gor
-                            </a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Banner Set</h3>
-                            <p>Promosyon banner tasarim denemeleri.</p>
-                            <div class="hub-meta"><span>Layout</span></div>
-                            <a class="btn btn-secondary" href="/has/">
-                                Gor
-                            </a>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </main>
+    <footer style="border-top: 1px solid var(--border-subtle); padding: 2rem 0; margin-top: auto;">
+        <div class="container" style="text-align: center; color: var(--text-tertiary); font-size: 0.9rem;">
+            © 2026 Osman Cagri Genc. All rights reserved.
+        </div>
+    </footer>
+</body>
 
-        <footer>
-            <div class="container">Labs sayfalari deneysel isareti tasir.</div>
-        </footer>
-
-        <script>
-            const navToggle = document.querySelector(".nav-toggle");
-            const navLinks = document.getElementById("nav-links");
-            if (navToggle && navLinks) {
-                navToggle.addEventListener("click", () => {
-                    const isOpen = navLinks.dataset.open === "true";
-                    navLinks.dataset.open = isOpen ? "false" : "true";
-                    navToggle.setAttribute("aria-expanded", (!isOpen).toString());
-                });
-            }
-        </script>
-    </body>
 </html>

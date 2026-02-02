@@ -1,210 +1,168 @@
-<!doctype html>
-<html lang="tr">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Playground</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
-            rel="stylesheet"
-        />
-        <link rel="stylesheet" href="/assets/css/theme.css" />
-        <link rel="stylesheet" href="/assets/css/base.css" />
-        <link rel="stylesheet" href="/assets/css/hub.css" />
-        <script src="/assets/js/site.config.js"></script>
-        <script src="/assets/js/seo.js"></script>
-        <script>
-            window.Seo.apply({
-                title: "Playground | Oyunlar ve Demolar",
-                description:
-                    "Tarayici tabanli oyunlar, prototipler ve interaktif demolar. Puzzle, arcade ve simülasyon odakli koleksiyon.",
-                canonicalPath: "/playground/",
-                type: "website",
-                imagePath: "/assets/og/default.png",
-                schema: {
-                    "@type": "CollectionPage",
-                    name: "Playground",
-                    url: "https://osmcgrgenc.github.io/playground/",
-                },
-            });
-        </script>
-    </head>
-    <body>
-        <a class="skip-link" href="#main">Ana icerige gec</a>
-        <header class="site-nav">
-            <div class="container nav-inner">
-                <a class="nav-brand" href="/">
-                    <span>Osman Cagri Genc</span>
-                    <small>Frontend Lead • Product Builder</small>
-                </a>
-                <button
-                    class="nav-toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="nav-links"
-                >
-                    Menu
-                </button>
-                <ul class="nav-links" id="nav-links" data-open="false">
-                    <li><a href="/projects/">Projects</a></li>
-                    <li><a href="/playground/">Playground</a></li>
-                    <li><a href="/labs/">Labs</a></li>
-                    <li>
-                        <a class="nav-cta" href="/nobetci-eczaneler/">
-                            Nobetci Eczaneler
-                        </a>
-                    </li>
-                    <li><a href="/index.html#contact">Contact</a></li>
-                </ul>
-            </div>
-        </header>
+<!DOCTYPE html>
+<html lang="en">
 
-        <main id="main">
-            <section class="hub-hero">
-                <div class="container">
-                    <div class="pill">Playground</div>
-                    <h1>Oyunlar ve Prototipler</h1>
-                    <p>
-                        Saf HTML, CSS ve JavaScript ile gelistirilen oyunlar ve
-                        interaktif denemeler. Bu alan, oyun mekanikleri ve
-                        kullanici deneyimi denemeleri icin uretilmistir.
-                    </p>
-                </div>
-            </section>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playground | Osman Cagri Genc</title>
 
-            <section class="hub-section">
-                <div class="container">
-                    <h2>Puzzle</h2>
-                    <p>Bulmaca, strateji ve mantik temali oyunlar.</p>
-                    <div class="hub-grid">
-                        <article class="hub-card">
-                            <h3>Sudoku</h3>
-                            <p>Tek dosyali, mobil odakli sudoku deneyimi.</p>
-                            <div class="hub-meta"><span>Logic</span></div>
-                            <a class="btn btn-secondary" href="/sudoku/">Sudoku'yu oyna</a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Mayin Tarlasi</h3>
-                            <p>Modern tasarimli klasik mayin tarlasi.</p>
-                            <div class="hub-meta"><span>Puzzle</span></div>
-                            <a class="btn btn-secondary" href="/mayin-tarlasi/">Mayin Tarlasi'ni oyna</a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Mahjong Wonders</h3>
-                            <p>3D katmanli mahjong deneyimi.</p>
-                            <div class="hub-meta"><span>Strategy</span></div>
-                            <a class="btn btn-secondary" href="/mahjong/">Mahjong'u oyna</a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Pathbreak TD</h3>
-                            <p>Harita uzerinde yol kirma temali TD denemesi.</p>
-                            <div class="hub-meta"><span>Tactics</span></div>
-                            <a class="btn btn-secondary" href="/Pathbreak/">Pathbreak TD oyna</a>
-                        </article>
-                    </div>
-                </div>
-            </section>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-            <section class="hub-section">
-                <div class="container">
-                    <h2>Arcade</h2>
-                    <p>Hizli oynanis, skor odakli arcade oyunlari.</p>
-                    <div class="hub-grid">
-                        <article class="hub-card">
-                            <h3>Brick Breaker</h3>
-                            <p>Klasik tugla kirma oyunu.</p>
-                            <div class="hub-meta"><span>Arcade</span></div>
-                            <a class="btn btn-secondary" href="/candy-crush/">Brick Breaker oyna</a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Cyber Rush 3D</h3>
-                            <p>Neon dunyada sonsuz kosu.</p>
-                            <div class="hub-meta"><span>Runner</span></div>
-                            <a class="btn btn-secondary" href="/cyber-rush/">Cyber Rush oyna</a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Pokemon Yakalayicisi</h3>
-                            <p>Haritada gez, Pokemon topla.</p>
-                            <div class="hub-meta"><span>Arcade</span></div>
-                            <a class="btn btn-secondary" href="/pokemon/">Pokemon Yakalayicisi oyna</a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Pokemon Savasi</h3>
-                            <p>Sira tabanli mini Pokemon savasi.</p>
-                            <div class="hub-meta"><span>Combat</span></div>
-                            <a class="btn btn-secondary" href="/pokemon-battle/">Pokemon Savasi oyna</a>
-                        </article>
-                    </div>
-                </div>
-            </section>
+    <!-- Design System -->
+    <link rel="stylesheet" href="/assets/css/reset.css" />
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
 
-            <section class="hub-section">
-                <div class="container">
-                    <h2>Simulation</h2>
-                    <p>Mekanikler ve sistem kurgusu odakli oyunlar.</p>
-                    <div class="hub-grid">
-                        <article class="hub-card">
-                            <h3>Tower Defense</h3>
-                            <p>6 kule, 4 zorluk seviyesi.</p>
-                            <div class="hub-meta"><span>Strategy</span></div>
-                            <a class="btn btn-secondary" href="/tower/">Tower Defense oyna</a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Counter Strike Mini</h3>
-                            <p>2D top-down prototype, tur bazli sistem.</p>
-                            <div class="hub-meta"><span>Shooter</span></div>
-                            <a class="btn btn-secondary" href="/counter-strike/">Counter Strike oyna</a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>Horse Race</h3>
-                            <p>Yaris mekanigi ve skor odakli simulasyon.</p>
-                            <div class="hub-meta"><span>Simulation</span></div>
-                            <a class="btn btn-secondary" href="/horce-race/">Horse Race oyna</a>
-                        </article>
-                        <article class="hub-card">
-                            <h3>NEON HEIST</h3>
-                            <p>Mikro extraction shooter prototipi.</p>
-                            <div class="hub-meta"><span>Action</span></div>
-                            <a class="btn btn-secondary" href="/neon-tech/">Neon Heist oyna</a>
-                        </article>
-                    </div>
-                </div>
-            </section>
+    <!-- Scripts -->
+    <script src="/assets/js/site.config.js"></script>
+    <script src="/assets/js/seo.js"></script>
+    <script src="/assets/js/ui.js" defer></script>
 
-            <section class="hub-section">
-                <div class="container">
-                    <h2>Experimental / AR</h2>
-                    <p>Deneysel etkileşimler ve teknolojik prototipler.</p>
-                    <div class="hub-grid">
-                        <article class="hub-card">
-                            <h3>AR Hazine Avi</h3>
-                            <p>A-Frame + AR.js ile AR prototipi.</p>
-                            <div class="hub-meta"><span>AR</span></div>
-                            <a class="btn btn-secondary" href="/ar-game/">AR prototipi gor</a>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </main>
+    <script>
+        window.Seo.apply({
+            title: "Playground | Oyunlar ve Prototipler",
+            description: "Saf HTML/CSS/JS ile gelistirdigim oyunlar, deneyler ve etkileşimli demolar.",
+            canonicalPath: "/playground/",
+            type: "website",
+            imagePath: "/assets/og/default.png"
+        });
+    </script>
+</head>
 
-        <footer>
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a class="nav-logo" href="/">
+                <span>Osman Cagri Genc</span>
+            </a>
+
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="nav-menu">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/projects/">Projects</a>
+                <a class="nav-link active" href="/playground/">Playground</a>
+                <a class="nav-link" href="/labs/">Labs</a>
+                <a class="btn btn-primary btn-sm" href="/nobetci-eczaneler/">Nobetci Eczaneler</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="hero-section">
             <div class="container">
-                Legacy oyun listesi icin <a href="/games/">/games</a> sayfasi.
+                <div class="badge badge-accent">Playground</div>
+                <h1 class="hero-title">Oyunlar ve Prototipler</h1>
+                <p style="margin: 0 auto;">
+                    Saf HTML/CSS/JS ile gelistirdigim oyunlar, deneyler ve etkileşimli demolar.
+                </p>
             </div>
-        </footer>
+        </section>
 
-        <script>
-            const navToggle = document.querySelector(".nav-toggle");
-            const navLinks = document.getElementById("nav-links");
-            if (navToggle && navLinks) {
-                navToggle.addEventListener("click", () => {
-                    const isOpen = navLinks.dataset.open === "true";
-                    navLinks.dataset.open = isOpen ? "false" : "true";
-                    navToggle.setAttribute("aria-expanded", (!isOpen).toString());
-                });
-            }
-        </script>
-    </body>
+        <section class="section">
+            <div class="container">
+                <div class="grid grid-2">
+                    <article class="card">
+                        <h3>Tower Defense</h3>
+                        <p>Mobil uyumlu, tam ozellikli kule savunma oyunu. Dalga mekanigi ve kule gelistirmeleri icerir.
+                        </p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">Game Dev</span>
+                            <span class="badge">Canvas</span>
+                        </div>
+                        <a class="btn btn-primary" href="/tower/">Oyna</a>
+                    </article>
+
+                    <article class="card">
+                        <h3>Cyber Rush 3D</h3>
+                        <p>Neon temali 3D sonsuz kosu oyunu. WebGL olmadan CSS 3D donusumleri ve perspektif hileleri
+                            kullanir.</p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">3D CSS</span>
+                            <span class="badge">Arcade</span>
+                        </div>
+                        <a class="btn btn-primary" href="/cyber-rush/">Oyna</a>
+                    </article>
+
+                    <article class="card">
+                        <h3>Sudoku</h3>
+                        <p>Tek bir HTML dosyasi icinde calisan, mobil odakli ve hizli Sudoku deneyimi.</p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">Logic</span>
+                            <span class="badge">Single File</span>
+                        </div>
+                        <a class="btn btn-primary" href="/sudoku/">Oyna</a>
+                    </article>
+
+                    <article class="card">
+                        <h3>Pokemon Battle</h3>
+                        <p>Sira tabanli klasik Pokemon savas sistemi simulasyonu. Strateji ve sans faktorleri icerir.
+                        </p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">Simulation</span>
+                            <span class="badge">Turn-based</span>
+                        </div>
+                        <a class="btn btn-primary" href="/pokemon-battle/">Oyna</a>
+                    </article>
+
+                    <article class="card">
+                        <h3>Mayin Tarlasi</h3>
+                        <p>Klasik mayin tarlasi oyunu. Recursion ve grid algoritmalarini test etmek icin yazildi.</p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">Puzzle</span>
+                            <span class="badge">Classic</span>
+                        </div>
+                        <a class="btn btn-primary" href="/mayin-tarlasi/">Oyna</a>
+                    </article>
+
+                    <article class="card">
+                        <h3>Mahjong</h3>
+                        <p>Geleneksel Mahjong eslestirme oyunu.</p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">Puzzle</span>
+                            <span class="badge">Classic</span>
+                        </div>
+                        <a class="btn btn-primary" href="/mahjong/">Oyna</a>
+                    </article>
+                    <article class="card">
+                        <h3>Candy Crush Clone</h3>
+                        <p>Match-3 oyun mekanigi prototipi.</p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">Match-3</span>
+                            <span class="badge">Prototype</span>
+                        </div>
+                        <a class="btn btn-primary" href="/candy-crush/">Oyna</a>
+                    </article>
+                    <article class="card">
+                        <h3>At Yarisi</h3>
+                        <p>Basit sans ve olasilik temelli yaris oyunu.</p>
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge">Chance</span>
+                            <span class="badge">Multiplayer (Local)</span>
+                        </div>
+                        <a class="btn btn-primary" href="/horce-race/">Oyna</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="border-top: 1px solid var(--border-subtle); padding: 2rem 0; margin-top: auto;">
+        <div class="container" style="text-align: center; color: var(--text-tertiary); font-size: 0.9rem;">
+            © 2026 Osman Cagri Genc. All rights reserved.
+        </div>
+    </footer>
+</body>
+
 </html>
