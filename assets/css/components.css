@@ -168,6 +168,8 @@
     padding: 8px 16px;
     border-radius: var(--radius-full);
     transition: all var(--transition-fast);
+    margin-bottom: auto;
+    margin-top: auto;
 }
 
 .nav-link:hover,
