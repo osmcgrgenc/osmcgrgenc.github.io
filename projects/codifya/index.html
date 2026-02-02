@@ -3,9 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Codifya Zam Radar - Akıllı Alışveriş Asistanınız</title>
+    <title>Codifya Zam Radar</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/assets/css/theme.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <script src="/assets/js/site.config.js"></script>
+    <script src="/assets/js/seo.js"></script>
+    <script>
+        window.Seo.apply({
+            title: "Codifya Zam Radar | Akilli Alisveris Asistani",
+            description:
+                "Fisleri dijitalleştiren, fiyat gecmisi ve tasarruf onerileri sunan akilli alisveris asistani.",
+            canonicalPath: "/projects/codifya/",
+            type: "product",
+            imagePath: "/assets/og/default.png",
+            schema: {
+                "@type": "SoftwareApplication",
+                name: "Codifya Zam Radar",
+                applicationCategory: "ShoppingApplication",
+                operatingSystem: "iOS, Android, Web",
+                url: "https://osmcgrgenc.github.io/projects/codifya/",
+                author: {
+                    "@type": "Person",
+                    name: "Osman Cagri Genc",
+                },
+                description:
+                    "Fisleri dijitalleştiren, fiyat gecmisi ve tasarruf onerileri sunan akilli alisveris asistani.",
+            },
+        });
+    </script>
     <script>
         tailwind.config = {
             theme: {
@@ -257,6 +284,38 @@
     </style>
 </head>
 <body>
+    <a class="skip-link" href="#main">Ana icerige gec</a>
+    <header class="site-nav">
+        <div class="container nav-inner">
+            <a class="nav-brand" href="/">
+                <span>Osman Cagri Genc</span>
+                <small>Frontend Lead • Product Builder</small>
+            </a>
+            <button
+                class="nav-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="nav-links"
+            >
+                Menu
+            </button>
+            <ul class="nav-links" id="nav-links" data-open="false">
+                <li><a href="/projects/">Projects</a></li>
+                <li><a href="/playground/">Playground</a></li>
+                <li><a href="/labs/">Labs</a></li>
+                <li>
+                    <a class="nav-cta" href="/nobetci-eczaneler/">
+                        Nobetci Eczaneler
+                    </a>
+                </li>
+                <li><a href="/index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+    <main id="main">
+        <div class="max-w-6xl mx-auto px-6 pt-8">
+            <a href="/projects/" class="text-slate underline">← Projects</a>
+        </div>
     <!-- Navigation -->
     <header class="fixed top-0 left-0 w-full z-50 px-4 py-4">
         <nav class="max-w-7xl mx-auto glass-card rounded-2xl px-6 py-3 flex justify-between items-center">
@@ -402,6 +461,30 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Summary -->
+    <section class="py-16">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="font-display text-xl font-semibold mb-3">Problem</h3>
+                    <p class="text-slate">Fis ve fiyat verileri daginik, karsilastirma zor.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="font-display text-xl font-semibold mb-3">Cozum</h3>
+                    <p class="text-slate">OCR ile fis okuma, fiyat gecmisi ve tasarruf onerileri.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="font-display text-xl font-semibold mb-3">Tech</h3>
+                    <p class="text-slate">React Native, backend servisleri, analiz ve bildirim akisi.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="font-display text-xl font-semibold mb-3">Durum</h3>
+                    <p class="text-slate">Canli urun. Yeni market entegrasyonlari planlanmakta.</p>
                 </div>
             </div>
         </div>
@@ -742,6 +825,7 @@
             </div>
         </div>
     </footer>
+    </main>
 
     <!-- Smooth scroll behavior -->
     <script>
@@ -779,6 +863,17 @@
             card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(card);
         });
+    </script>
+    <script>
+        const navToggle = document.querySelector(".nav-toggle");
+        const navLinks = document.getElementById("nav-links");
+        if (navToggle && navLinks) {
+            navToggle.addEventListener("click", () => {
+                const isOpen = navLinks.dataset.open === "true";
+                navLinks.dataset.open = isOpen ? "false" : "true";
+                navToggle.setAttribute("aria-expanded", (!isOpen).toString());
+            });
+        }
     </script>
 </body>
 </html>

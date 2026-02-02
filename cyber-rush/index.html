@@ -3,10 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Rush 3D</title>
-    <link rel="stylesheet" href="style.css">
+  <title>Cyber Rush 3D</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/site.config.js"></script>
+  <script src="/assets/js/seo.js"></script>
+  <script>
+      window.Seo.apply({
+          title: "Cyber Rush 3D | Playground",
+          description:
+              "Neon temali 3D endless runner oyunu. Engel atlama ve hiz odakli deneyim.",
+          canonicalPath: "/cyber-rush/",
+          type: "website",
+          imagePath: "/assets/og/default.png",
+          schema: {
+              "@type": "SoftwareApplication",
+              name: "Cyber Rush 3D",
+              applicationCategory: "Game",
+              operatingSystem: "Web",
+              url: "https://osmcgrgenc.github.io/cyber-rush/",
+              description:
+                  "Neon temali 3D endless runner oyunu. Engel atlama ve hiz odakli deneyim.",
+              author: { "@type": "Person", name: "Osman Cagri Genc" },
+          },
+      });
+  </script>
+  <style>
+      .back-link {
+          position: fixed;
+          top: 1rem;
+          left: 1rem;
+          z-index: 2000;
+          background: rgba(0, 0, 0, 0.6);
+          color: #fff;
+          padding: 0.4rem 0.75rem;
+          border-radius: 999px;
+          text-decoration: none;
+          font-size: 0.85rem;
+      }
+  </style>
 </head>
 <body>
+    <a class="back-link" href="/playground/">← Playground</a>
 
     <!-- Arka Plan Efektleri -->
     <div id="stars"></div>
@@ -39,7 +76,7 @@
         <!-- Game Over Ekranı -->
         <div id="game-over-screen" class="overlay hidden">
             <div class="overlay-content">
-                <h1 class="glitch" data-text="GAME OVER">GAME OVER</h1>
+                <h2 class="glitch" data-text="GAME OVER">GAME OVER</h2>
                 <div class="stats">
                     <div class="stat-item">
                         <span class="stat-label">SKOR</span>

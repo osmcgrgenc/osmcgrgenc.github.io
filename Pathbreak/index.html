@@ -8,8 +8,57 @@
     <meta name="mobile-web-app-capable" content="yes">
     <title>Pathbreak TD</title>
     <link rel="stylesheet" href="style.css">
+    <script src="/assets/js/site.config.js"></script>
+    <script src="/assets/js/seo.js"></script>
+    <script>
+        window.Seo.apply({
+            title: "Pathbreak TD | Playground",
+            description:
+                "Pathbreak TD: yol kirma ve kule savunma mekaniklerini birlestiren oyun prototipi.",
+            canonicalPath: "/Pathbreak/",
+            type: "website",
+            imagePath: "/assets/og/default.png",
+            schema: {
+                "@type": "SoftwareApplication",
+                name: "Pathbreak TD",
+                applicationCategory: "Game",
+                operatingSystem: "Web",
+                url: "https://osmcgrgenc.github.io/Pathbreak/",
+                description:
+                    "Pathbreak TD: yol kirma ve kule savunma mekaniklerini birlestiren oyun prototipi.",
+                author: { "@type": "Person", name: "Osman Cagri Genc" },
+            },
+        });
+    </script>
+    <style>
+        .back-link {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 0.4rem 0.75rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
 </head>
 <body>
+    <a class="back-link" href="/playground/">← Playground</a>
+    <h1 class="sr-only">Pathbreak TD</h1>
     <div id="game-container">
         <!-- Üst Bar -->
         <div id="top-bar">
@@ -32,7 +81,8 @@
 
         <!-- Ana Oyun Alanı -->
         <div id="game-area">
-            <canvas id="game-canvas"></canvas>
+    <p class="subtitle">Yol kirma ve kule savunma mekaniklerini birlestiren deneysel TD prototipi.</p>
+    <canvas id="game-canvas" aria-label="Pathbreak oyun alani"></canvas>
             
             <!-- Aktif Artifactler -->
             <div id="active-artifacts" class="hidden">
@@ -140,4 +190,3 @@
     <script type="module" src="game.js"></script>
 </body>
 </html>
-

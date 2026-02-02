@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Projects</title>
+        <title>Labs</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -17,16 +17,17 @@
         <script src="/assets/js/seo.js"></script>
         <script>
             window.Seo.apply({
-                title: "Projects | Urun Calismalari",
+                title: "Labs | Deneysel Calismalar",
                 description:
-                    "Olceklenebilir urunler ve canli platformlar: Codifya Zam Radar, BerberBul ve Nobetci Eczaneler.",
-                canonicalPath: "/projects/",
+                    "Framework denemeleri, UI testleri ve teknik prototipler. Urun degil, deneysel calisma alani.",
+                canonicalPath: "/labs/",
                 type: "website",
                 imagePath: "/assets/og/default.png",
+                noindex: true,
                 schema: {
-                    "@type": "CollectionPage",
-                    name: "Projects",
-                    url: "https://osmcgrgenc.github.io/projects/",
+                    "@type": "WebPage",
+                    name: "Labs",
+                    url: "https://osmcgrgenc.github.io/labs/",
                 },
             });
         </script>
@@ -64,11 +65,11 @@
         <main id="main">
             <section class="hub-hero">
                 <div class="container">
-                    <div class="pill">Projects</div>
-                    <h1>Urun ve Platform Calismalari</h1>
+                    <div class="pill">Labs</div>
+                    <h1>Deneysel Calismalar</h1>
                     <p>
-                        Problem, cozum ve teknoloji secimlerine odaklanan
-                        projeler. Canli urunler ve altyapi deneyimleri burada.
+                        Burasi, urunlestirilmeyen ama ogrenme ve deneme icin
+                        uretilen arayuz ve teknoloji prototiplerini barindirir.
                     </p>
                 </div>
             </section>
@@ -77,52 +78,43 @@
                 <div class="container">
                     <div class="hub-grid">
                         <article class="hub-card">
-                            <h3>Codifya Zam Radar</h3>
-                            <p>
-                                Fisleri dijitalleştirerek urun fiyat gecmisi ve
-                                tasarruf onerileri sunan akilli alisveris
-                                asistani.
-                            </p>
-                            <div class="hub-meta">
-                                <span>React Native</span>
-                                <span>OCR & AI</span>
-                                <span>Realtime</span>
-                            </div>
-                            <a class="btn btn-secondary" href="/projects/codifya/">
-                                Codifya Zam Radar detaylari
+                            <h3>V-Framework Demo</h3>
+                            <p>React-benzeri vanilla JS framework denemesi.</p>
+                            <div class="hub-meta"><span>Framework</span></div>
+                            <a class="btn btn-secondary" href="/v-framework/">
+                                Gor
                             </a>
                         </article>
                         <article class="hub-card">
-                            <h3>BerberBul</h3>
-                            <p>
-                                Berberler icin randevu, kasa ve musteri
-                                yonetimini tek platformda birlestiren SaaS urunu.
-                            </p>
-                            <div class="hub-meta">
-                                <span>React Native</span>
-                                <span>Node.js</span>
-                                <span>Subscription</span>
-                            </div>
-                            <a
-                                class="btn btn-secondary"
-                                href="/projects/berberbul/"
-                            >
-                                BerberBul detaylari
+                            <h3>Runner Test</h3>
+                            <p>Basit hareket ve animasyon testleri.</p>
+                            <div class="hub-meta"><span>UI Test</span></div>
+                            <a class="btn btn-secondary" href="/runner.html">
+                                Gor
                             </a>
                         </article>
                         <article class="hub-card">
-                            <h3>Nobetci Eczaneler</h3>
-                            <p>
-                                Konya icin guncel nobetci eczane listesi ve
-                                arama/filtreleme deneyimi.
-                            </p>
-                            <div class="hub-meta">
-                                <span>Static</span>
-                                <span>SEO</span>
-                                <span>Automation</span>
-                            </div>
-                            <a class="btn btn-secondary" href="/nobetci-eczaneler/">
-                                Nobetci Eczaneler uygulamasi
+                            <h3>Input Test</h3>
+                            <p>Mobil input davranislari ve formatlama denemesi.</p>
+                            <div class="hub-meta"><span>Form</span></div>
+                            <a class="btn btn-secondary" href="/inputTest.html">
+                                Gor
+                            </a>
+                        </article>
+                        <article class="hub-card">
+                            <h3>DateTime Test</h3>
+                            <p>Tarih/saat cevirim senaryolari.</p>
+                            <div class="hub-meta"><span>Utility</span></div>
+                            <a class="btn btn-secondary" href="/dateTimeTest.html">
+                                Gor
+                            </a>
+                        </article>
+                        <article class="hub-card">
+                            <h3>Banner Set</h3>
+                            <p>Promosyon banner tasarim denemeleri.</p>
+                            <div class="hub-meta"><span>Layout</span></div>
+                            <a class="btn btn-secondary" href="/has/">
+                                Gor
                             </a>
                         </article>
                     </div>
@@ -131,9 +123,7 @@
         </main>
 
         <footer>
-            <div class="container">
-                Daha fazla oyun icin <a href="/playground/">Playground</a>.
-            </div>
+            <div class="container">Labs sayfalari deneysel isareti tasir.</div>
         </footer>
 
         <script>

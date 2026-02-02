@@ -3,14 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>🏰 Tower Defense - Kule Savunma</title>
+    <title>Tower Defense | Playground</title>
     <link rel="stylesheet" href="style.css">
+    <script src="/assets/js/site.config.js"></script>
+    <script src="/assets/js/seo.js"></script>
+    <script>
+        window.Seo.apply({
+            title: "Tower Defense | Playground",
+            description:
+                "Kule savunma oyunu: 6 kule, 4 zorluk seviyesi ve mobil uyumlu oynanis.",
+            canonicalPath: "/tower/",
+            type: "website",
+            imagePath: "/assets/og/default.png",
+            schema: {
+                "@type": "SoftwareApplication",
+                name: "Tower Defense",
+                applicationCategory: "Game",
+                operatingSystem: "Web",
+                url: "https://osmcgrgenc.github.io/tower/",
+                description:
+                    "Kule savunma oyunu: 6 kule, 4 zorluk seviyesi ve mobil uyumlu oynanis.",
+                author: {
+                    "@type": "Person",
+                    name: "Osman Cagri Genc",
+                },
+            },
+        });
+    </script>
+    <style>
+        .back-link {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 0.4rem 0.75rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+    </style>
 </head>
 <body>
+    <a class="back-link" href="/playground/">← Playground</a>
     <!-- Ana Menü -->
     <div id="mainMenu" class="menu-screen">
         <div class="menu-content">
-            <h1>🏰 Tower Defense</h1>
+            <h2>🏰 Tower Defense</h2>
             <p class="menu-subtitle">Kule Savunma Oyunu</p>
             
             <div class="difficulty-selection">

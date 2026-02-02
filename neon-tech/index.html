@@ -3,12 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NEON HEIST: Micro-Extraction Arena</title>
+  <title>NEON HEIST</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="/assets/js/site.config.js"></script>
+  <script src="/assets/js/seo.js"></script>
+  <script>
+    window.Seo.apply({
+      title: "NEON HEIST | Playground",
+      description:
+        "Micro-extraction shooter prototipi. HUD, loadout ve mini harita ile aksiyon denemesi.",
+      canonicalPath: "/neon-tech/",
+      type: "website",
+      imagePath: "/assets/og/default.png",
+      lang: "en",
+      schema: {
+        "@type": "SoftwareApplication",
+        name: "NEON HEIST",
+        applicationCategory: "Game",
+        operatingSystem: "Web",
+        url: "https://osmcgrgenc.github.io/neon-tech/",
+        description:
+          "Micro-extraction shooter prototipi. HUD, loadout ve mini harita ile aksiyon denemesi.",
+        author: { "@type": "Person", name: "Osman Cagri Genc" },
+      },
+    });
+  </script>
+  <style>
+    .back-link {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
 <body>
+  <a class="back-link" href="/playground/">← Playground</a>
   <div id="app">
-    <canvas id="game-canvas" width="1280" height="720"></canvas>
+    <p class="sr-only">Micro-extraction shooter prototipi. WASD ile hareket, mouse ile nişan.</p>
+    <canvas id="game-canvas" width="1280" height="720" aria-label="Neon Heist oyun alani"></canvas>
 
     <div id="hud" class="overlay hidden">
       <div class="hud-top">
@@ -33,7 +72,7 @@
       <div class="hud-bottom">
         <div id="hit-marker" class="hit-marker hidden">✕</div>
         <div id="minimap-container">
-          <canvas id="minimap" width="160" height="160"></canvas>
+          <canvas id="minimap" width="160" height="160" aria-label="Mini harita"></canvas>
         </div>
       </div>
 

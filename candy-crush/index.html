@@ -3,10 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Brick Breaker | Retro Arcade</title>
+    <title>Brick Breaker | Playground</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="/assets/js/site.config.js"></script>
+    <script src="/assets/js/seo.js"></script>
+    <script>
+      window.Seo.apply({
+        title: "Brick Breaker | Playground",
+        description: "Klasik brick breaker oyunu. Power-up'lar, bolumler ve skor takibi.",
+        canonicalPath: "/candy-crush/",
+        type: "website",
+        imagePath: "/assets/og/default.png",
+        schema: {
+          "@type": "SoftwareApplication",
+          name: "Brick Breaker",
+          applicationCategory: "Game",
+          operatingSystem: "Web",
+          url: "https://osmcgrgenc.github.io/candy-crush/",
+          description: "Klasik brick breaker oyunu. Power-up'lar, bolumler ve skor takibi.",
+          author: { "@type": "Person", name: "Osman Cagri Genc" }
+        }
+      });
+    </script>
+    <style>
+      .back-link {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 2000;
+        background: rgba(0,0,0,0.6);
+        color: #fff;
+        padding: 0.4rem 0.75rem;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 0.85rem;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
   </head>
   <body>
+    <a class="back-link" href="/playground/">← Playground</a>
+    <h1 class="sr-only">Brick Breaker</h1>
     <main class="page-shell">
       <header class="hud">
         <div class="stat-group">
@@ -49,6 +96,7 @@
       </header>
 
       <section id="game-frame">
+        <p class="game-description">Topu sektirerek tuglalari kir, power-up topla ve skorunu gelistir.</p>
         <canvas id="gameCanvas" aria-label="Brick Breaker oyun alanı"></canvas>
         <div id="comboDisplay" class="combo-display hidden">
           <span class="combo-text">COMBO x<span id="comboCount">0</span></span>

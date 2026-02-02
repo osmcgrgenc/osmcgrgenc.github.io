@@ -3,7 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Mayın Tarlası</title>
+  <title>Mayin Tarlasi</title>
+  <script src="/assets/js/site.config.js"></script>
+  <script src="/assets/js/seo.js"></script>
+  <script>
+      window.Seo.apply({
+          title: "Mayin Tarlasi | Playground",
+          description:
+              "Modern tasarimli klasik mayin tarlasi. Kolay, orta ve zor modlar.",
+          canonicalPath: "/mayin-tarlasi/",
+          type: "website",
+          imagePath: "/assets/og/default.png",
+          schema: {
+              "@type": "SoftwareApplication",
+              name: "Mayin Tarlasi",
+              applicationCategory: "Game",
+              operatingSystem: "Web",
+              url: "https://osmcgrgenc.github.io/mayin-tarlasi/",
+              description:
+                  "Modern tasarimli klasik mayin tarlasi. Kolay, orta ve zor modlar.",
+              author: { "@type": "Person", name: "Osman Cagri Genc" },
+          },
+      });
+  </script>
+  <style>
+      .back-link {
+          position: fixed;
+          top: 1rem;
+          left: 1rem;
+          z-index: 2000;
+          background: rgba(0, 0, 0, 0.6);
+          color: #fff;
+          padding: 0.4rem 0.75rem;
+          border-radius: 999px;
+          text-decoration: none;
+          font-size: 0.85rem;
+      }
+  </style>
     <style>
         /* CSS Değişkenleri ve Temel Kurulum */
         :root {
@@ -209,6 +245,7 @@
     </style>
 </head>
 <body>
+    <a class="back-link" href="/playground/">← Playground</a>
 
     <h1>Modern Mayın Tarlası</h1>
 

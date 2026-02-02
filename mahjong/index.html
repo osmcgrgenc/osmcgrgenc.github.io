@@ -2,7 +2,54 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <title>Mahjong Wonders - 3D Katmanlı</title>
+  <title>Mahjong Wonders</title>
+  <script src="/assets/js/site.config.js"></script>
+  <script src="/assets/js/seo.js"></script>
+  <script>
+    window.Seo.apply({
+      title: "Mahjong Wonders | Playground",
+      description:
+        "3D katmanli mahjong oyunu. Puzzle ve strateji odakli deneyim.",
+      canonicalPath: "/mahjong/",
+      type: "website",
+      imagePath: "/assets/og/default.png",
+      schema: {
+        "@type": "SoftwareApplication",
+        name: "Mahjong Wonders",
+        applicationCategory: "Game",
+        operatingSystem: "Web",
+        url: "https://osmcgrgenc.github.io/mahjong/",
+        description:
+          "3D katmanli mahjong oyunu. Puzzle ve strateji odakli deneyim.",
+        author: { "@type": "Person", name: "Osman Cagri Genc" },
+      },
+    });
+  </script>
+  <style>
+    .back-link {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -748,6 +795,8 @@
   </style>
 </head>
 <body>
+  <a class="back-link" href="/playground/">← Playground</a>
+  <h1 class="sr-only">Mahjong Wonders</h1>
   <div class="app">
     <header class="header">
       <div class="header-top">

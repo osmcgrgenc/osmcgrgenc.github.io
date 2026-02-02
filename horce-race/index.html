@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
     <meta name="theme-color" content="#0a1a10" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -12,11 +11,59 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
-    <title>TurfMaster</title>
+  <title>Horse Race</title>
+  <script src="/assets/js/site.config.js"></script>
+  <script src="/assets/js/seo.js"></script>
+  <script>
+    window.Seo.apply({
+      title: "Horse Race | Playground",
+      description: "Horse race simulasyonu. Yaris akisi ve skor odakli prototip.",
+      canonicalPath: "/horce-race/",
+      type: "website",
+      imagePath: "/assets/og/default.png",
+      lang: "en",
+      schema: {
+        "@type": "SoftwareApplication",
+        name: "Horse Race",
+        applicationCategory: "Game",
+        operatingSystem: "Web",
+        url: "https://osmcgrgenc.github.io/horce-race/",
+        description: "Horse race simulasyonu. Yaris akisi ve skor odakli prototip.",
+        author: { "@type": "Person", name: "Osman Cagri Genc" }
+      }
+    });
+  </script>
+  <style>
+    .back-link {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
     <script type="module" crossorigin src="./assets/index-CxTMmuxQ.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-BXiN8HVy.css">
   </head>
   <body>
+    <a class="back-link" href="/playground/">← Playground</a>
+    <h1 class="sr-only">Horse Race</h1>
     <div id="app"></div>
   </body>
 </html>

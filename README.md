@@ -45,6 +45,22 @@ Modern ve responsive kişisel portfolyo web sitesi. Frontend Team Leader ve Soft
 
 [https://osmcgrgenc.github.io](https://osmcgrgenc.github.io)
 
+## ✅ How to test locally
+
+Static olarak servis edin:
+
+```bash
+python3 -m http.server 8080
+```
+
+Sonra `http://localhost:8080` adresini acin.
+
+## 🚢 Deployment model
+
+- GitHub Pages root: repo kökünden statik HTML/CSS/JS
+- Root seviyesinde build yoktur
+- Alt uygulamalar (ör. `nobetci-eczaneler/`) kendi içinde kalır
+
 ## 📞 İletişim
 
 - **Email**: osman.cagri.genc@enoca.com

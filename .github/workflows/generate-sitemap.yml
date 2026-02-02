@@ -1,0 +1,35 @@
+name: Generate Sitemap
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  schedule:
+    - cron: "0 3 * * 1" # Weekly Monday 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Generate sitemap
+        run: node tools/generate-sitemap.mjs
+
+      - name: Commit changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add sitemap.xml sitemap-pages.json
+            git commit -m "chore: update sitemap"
+            git push
+          else
+            echo "No changes to commit"
+          fi

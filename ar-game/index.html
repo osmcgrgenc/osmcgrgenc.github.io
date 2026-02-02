@@ -1,15 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
   <head>
-    <title>AR Hazine Avı</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Hazine Avi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/theme.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <script src="/assets/js/site.config.js"></script>
+    <script src="/assets/js/seo.js"></script>
+    <script>
+      window.Seo.apply({
+        title: "AR Hazine Avi | Playground",
+        description: "A-Frame ve AR.js ile gelistirilmis basit AR prototipi.",
+        canonicalPath: "/ar-game/",
+        type: "website",
+        imagePath: "/assets/og/default.png",
+        schema: {
+          "@type": "SoftwareApplication",
+          name: "AR Hazine Avi",
+          applicationCategory: "AR",
+          operatingSystem: "Web",
+          url: "https://osmcgrgenc.github.io/ar-game/",
+          description: "A-Frame ve AR.js ile gelistirilmis basit AR prototipi.",
+          author: { "@type": "Person", name: "Osman Cagri Genc" }
+        }
+      });
+    </script>
   </head>
 
   <body style="margin : 0px; overflow: hidden;">
-    <a-scene embedded arjs>
+    <div class="container" style="position: absolute; z-index: 10; width: 100%;">
+      <div class="lab-banner" style="margin: 1rem;">
+        Playground: AR prototipi. <a href="/playground/">Playground</a>
+      </div>
+    </div>
+    <h1 class="sr-only">AR Hazine Avi</h1>
+    <a-scene embedded arjs aria-label="AR hazine avi sahnesi">
 
       <a-box position="0 0.5 0" material="color: tomato;"></a-box>
 

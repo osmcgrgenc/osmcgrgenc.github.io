@@ -3,9 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BerberBul - Berberler için akıllı randevu ve müşteri yönetim sistemi. Yakınınızdaki berberleri bulun, online randevu alın.">
-    <title>BerberBul – Akıllı Randevu ve Müşteri Yönetimi</title>
+    <title>BerberBul</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/theme.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <script src="/assets/js/site.config.js"></script>
+    <script src="/assets/js/seo.js"></script>
+    <script>
+        window.Seo.apply({
+            title: "BerberBul | Akilli Randevu ve Musteri Yonetimi",
+            description:
+                "Berberler icin akilli randevu ve musteri yonetim sistemi. Yakininizdaki berberleri bulun, online randevu alin.",
+            canonicalPath: "/projects/berberbul/",
+            type: "product",
+            imagePath: "/assets/og/default.png",
+            schema: {
+                "@type": "SoftwareApplication",
+                name: "BerberBul",
+                applicationCategory: "BusinessApplication",
+                operatingSystem: "iOS, Android, Web",
+                url: "https://osmcgrgenc.github.io/projects/berberbul/",
+                author: {
+                    "@type": "Person",
+                    name: "Osman Cagri Genc",
+                },
+                description:
+                    "Berberler icin akilli randevu ve musteri yonetim sistemi.",
+            },
+        });
+    </script>
     <style>
         * {
             margin: 0;
@@ -1065,6 +1091,38 @@
     </style>
 </head>
 <body>
+    <a class="skip-link" href="#main">Ana icerige gec</a>
+    <header class="site-nav">
+        <div class="container nav-inner">
+            <a class="nav-brand" href="/">
+                <span>Osman Cagri Genc</span>
+                <small>Frontend Lead • Product Builder</small>
+            </a>
+            <button
+                class="nav-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="nav-links"
+            >
+                Menu
+            </button>
+            <ul class="nav-links" id="nav-links" data-open="false">
+                <li><a href="/projects/">Projects</a></li>
+                <li><a href="/playground/">Playground</a></li>
+                <li><a href="/labs/">Labs</a></li>
+                <li>
+                    <a class="nav-cta" href="/nobetci-eczaneler/">
+                        Nobetci Eczaneler
+                    </a>
+                </li>
+                <li><a href="/index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+    <main id="main">
+        <div class="container" style="padding-top: 1rem;">
+            <a href="/projects/" style="color: var(--text-muted);">← Projects</a>
+        </div>
     <!-- Header -->
     <header>
         <div class="header-inner">
@@ -1151,6 +1209,38 @@
                         </div>
                         <div class="card-badge">✨ Örnek Profil Kartı</div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Proje Ozeti</span>
+                <h2 class="section-title">Problem, Cozum, Tech, Durum</h2>
+                <p class="section-desc">BerberBul'un urun karari ve teknoloji secimleri.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card glass-card">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Problem</h3>
+                    <p>Berberler icin randevu ve musteri yonetimi daginik, verimsiz.</p>
+                </div>
+                <div class="benefit-card glass-card">
+                    <div class="benefit-icon">🧩</div>
+                    <h3>Cozum</h3>
+                    <p>Takvim, POS ve musteri yonetimini tek SaaS akisinda birlestirme.</p>
+                </div>
+                <div class="benefit-card glass-card">
+                    <div class="benefit-icon">⚙️</div>
+                    <h3>Tech</h3>
+                    <p>React Native arayuz, Node.js backend, abonelik altyapisi.</p>
+                </div>
+                <div class="benefit-card glass-card">
+                    <div class="benefit-icon">✅</div>
+                    <h3>Durum</h3>
+                    <p>Canli urun. Iyilestirilmis randevu akisi ve raporlama planlari.</p>
                 </div>
             </div>
         </div>
@@ -1505,6 +1595,7 @@
             </div>
         </div>
     </footer>
+    </main>
 
     <script>
         // Mobile menu toggle
@@ -1566,6 +1657,17 @@
             el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
         });
+    </script>
+    <script>
+        const navToggle = document.querySelector(".nav-toggle");
+        const navLinks = document.getElementById("nav-links");
+        if (navToggle && navLinks) {
+            navToggle.addEventListener("click", () => {
+                const isOpen = navLinks.dataset.open === "true";
+                navLinks.dataset.open = isOpen ? "false" : "true";
+                navToggle.setAttribute("aria-expanded", (!isOpen).toString());
+            });
+        }
     </script>
 </body>
 </html>

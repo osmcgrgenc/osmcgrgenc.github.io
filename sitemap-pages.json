@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-02-02T14:38:55.924Z",
+  "included": [
+    "/Pathbreak/",
+    "/ar-game/",
+    "/candy-crush/",
+    "/counter-strike/",
+    "/cyber-rush/",
+    "/games/",
+    "/horce-race/",
+    "/mahjong/",
+    "/mayin-tarlasi/",
+    "/neon-tech/",
+    "/nobetci-eczaneler/",
+    "/playground/",
+    "/pokemon-battle/",
+    "/pokemon/",
+    "/projects/",
+    "/projects/berberbul/",
+    "/projects/codifya/",
+    "/sudoku/",
+    "/tower/"
+  ],
+  "missing": [
+    "/"
+  ],
+  "excluded": [
+    "/labs/",
+    "/v-framework/",
+    "/runner.html",
+    "/inputTest.html",
+    "/dateTimeTest.html",
+    "/has/"
+  ],
+  "discoveredCount": 26
+}

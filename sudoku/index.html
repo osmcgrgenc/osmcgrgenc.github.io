@@ -3,7 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sudoku | Tek Dosyalı Mobil Sudoku Deneyimi</title>
+  <title>Sudoku</title>
+  <script src="/assets/js/site.config.js"></script>
+  <script src="/assets/js/seo.js"></script>
+  <script>
+      window.Seo.apply({
+          title: "Sudoku | Playground",
+          description:
+              "Tek dosyali, mobil odakli sudoku deneyimi. Zorluk seviyeleri ve ipucu sistemi.",
+          canonicalPath: "/sudoku/",
+          type: "website",
+          imagePath: "/assets/og/default.png",
+          schema: {
+              "@type": "SoftwareApplication",
+              name: "Sudoku",
+              applicationCategory: "Game",
+              operatingSystem: "Web",
+              url: "https://osmcgrgenc.github.io/sudoku/",
+              description:
+                  "Tek dosyali, mobil odakli sudoku deneyimi. Zorluk seviyeleri ve ipucu sistemi.",
+              author: { "@type": "Person", name: "Osman Cagri Genc" },
+          },
+      });
+  </script>
+  <style>
+      .back-link {
+          position: fixed;
+          top: 1rem;
+          left: 1rem;
+          z-index: 2000;
+          background: rgba(0, 0, 0, 0.6);
+          color: #fff;
+          padding: 0.4rem 0.75rem;
+          border-radius: 999px;
+          text-decoration: none;
+          font-size: 0.85rem;
+      }
+  </style>
   <!--
     Kullanım Kılavuzu (Kısa):
     - Üst bardan zorluk seç, "Yeni Oyun" ile 9x9 sudoku üret.
@@ -615,6 +651,7 @@
   </style>
 </head>
 <body>
+  <a class="back-link" href="/playground/">← Playground</a>
   <a href="#game-root" class="sr-only">Oyuna geç</a>
   <main id="game-root">
     <header class="app-header" aria-label="Sudoku kontrol paneli">

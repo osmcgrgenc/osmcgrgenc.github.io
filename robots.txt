@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /labs/
 
 Sitemap: https://osmcgrgenc.github.io/sitemap.xml

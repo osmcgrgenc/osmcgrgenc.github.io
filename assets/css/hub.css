@@ -1,0 +1,68 @@
+.hub-hero {
+  padding: 6rem 0 3rem;
+  background: var(--gradient-hero);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hub-hero h1 {
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  margin-bottom: 1rem;
+}
+
+.hub-hero p {
+  color: var(--color-muted);
+  max-width: 720px;
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.hub-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-card);
+}
+
+.hub-card h3 {
+  font-size: 1.2rem;
+}
+
+.hub-card p {
+  color: var(--color-muted);
+}
+
+.hub-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hub-meta span {
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-pill);
+  background: rgba(122, 165, 255, 0.12);
+  color: var(--color-accent-2);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.hub-section {
+  padding: 3.5rem 0;
+}
+
+.hub-section h2 {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  margin-bottom: 0.75rem;
+}
+
+.hub-section p {
+  color: var(--color-muted);
+}
